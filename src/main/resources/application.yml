@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver # h2 database 連接位址
+    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE # 配置driver
+    initialize: true
+    sql-script-ecoding: UTF-8
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-admin-password: sa
+
+  thymeleaf:
+    cache: false
+    prefix: "classpath:/templates/app/"
+    suffix: .html
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+  
+#  security:
+#    user:
+#      name: admin
+#      password: 123456
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+# server
+server:
+  port: 8080
+
