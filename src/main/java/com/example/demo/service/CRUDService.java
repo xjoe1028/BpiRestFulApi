@@ -82,7 +82,7 @@ public class CRUDService {
 	public Bpi updateBpi(Bpi bpi) {
 		Bpi entity = new Bpi();
 		BeanUtils.copyProperties(bpi, entity);
-		bpi.setUpdated(getNowDate(new Date()));
+		entity.setUpdated(getNowDate(new Date()));
 		return crudRepository.save(entity);
 	}
 
