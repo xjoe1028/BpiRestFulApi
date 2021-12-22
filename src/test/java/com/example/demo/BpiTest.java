@@ -28,6 +28,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Bpi api test
+ * 
+ * @author Joe
+ *
+ * @Date 2021/12/22
+ */
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
