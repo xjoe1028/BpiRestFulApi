@@ -7,9 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.demo.entity.pk.BpiPK;
 import com.sun.istack.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -28,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "bpi")
+@IdClass(BpiPK.class)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bpi implements Serializable {
@@ -37,15 +39,18 @@ public class Bpi implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty("bpi id")
 	@Id
+	@Column
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
+	@NotNull
 	private Long bpiId;
 
 	/**
 	 * 貨幣名稱
 	 */
 	@ApiModelProperty("code 貨幣名稱")
+	@Id
 	@Column
 	@NotNull
 	private String code;
@@ -55,7 +60,6 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
 	@Column
-	@NotNull
 	private String codeChineseName;
 	
 	/**
@@ -63,7 +67,6 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("code 金錢符號")
 	@Column
-	@NotNull
 	private String symbol;
 	
 	/**
@@ -71,7 +74,6 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("rate 匯率(千分位,)")
 	@Column
-	@NotNull
 	private String rate; 
 	
 	/**
@@ -79,15 +81,13 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("rate 匯率")
 	@Column
-	@NotNull
-	private Double rate_float;
+	private Double rateFloat;
 	
 	/**
 	 * 描述
 	 */
 	@ApiModelProperty("description 描述")
 	@Column
-	@NotNull
 	private String description;
 	
 	/**
@@ -95,17 +95,16 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("updated 更新時間")
 	@Column
-	@JsonIgnore
 	private String updated;
 
 	@Builder
-	public Bpi(String code, String codeChineseName, String symbol, String rate, Double rate_float, String description) {
+	public Bpi(String code, String codeChineseName, String symbol, String rate, Double rateFloat, String description) {
 		super();
 		this.code = code;
 		this.codeChineseName = codeChineseName;
 		this.symbol = symbol;
 		this.rate = rate;
-		this.rate_float = rate_float;
+		this.rateFloat = rateFloat;
 		this.description = description;
 	}
 	

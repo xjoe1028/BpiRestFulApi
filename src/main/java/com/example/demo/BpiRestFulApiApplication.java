@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan(basePackages = "com.example")
 @SpringBootApplication
-public class DemoCRUDRestFulAPIApplication {
+public class BpiRestFulApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoCRUDRestFulAPIApplication.class, args);
+		SpringApplication.run(BpiRestFulApiApplication.class, args);
 	}
 
 }

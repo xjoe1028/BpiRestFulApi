@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Bpi;
 import com.example.demo.entity.Coindesk;
 import com.example.demo.entity.NewBpi;
-import com.example.demo.repository.CRUDRepository;
+import com.example.demo.entity.pk.BpiPK;
+import com.example.demo.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +30,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class CRUDService {
+public class BpiService {
 
 	@Autowired
-	private CRUDRepository crudRepository;
+	private BpiRepository bpiRepository;
 
 	public final static Map<String, String> coinNameMap = new HashMap<>();
 
@@ -44,22 +45,44 @@ public class CRUDService {
 	}
 
 	/**
-	 * 查詢全部
+	 * select all
 	 * 
 	 * @return
 	 */
 	public List<Bpi> findAll() {
-		return crudRepository.findAll();
+		return bpiRepository.findAll();
 	}
 
 	/**
-	 * 查單一
+	 * select by bpiId
 	 * 
 	 * @param id
 	 * @return
 	 */
 	public Bpi findBpiById(Long id) {
-		return crudRepository.getById(id);
+		return bpiRepository.findByBpiId(id);
+//		return bpiRepository.getById(BpiPK.builder().bpiId(id).build());
+	}
+	
+	/**
+	 * select by code
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public Bpi findBpiByCode(String code) {
+		return bpiRepository.findByCode(code);
+	}
+	
+	/**
+	 * 查詢 where code = ? and codeChineseName = ?
+	 * 
+	 * @param code
+	 * @param codeChineseName
+	 * @return
+	 */
+	public Bpi findByCodeAndCodeChineseName(String code, String codeChineseName) {
+		return bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
 	}
 
 	/**
@@ -69,8 +92,7 @@ public class CRUDService {
 	 * @return
 	 */
 	public Bpi addBpi(Bpi bpi) {
-		bpi.setUpdated(getNowDate(new Date()));
-		return crudRepository.save(bpi);
+		return bpiRepository.save(bpi);
 	}
 
 	/**
@@ -83,21 +105,60 @@ public class CRUDService {
 		Bpi entity = new Bpi();
 		BeanUtils.copyProperties(bpi, entity);
 		entity.setUpdated(getNowDate(new Date()));
-		return crudRepository.save(entity);
+		return bpiRepository.save(entity);
+	}
+	
+	/**
+	 * 修改 匯率 by code
+	 * 
+	 * @param bpi
+	 * @return
+	 */
+	public Integer updateBpiRate(Bpi bpi) {
+		Bpi entity = bpiRepository.findByCode(bpi.getCode());
+		if(entity == null) {
+			return 0;
+		}
+		
+		if(bpi.getRateFloat() == null || bpi.getRate() == null) {
+			return 0;
+		} else if(bpi.getRate() == null && bpi.getRateFloat() != null) {
+			bpi.setRate(String.valueOf(bpi.getRateFloat()));
+		} else if(bpi.getRate() != null && bpi.getRateFloat() == null) {
+			bpi.setRateFloat(Double.parseDouble(bpi.getRate()));
+		}
+		
+		bpiRepository.updateBpiRateByCode(bpi.getRate(), bpi.getRateFloat(), bpi.getCode());
+		return 1;
 	}
 
 	/**
-	 * 刪除
+	 * 刪除 where id
 	 * 
 	 * @param id
 	 * @return
 	 */
 	public Integer deleteBpi(Long id) {
-		Optional<Bpi> entity = crudRepository.findById(id);
+		Optional<Bpi> entity = bpiRepository.findById(BpiPK.builder().bpiId(id).build());
 		if (entity == null) {
 			return 0;
 		}
-		crudRepository.deleteById(id);
+		bpiRepository.deleteById(BpiPK.builder().bpiId(id).build());
+		return 1;
+	}
+	
+	/**
+	 * 刪除 where code
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public Integer deleteBpiByCode(String code) {
+		Optional<Bpi> entity = bpiRepository.findById(BpiPK.builder().code(code).build());
+		if (entity == null) {
+			return 0;
+		}
+		bpiRepository.deleteBpiByCode(code);
 		return 1;
 	}
 
@@ -117,7 +178,7 @@ public class CRUDService {
 		newBpi.setNewBpi(map);
 		return newBpi;
 	}
-
+	
 	private String getNowDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		return sdf.format(date);
@@ -126,8 +187,7 @@ public class CRUDService {
 	private String updatedFormat(String updated) throws ParseException {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Date date = dateFormat.parse(updated);// You will get date object relative to server/client
-		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss"); // If you need time just put specific format
-																			// for time
+		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss"); // If you need time just put specific format for time
 		String dateStr = formatter.format(date);
 		return dateStr;
 	}

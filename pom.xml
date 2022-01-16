@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>DemoCRUDRestFulAPI</artifactId>
+	<artifactId>BpiRestFulApi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>DemoCRUDRestFulAPI-</name>
-	<description>Demo CURD Restful API project for Spring Boot</description>
+	<name>BpiRestFulApi</name>
+	<description>Demo Bpi CURD Restful API project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -41,6 +41,7 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<!-- h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -72,6 +73,12 @@
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
 		 </dependency>
+		 <!-- Oracle JDBC driver -->
+		 <!-- https://mvnrepository.com/artifact/com.oracle.ojdbc/ojdbc8 -->
+		<dependency>
+			<groupId>com.oracle.ojdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

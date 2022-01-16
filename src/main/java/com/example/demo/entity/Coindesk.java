@@ -35,6 +35,4 @@ public class Coindesk implements Serializable {
 	
 	private Map<String, Bpi> bpi;
 	
-	
-	
 }

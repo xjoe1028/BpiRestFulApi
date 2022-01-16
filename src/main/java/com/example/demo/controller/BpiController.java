@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.entity.Bpi;
 import com.example.demo.entity.NewBpi;
-import com.example.demo.service.CRUDService;
+import com.example.demo.service.BpiService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,13 +32,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/crud", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CRUDController {
+@RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
+public class BpiController {
 	
 	public static final String COINDESK_URL = "https://api.coindesk.com/v1/bpi/currentprice.json";
 	
 	@Autowired
-	private CRUDService crudService;
+	private BpiService bpiService;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -50,23 +51,55 @@ public class CRUDController {
 	 */
 	@GetMapping("/findAllBpis")
 	public ResponseEntity<List<Bpi>> findAllBpis() {
-		List<Bpi> bpiList = crudService.findAll();
+		List<Bpi> bpiList = bpiService.findAll();
 		if(bpiList.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
-		return ResponseEntity.ok(crudService.findAll());
+		return ResponseEntity.ok(bpiList);
+	}
+	
+//	/**
+//	 * 查詢 Bpi by id
+//	 * 
+//	 * @param id
+//	 * @return
+//	 */
+//	@GetMapping("/findBpi/{id}")
+//	public ResponseEntity<Bpi> findBpiById(@PathVariable Long id) {
+//		Bpi bpi = bpiService.findBpiById(id);
+//		if(bpi == null) {
+//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		}
+//		
+//		return ResponseEntity.ok(bpi);
+//	}
+	
+	/**
+	 * 查詢 Bpi by code
+	 * 
+	 * @param code
+	 * @return
+	 */
+	@GetMapping("/findBpi/code")
+	public ResponseEntity<Bpi> findBpiByCode(@RequestParam("code") String code) {
+		Bpi bpi = bpiService.findBpiByCode(code);
+		if(bpi == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
+		return ResponseEntity.ok(bpi);
 	}
 	
 	/**
-	 * 查詢 Bpi
+	 * 查詢 Bpi by code and codeChineseName
 	 * 
-	 * @param id
+	 * @param code
 	 * @return
 	 */
-	@GetMapping("/findBpi/{id}")
-	public ResponseEntity<Bpi> findBpiById(@PathVariable Long id) {
-		Bpi bpi = crudService.findBpiById(id);
+	@GetMapping("/findBpi/code/codeChineseName")
+	public ResponseEntity<Bpi> findBpiByCodeChineseName(@RequestParam("code") String code, @RequestParam("codeChineseName")String codeChineseName) {
+		Bpi bpi = bpiService.findByCodeAndCodeChineseName(code, codeChineseName);
 		if(bpi == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -82,7 +115,7 @@ public class CRUDController {
 	 */
 	@PostMapping("/addBpi")
 	public ResponseEntity<Bpi> addBpi(@RequestBody Bpi bpi) {
-		return ResponseEntity.ok(crudService.addBpi(bpi));
+		return ResponseEntity.ok(bpiService.addBpi(bpi));
 	}
 	
 	/**
@@ -93,18 +126,40 @@ public class CRUDController {
 	 */
 	@PutMapping("/updateBpi")
 	public ResponseEntity<Bpi> updateBpi(@RequestBody Bpi bpi) {
-		return ResponseEntity.ok(crudService.updateBpi(bpi));
+		return ResponseEntity.ok(bpiService.updateBpi(bpi));
 	}
 	
 	/**
-	 * 刪除 Bpi
+	 * 修改 Bpi 匯率
+	 * 
+	 * @param bpi
+	 * @return
+	 */
+	@PutMapping("/updateBpiRate")
+	public ResponseEntity<Integer> updateBpiRate(@RequestBody Bpi bpi) {
+		return ResponseEntity.ok(bpiService.updateBpiRate(bpi));
+	}
+	
+	/**
+	 * 刪除 Bpi by id
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/deleteBpi/{id}")
 	public ResponseEntity<Integer> deleteBpi(@PathVariable Long id) {
-		return ResponseEntity.ok(crudService.deleteBpi(id));
+		return ResponseEntity.ok(bpiService.deleteBpi(id));
+	}
+	
+	/**
+	 * 刪除 Bpi by code
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("/deleteBpi/code")
+	public ResponseEntity<Integer> deleteBpiByCode(@RequestBody String code) {
+		return ResponseEntity.ok(bpiService.deleteBpiByCode(code));
 	}
 	
 	/**
@@ -119,10 +174,16 @@ public class CRUDController {
 		return ResponseEntity.ok(response);
 	}
 	
+	/**
+	 * 呼叫 coindesk API 在 format成自定義的資料 return
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@GetMapping("/call/coindesk/transform")
 	public ResponseEntity<NewBpi> transformNewBpi() throws Exception {
 		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);
 		log.info("response : {}", jsonStr);
-		return ResponseEntity.ok(crudService.transform(jsonStr));
+		return ResponseEntity.ok(bpiService.transform(jsonStr));
 	}
 }

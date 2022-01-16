@@ -1,7 +1,16 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver # h2 database 連接位址
-    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE # 配置driver
+     # h2 database
+#    driver-class-name: org.h2.Driver # h2 database 連接位址
+#    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE # 配置driver
+#    initialize: true
+#    sql-script-ecoding: UTF-8
+    
+    # oracle database
+    driver-class-name: oracle.jdbc.driver.OracleDriver # oracle database 連接位址
+    url: jdbc:oracle:thin:@61.216.84.220:1533:XE # 配置driver
+    username: demo
+    password: 123456
     initialize: true
     sql-script-ecoding: UTF-8
 
@@ -10,7 +19,10 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
-      dialect: org.hibernate.dialect.H2Dialect
+      # h2       
+#      dialect: org.hibernate.dialect.H2Dialect
+      # oracle 
+      dialect: org.hibernate.dialect.Oracle10gDialect
 
   h2:
     console:
