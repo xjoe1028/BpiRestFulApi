@@ -22,7 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.demo.entity.Bpi;
+import com.example.demo.model.BpiRq;
+import com.example.demo.model.entity.Bpi;
 import com.example.demo.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BpiTest {
 
 	@Autowired
-	private BpiRepository crudRepository;
+	private BpiRepository bpiRepository;
 	
 	@Autowired
 	private ObjectMapper jsonMapper;
@@ -50,7 +51,7 @@ public class BpiTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	public final static String URL = "/api/bpi";
+	public final static String URL = "/api/rq";
 
 	public static String[] codes = {"USD", "GBP", "EUR" };
 	public static String[] codesName = {"美元", "英镑", "歐元" };
@@ -67,18 +68,18 @@ public class BpiTest {
 	 */
 	@Disabled("skip")
 	@Test
-	void beforeInit() throws Exception {
+	private void beforeInit() throws Exception {
 		for (int i = 0; i < codes.length; i++) {
-			Bpi bpi = new Bpi();
-			bpi.setCode(codes[i]);
-			bpi.setCodeChineseName(codesName[i]);
-			bpi.setRate(rates[i]);
-			bpi.setDescription(descriptions[i]);
-			bpi.setRateFloat(ratesFloat[i]);
-			bpi.setSymbol(symbols[i]);
-			crudRepository.save(bpi);
+			Bpi rq = new Bpi();
+			rq.setCode(codes[i]);
+			rq.setCodeChineseName(codesName[i]);
+			rq.setRate(rates[i]);
+			rq.setDescription(descriptions[i]);
+			rq.setRateFloat(ratesFloat[i]);
+			rq.setSymbol(symbols[i]);
+			bpiRepository.save(rq);
 		}
-		log.info("testData : {}", crudRepository.findAll().toString());
+		log.info("testData : {}", bpiRepository.findAll().toString());
 	}
 
 	/**
@@ -146,21 +147,30 @@ public class BpiTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Disabled("skip")
+//	@Disabled("skip")
 	@Test
 	void addBipTest() throws Exception {
-		Bpi bpi = Bpi.builder()
-				.code("TWD")
-				.symbol("$")
-				.codeChineseName("新台幣")
-				.description("New Taiwan Dollar")
-				.rate("1,000.2")
-				.rateFloat(1000.2)
+//		BpiDTO rq = BpiDTO.builder()
+//				.code("TWD")
+//				.symbol("$")
+//				.codeChineseName("新台幣")
+//				.description("New Taiwan Dollar")
+//				.rate("1,000.2")
+//				.rateFloat(1000.2)
+//				.build();
+		
+		BpiRq rq = BpiRq.builder()
+				.code("CNY")
+				.symbol("¥")
+				.codeChineseName("人民幣")
+				.description("ChiNa Yuan")
+				.rate("4.41")
+				.rateFloat(4.41)
 				.build();
 		
 		ResultActions resultActions = this.mockMvc.perform(post(URL + "/addBpi") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(bpi))
+				.content(jsonMapper.writeValueAsString(rq))
 			); 
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
@@ -178,14 +188,23 @@ public class BpiTest {
 	@Test
 	void updateBipTest() throws Exception {
 //		beforeInit();
-		List<Bpi> bpis = crudRepository.findAll();
+		List<Bpi> bpis = bpiRepository.findAll();
 		Bpi bpi = bpis.get(0);
 		bpi.setDescription("test update");
 		bpi.setRateFloat(123.123);
 		
+		BpiRq rq = BpiRq.builder()
+				.code(bpi.getCode())
+				.codeChineseName(bpi.getCodeChineseName())
+				.symbol(bpi.getSymbol())
+				.rate(bpi.getRate())
+				.rateFloat(bpi.getRateFloat())
+				.description(bpi.getDescription())
+				.build();
+		
 		ResultActions resultActions = this.mockMvc.perform(put(URL + "/updateBpi") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(bpi))
+				.content(jsonMapper.writeValueAsString(rq))
 			);
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
@@ -199,18 +218,17 @@ public class BpiTest {
 	 * 
 	 * @throws Exception
 	 */
-//	@Disabled("skip")
+	@Disabled("skip")
 	@Test
 	void updateBipRateTest() throws Exception {
 //		beforeInit();
-		Bpi bpi = new Bpi();
-		bpi.setCode("TWD");
-		bpi.setRate("123.12");
-		bpi.setRateFloat(123.12);
+		BpiRq rq = new BpiRq();
+		rq.setCode("TWD");
+		rq.setRateFloat(1234.12);
 		
 		ResultActions resultActions = this.mockMvc.perform(put(URL + "/updateBpiRate") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(bpi))
+				.content(jsonMapper.writeValueAsString(rq))
 			);
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK

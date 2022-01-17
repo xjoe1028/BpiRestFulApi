@@ -1,7 +1,9 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import com.example.demo.model.entity.Bpi;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

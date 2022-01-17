@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,14 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Bpi;
-import com.example.demo.entity.Coindesk;
-import com.example.demo.entity.NewBpi;
-import com.example.demo.entity.pk.BpiPK;
+import com.example.demo.model.BpiRq;
+import com.example.demo.model.BpiRs;
+import com.example.demo.model.Coindesk;
+import com.example.demo.model.NewBpi;
+import com.example.demo.model.entity.Bpi;
+import com.example.demo.model.entity.pk.BpiPK;
 import com.example.demo.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -92,8 +94,11 @@ public class BpiService {
 	 * @param bpi
 	 * @return
 	 */
-	public Bpi addBpi(Bpi bpi) {
-		return bpiRepository.save(bpi);
+	public BpiRs addBpi(BpiRq rq) {
+		Bpi entity = dtoToEntity(rq);
+		entity.setCreated(getNowDate(new Date()));
+		Bpi bpi = bpiRepository.save(entity);		
+		return BpiRs.builder().bpi(bpi).message("新增成功").build();
 	}
 
 	/**
@@ -102,11 +107,12 @@ public class BpiService {
 	 * @param bpi
 	 * @return
 	 */
-	public Bpi updateBpi(Bpi bpi) {
-		Bpi entity = new Bpi();
-		BeanUtils.copyProperties(bpi, entity);
+	public BpiRs updateBpi(BpiRq rq) {
+		Bpi entity = dtoToEntity(rq);
 		entity.setUpdated(getNowDate(new Date()));
-		return bpiRepository.save(entity);
+		entity.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
+		entity = bpiRepository.save(entity);
+		return BpiRs.builder().bpi(entity).message("修改成功").build();
 	}
 	
 	/**
@@ -115,22 +121,28 @@ public class BpiService {
 	 * @param bpi
 	 * @return
 	 */
-	public Integer updateBpiRate(Bpi bpi) {
-		Bpi entity = bpiRepository.findByCode(bpi.getCode());
+	public BpiRs updateBpiRate(BpiRq rq) {
+		Bpi entity = bpiRepository.findByCode(rq.getCode());
 		if(entity == null) {
-			return 0;
+			return BpiRs.builder().message("更新失敗").build();
 		}
 		
-		if(bpi.getRateFloat() == null || bpi.getRate() == null) {
-			return 0;
-		} else if(bpi.getRate() == null && bpi.getRateFloat() != null) {
-			bpi.setRate(String.valueOf(bpi.getRateFloat()));
-		} else if(bpi.getRate() != null && bpi.getRateFloat() == null) {
-			bpi.setRateFloat(Double.parseDouble(bpi.getRate()));
+		if (rq.getRateFloat() == null && rq.getRate() == null) {
+			return BpiRs.builder().message("更新失敗").build();
+		} else if (rq.getRate() == null && rq.getRateFloat() != null) {
+			rq.setRate(fmtMicrometer(String.valueOf(rq.getRateFloat())));
+		} else if (rq.getRate() != null && rq.getRateFloat() == null) {
+			rq.setRateFloat(Double.parseDouble(rq.getRate()));
+			rq.setRate(fmtMicrometer(rq.getRate()));
+		} else {
+			rq.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
 		}
 		
-		bpiRepository.updateBpiRateByCode(bpi.getRate(), bpi.getRateFloat(), bpi.getCode());
-		return 1;
+		bpiRepository.updateBpiRateByCode(rq.getRate(), rq.getRateFloat(), rq.getCode(), getNowDate(new Date()));
+
+		entity = bpiRepository.findByCode(rq.getCode());
+		
+		return BpiRs.builder().bpi(entity).message("更新成功")	.build();
 	}
 
 	/**
@@ -140,13 +152,13 @@ public class BpiService {
 	 * @return
 	 */
 	@Deprecated
-	public Integer deleteBpi(Long id) {
+	public BpiRs deleteBpiById(Long id) {
 		Optional<Bpi> entity = bpiRepository.findById(BpiPK.builder().bpiId(id).build());
 		if (entity == null) {
-			return 0;
+			return BpiRs.builder().message("刪除失敗").build();
 		}
 		bpiRepository.deleteById(BpiPK.builder().bpiId(id).build());
-		return 1;
+		return BpiRs.builder().message("刪除成功").build();
 	}
 	
 	/**
@@ -155,13 +167,13 @@ public class BpiService {
 	 * @param code
 	 * @return
 	 */
-	public Integer deleteBpiByCode(String code) {
-		Optional<Bpi> entity = bpiRepository.findById(BpiPK.builder().code(code).build());
+	public BpiRs deleteBpiByCode(String code) {
+		Bpi entity = bpiRepository.findByCode(code);
 		if (entity == null) {
-			return 0;
+			return BpiRs.builder().message("刪除失敗").build();
 		}
 		bpiRepository.deleteBpiByCode(code);
-		return 1;
+		return BpiRs.builder().bpi(entity).message("刪除成功").build();
 	}
 
 	public NewBpi transform(String jsonStr) throws Exception {
@@ -193,5 +205,51 @@ public class BpiService {
 		String dateStr = formatter.format(date);
 		return dateStr;
 	}
-
+	
+	/**
+	 * rq transform entity
+	 * 
+	 * @param rq
+	 * @return
+	 */
+	private Bpi dtoToEntity(BpiRq rq) {
+		return Bpi.builder()
+				.code(rq.getCode())
+				.codeChineseName(rq.getCodeChineseName())
+				.description(rq.getDescription())
+				.rate(fmtMicrometer(rq.getRate()))
+				.rateFloat(rq.getRateFloat())
+				.symbol(rq.getSymbol())
+				.build();
+	}
+	
+	/**
+	 * @Title: fmtMicrometer
+	 * @Description: 格式化數字為千分位
+	 * @param text
+	 * @return    設定檔案
+	 * @return String    返回型別
+	 */
+	private static String fmtMicrometer(String text) {
+		DecimalFormat df = null;
+		if (text.indexOf(".") > 0) {
+			if (text.length() - text.indexOf(".") - 1 == 0) {
+				df = new DecimalFormat("###,##0.");
+			} else if (text.length() - text.indexOf(".") - 1 == 1) {
+				df = new DecimalFormat("###,##0.0");
+			} else {
+				df = new DecimalFormat("###,##0.00");
+			}
+		} else {
+			df = new DecimalFormat("###,##0");
+		}
+		double number = 0.0;
+		try {
+			number = Double.parseDouble(text);
+		} catch (Exception e) {
+			number = 0.0;
+		}
+		return df.format(number);
+	}
+	
 }

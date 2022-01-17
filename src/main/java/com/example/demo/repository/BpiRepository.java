@@ -7,8 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.entity.Bpi;
-import com.example.demo.entity.pk.BpiPK;
+import com.example.demo.model.entity.Bpi;
+import com.example.demo.model.entity.pk.BpiPK;
 
 /**
  * JPA 底層 Hibernate
@@ -49,9 +49,9 @@ public interface BpiRepository extends JpaRepository<Bpi, BpiPK> {
 	 * @return
 	 */
 	@Modifying
-	@Query("UPDATE Bpi SET rate = :rate , rateFloat = :rateFloat WHERE code = :code")
+	@Query("UPDATE Bpi SET rate = :rate , rateFloat = :rateFloat, updated = :updated WHERE code = :code")
 	@Transactional
-	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat")Double rateFloat , @Param("code") String code);
+	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat") Double rateFloat , @Param("code") String code, @Param("updated") String updated);
 	
 	/**
 	 * delete 語句 jpa 用法

@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.entity.Bpi;
-import com.example.demo.entity.NewBpi;
+import com.example.demo.model.BpiRq;
+import com.example.demo.model.BpiRs;
+import com.example.demo.model.NewBpi;
+import com.example.demo.model.entity.Bpi;
 import com.example.demo.service.BpiService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -98,8 +99,8 @@ public class BpiController {
 	 * @return
 	 */
 	@PostMapping("/addBpi")
-	public ResponseEntity<Bpi> addBpi(@RequestBody Bpi bpi) {
-		return ResponseEntity.ok(bpiService.addBpi(bpi));
+	public ResponseEntity<BpiRs> addBpi(@RequestBody BpiRq rq) {
+		return ResponseEntity.ok(bpiService.addBpi(rq));
 	}
 	
 	/**
@@ -109,8 +110,8 @@ public class BpiController {
 	 * @return
 	 */
 	@PutMapping("/updateBpi")
-	public ResponseEntity<Bpi> updateBpi(@RequestBody Bpi bpi) {
-		return ResponseEntity.ok(bpiService.updateBpi(bpi));
+	public ResponseEntity<BpiRs> updateBpi(@RequestBody BpiRq rq) {
+		return ResponseEntity.ok(bpiService.updateBpi(rq));
 	}
 	
 	/**
@@ -120,8 +121,8 @@ public class BpiController {
 	 * @return
 	 */
 	@PutMapping("/updateBpiRate")
-	public ResponseEntity<Integer> updateBpiRate(@RequestBody Bpi bpi) {
-		return ResponseEntity.ok(bpiService.updateBpiRate(bpi));
+	public ResponseEntity<BpiRs> updateBpiRate(@RequestBody BpiRq rq) {
+		return ResponseEntity.ok(bpiService.updateBpiRate(rq));
 	}
 	
 	/**
@@ -131,7 +132,7 @@ public class BpiController {
 	 * @return
 	 */
 	@DeleteMapping("/deleteBpi/code")
-	public ResponseEntity<Integer> deleteBpiByCode(@RequestBody String code) {
+	public ResponseEntity<BpiRs> deleteBpiByCode(@RequestBody String code) {
 		return ResponseEntity.ok(bpiService.deleteBpiByCode(code));
 	}
 	
