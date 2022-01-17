@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -37,13 +35,6 @@ public class Bpi implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty("bpi id")
-	@Id
-	@Column
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@NotNull
-	private Long bpiId;
-
 	/**
 	 * 貨幣名稱
 	 */
@@ -57,7 +48,9 @@ public class Bpi implements Serializable {
 	 * 貨幣中文名稱
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
+	@Id
 	@Column
+	@NotNull
 	private String codeChineseName;
 	
 	/**
@@ -91,7 +84,7 @@ public class Bpi implements Serializable {
 	/**
 	 * 創建時間
 	 */
-	@ApiModelProperty("started 創建時間")
+	@ApiModelProperty("created 創建時間")
 	@Column
 	private String created;
 	
@@ -103,10 +96,9 @@ public class Bpi implements Serializable {
 	private String updated;
 
 	@Builder
-	public Bpi(Long bpiId, String code, String codeChineseName, String symbol, String rate, Double rateFloat,
+	public Bpi(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
 			String description, String created, String updated) {
 		super();
-		this.bpiId = bpiId;
 		this.code = code;
 		this.codeChineseName = codeChineseName;
 		this.symbol = symbol;

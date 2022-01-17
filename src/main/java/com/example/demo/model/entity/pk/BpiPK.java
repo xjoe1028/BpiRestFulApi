@@ -23,17 +23,17 @@ public class BpiPK implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@ApiModelProperty("bpi id")
-	private Long bpiId;
-	
 	@ApiModelProperty("code 貨幣名稱")
 	private String code;
+	
+	@ApiModelProperty("codeChineseName 貨幣中文名稱")
+	private String codeChineseName;
 
 	@Builder
-	public BpiPK(Long bpiId, String code) {
+	public BpiPK(String code, String codeChineseName) {
 		super();
-		this.bpiId = bpiId;
 		this.code = code;
+		this.codeChineseName = codeChineseName;
 	}
 	
 }

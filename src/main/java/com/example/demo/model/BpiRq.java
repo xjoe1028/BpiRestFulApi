@@ -26,9 +26,6 @@ public class BpiRq implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty("bpi id")
-	private Long bpiId;
-
 	/**
 	 * 貨幣名稱
 	 */
@@ -68,7 +65,7 @@ public class BpiRq implements Serializable {
 	/**
 	 * 創建時間
 	 */
-	@ApiModelProperty("started 創建時間")
+	@ApiModelProperty("created 創建時間")
 	@Column
 	private String created;
 	
@@ -77,9 +74,10 @@ public class BpiRq implements Serializable {
 	 */
 	@ApiModelProperty("updated 更新時間")
 	private String updated;
-	
+
 	@Builder
-	public BpiRq(String code, String codeChineseName, String symbol, String rate, Double rateFloat, String description, String updated, String created) {
+	public BpiRq(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
+			String description, String created, String updated) {
 		super();
 		this.code = code;
 		this.codeChineseName = codeChineseName;
@@ -87,7 +85,8 @@ public class BpiRq implements Serializable {
 		this.rate = rate;
 		this.rateFloat = rateFloat;
 		this.description = description;
-		this.updated = updated;
 		this.created = created;
+		this.updated = updated;
 	}
+	
 }

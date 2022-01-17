@@ -77,13 +77,29 @@ public class BpiController {
 	}
 	
 	/**
+	 * 查詢 Bpi by code
+	 * 
+	 * @param code
+	 * @return
+	 */
+	@GetMapping("/findBpi/codeChineseName")
+	public ResponseEntity<Bpi> findBpiByCodeChineseName(@RequestParam("codeChineseName") String codeChineseName) {
+		Bpi bpi = bpiService.findBpiByCodeChineseName(codeChineseName);
+		if(bpi == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
+		return ResponseEntity.ok(bpi);
+	}
+	
+	/**
 	 * 查詢 Bpi by code and codeChineseName
 	 * 
 	 * @param code
 	 * @return
 	 */
-	@GetMapping("/findBpi/code/codeChineseName")
-	public ResponseEntity<Bpi> findBpiByCodeChineseName(@RequestParam("code") String code, @RequestParam("codeChineseName") String codeChineseName) {
+	@GetMapping("/findBpi/pk")
+	public ResponseEntity<Bpi> findBpiByPk(@RequestParam("code") String code, @RequestParam("codeChineseName") String codeChineseName) {
 		Bpi bpi = bpiService.findByCodeAndCodeChineseName(code, codeChineseName);
 		if(bpi == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

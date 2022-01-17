@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import com.example.demo.model.BpiRs;
 import com.example.demo.model.Coindesk;
 import com.example.demo.model.NewBpi;
 import com.example.demo.model.entity.Bpi;
-import com.example.demo.model.entity.pk.BpiPK;
 import com.example.demo.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,18 +54,6 @@ public class BpiService {
 	}
 
 	/**
-	 * select by bpiId
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@Deprecated
-	public Bpi findBpiById(Long id) {
-		return bpiRepository.findByBpiId(id);
-//		return bpiRepository.getById(BpiPK.builder().bpiId(id).build());
-	}
-	
-	/**
 	 * select by code
 	 * 
 	 * @param code
@@ -75,6 +61,16 @@ public class BpiService {
 	 */
 	public Bpi findBpiByCode(String code) {
 		return bpiRepository.findByCode(code);
+	}
+	
+	/**
+	 * select by codeChineseName
+	 * 
+	 * @param codeChineseName
+	 * @return
+	 */
+	public Bpi findBpiByCodeChineseName(String codeChineseName) {
+		return bpiRepository.findByCodeChineseName(codeChineseName);
 	}
 	
 	/**
@@ -109,8 +105,8 @@ public class BpiService {
 	 */
 	public BpiRs updateBpi(BpiRq rq) {
 		Bpi entity = dtoToEntity(rq);
+		entity.setRate(fmtMicrometer(rq.getRate().replace(",", ""))); // 千分位格式化
 		entity.setUpdated(getNowDate(new Date()));
-		entity.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
 		entity = bpiRepository.save(entity);
 		return BpiRs.builder().bpi(entity).message("修改成功").build();
 	}
@@ -133,7 +129,7 @@ public class BpiService {
 			rq.setRate(fmtMicrometer(String.valueOf(rq.getRateFloat())));
 		} else if (rq.getRate() != null && rq.getRateFloat() == null) {
 			rq.setRateFloat(Double.parseDouble(rq.getRate()));
-			rq.setRate(fmtMicrometer(rq.getRate()));
+			rq.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
 		} else {
 			rq.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
 		}
@@ -145,22 +141,6 @@ public class BpiService {
 		return BpiRs.builder().bpi(entity).message("更新成功")	.build();
 	}
 
-	/**
-	 * 刪除 where id
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@Deprecated
-	public BpiRs deleteBpiById(Long id) {
-		Optional<Bpi> entity = bpiRepository.findById(BpiPK.builder().bpiId(id).build());
-		if (entity == null) {
-			return BpiRs.builder().message("刪除失敗").build();
-		}
-		bpiRepository.deleteById(BpiPK.builder().bpiId(id).build());
-		return BpiRs.builder().message("刪除成功").build();
-	}
-	
 	/**
 	 * 刪除 where code
 	 * 

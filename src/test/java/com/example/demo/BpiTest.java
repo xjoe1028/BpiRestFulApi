@@ -51,15 +51,16 @@ public class BpiTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	public final static String URL = "/api/rq";
+	public final static String URL = "/api/bpi";
+	public final static String TODAY = getNowDate(new Date());
 
-	public static String[] codes = {"USD", "GBP", "EUR" };
-	public static String[] codesName = {"美元", "英镑", "歐元" };
-	public static String[] symbols = {"$", "£", "€"};
-	public static String[] rates = {"51,211.0422", "37,789.4474", "44,368.3764" };
-	public static String[] descriptions = {"United States Dollar", "British Pound Sterling", "Euro" };
-	public static Double[] ratesFloat = {51211.0422, 37789.4474, 44368.3764 };
-	public static String[] updateDates = {getNowDate(new Date()), getNowDate(new Date()), getNowDate(new Date())};
+	public static String[] codes = {"USD", "GBP", "EUR", "CNY" };
+	public static String[] codesName = {"美元", "英镑", "歐元", "人民幣" };
+	public static String[] symbols = {"$", "£", "€", "¥"};
+	public static String[] rates = {"51,211.0422", "37,789.4474", "44,368.3764", "4.34"};
+	public static String[] descriptions = {"United States Dollar", "British Pound Sterling", "Euro", "New Taiwan Dollar"};
+	public static Double[] ratesFloat = {51211.0422, 37789.4474, 44368.3764, 4.34};
+	public static String[] createdDates = {TODAY, TODAY, TODAY, TODAY};
 	
 	/**
 	 * 資料初始化
@@ -68,7 +69,7 @@ public class BpiTest {
 	 */
 	@Disabled("skip")
 	@Test
-	private void beforeInit() throws Exception {
+	void beforeInit() throws Exception {
 		for (int i = 0; i < codes.length; i++) {
 			Bpi rq = new Bpi();
 			rq.setCode(codes[i]);
@@ -77,9 +78,17 @@ public class BpiTest {
 			rq.setDescription(descriptions[i]);
 			rq.setRateFloat(ratesFloat[i]);
 			rq.setSymbol(symbols[i]);
+			rq.setCreated(createdDates[i]);
 			bpiRepository.save(rq);
 		}
 		log.info("testData : {}", bpiRepository.findAll().toString());
+	}
+	
+	@Disabled("skip")
+	@Test
+	void deleteAllDataTest() throws Exception {
+		bpiRepository.findAll().forEach(bpi -> bpiRepository.delete(bpi));
+		log.info("delete success!!");
 	}
 
 	/**
@@ -122,7 +131,27 @@ public class BpiTest {
 	}
 	
 	/**
-	 * Select by code
+	 * Select by codeChineseName
+	 * 
+	 * @throws Exception
+	 */
+	@Disabled("skip")
+	@Test
+	void findBipByCodeChineseNameTest() throws Exception {
+//		beforeInit();
+		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findBpi/codeChineseName") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+			.param("codeChineseName", "人民幣")
+		);
+		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
+		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
+                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+		log.info("response : {}", response);
+	}
+	
+	/**
+	 * Select by primary key
 	 * 
 	 * @throws Exception
 	 */
@@ -130,7 +159,7 @@ public class BpiTest {
 	@Test
 	void findBipByCodeAndCodeChineseNameTest() throws Exception {
 //		beforeInit();
-		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findBpi/code/codeChineseName") // url
+		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findBpi/pk") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 			.param("code", "USD")
 			.param("codeChineseName", "美元")
@@ -150,22 +179,13 @@ public class BpiTest {
 //	@Disabled("skip")
 	@Test
 	void addBipTest() throws Exception {
-//		BpiDTO rq = BpiDTO.builder()
-//				.code("TWD")
-//				.symbol("$")
-//				.codeChineseName("新台幣")
-//				.description("New Taiwan Dollar")
-//				.rate("1,000.2")
-//				.rateFloat(1000.2)
-//				.build();
-		
 		BpiRq rq = BpiRq.builder()
-				.code("CNY")
-				.symbol("¥")
-				.codeChineseName("人民幣")
-				.description("ChiNa Yuan")
-				.rate("4.41")
-				.rateFloat(4.41)
+				.code("TWD")
+				.symbol("$")
+				.codeChineseName("新台幣")
+				.description("New Taiwan Dollar")
+				.rate("1000.2")
+				.rateFloat(1000.2)
 				.build();
 		
 		ResultActions resultActions = this.mockMvc.perform(post(URL + "/addBpi") // url
@@ -223,7 +243,7 @@ public class BpiTest {
 	void updateBipRateTest() throws Exception {
 //		beforeInit();
 		BpiRq rq = new BpiRq();
-		rq.setCode("TWD");
+		rq.setCode("USD");
 		rq.setRateFloat(1234.12);
 		
 		ResultActions resultActions = this.mockMvc.perform(put(URL + "/updateBpiRate") // url
