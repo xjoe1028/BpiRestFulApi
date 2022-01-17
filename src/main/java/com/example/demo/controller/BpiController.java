@@ -59,22 +59,6 @@ public class BpiController {
 		return ResponseEntity.ok(bpiList);
 	}
 	
-//	/**
-//	 * 查詢 Bpi by id
-//	 * 
-//	 * @param id
-//	 * @return
-//	 */
-//	@GetMapping("/findBpi/{id}")
-//	public ResponseEntity<Bpi> findBpiById(@PathVariable Long id) {
-//		Bpi bpi = bpiService.findBpiById(id);
-//		if(bpi == null) {
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		}
-//		
-//		return ResponseEntity.ok(bpi);
-//	}
-	
 	/**
 	 * 查詢 Bpi by code
 	 * 
@@ -98,7 +82,7 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/code/codeChineseName")
-	public ResponseEntity<Bpi> findBpiByCodeChineseName(@RequestParam("code") String code, @RequestParam("codeChineseName")String codeChineseName) {
+	public ResponseEntity<Bpi> findBpiByCodeChineseName(@RequestParam("code") String code, @RequestParam("codeChineseName") String codeChineseName) {
 		Bpi bpi = bpiService.findByCodeAndCodeChineseName(code, codeChineseName);
 		if(bpi == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -138,17 +122,6 @@ public class BpiController {
 	@PutMapping("/updateBpiRate")
 	public ResponseEntity<Integer> updateBpiRate(@RequestBody Bpi bpi) {
 		return ResponseEntity.ok(bpiService.updateBpiRate(bpi));
-	}
-	
-	/**
-	 * 刪除 Bpi by id
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping("/deleteBpi/{id}")
-	public ResponseEntity<Integer> deleteBpi(@PathVariable Long id) {
-		return ResponseEntity.ok(bpiService.deleteBpi(id));
 	}
 	
 	/**

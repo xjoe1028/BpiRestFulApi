@@ -59,6 +59,7 @@ public class BpiService {
 	 * @param id
 	 * @return
 	 */
+	@Deprecated
 	public Bpi findBpiById(Long id) {
 		return bpiRepository.findByBpiId(id);
 //		return bpiRepository.getById(BpiPK.builder().bpiId(id).build());
@@ -138,6 +139,7 @@ public class BpiService {
 	 * @param id
 	 * @return
 	 */
+	@Deprecated
 	public Integer deleteBpi(Long id) {
 		Optional<Bpi> entity = bpiRepository.findById(BpiPK.builder().bpiId(id).build());
 		if (entity == null) {

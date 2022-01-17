@@ -220,25 +220,6 @@ public class BpiTest {
 	}
 	
 	/**
-	 * delete
-	 * 
-	 * @throws Exception
-	 */
-	@Disabled("skip")
-	@Test
-	void deleteBpiTest() throws Exception {
-		beforeInit();
-		ResultActions resultActions = this.mockMvc.perform(delete(URL + "/deleteBpi/1") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-			);
-		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
-		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
-		log.info("response : {}", response);
-	}
-	
-	/**
 	 * delete by code
 	 * 
 	 * @throws Exception
