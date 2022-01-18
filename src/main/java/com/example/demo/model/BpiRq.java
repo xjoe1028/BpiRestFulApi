@@ -45,12 +45,6 @@ public class BpiRq implements Serializable {
 	private String symbol;
 	
 	/**
-	 * 匯率 有千分位樣式 
-	 */
-	@ApiModelProperty("rate 匯率(千分位,)")
-	private String rate; 
-	
-	/**
 	 * 匯率 
 	 */
 	@ApiModelProperty("rate 匯率")
@@ -76,13 +70,12 @@ public class BpiRq implements Serializable {
 	private String updated;
 
 	@Builder
-	public BpiRq(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
+	public BpiRq(String code, String codeChineseName, String symbol, Double rateFloat,
 			String description, String created, String updated) {
 		super();
 		this.code = code;
 		this.codeChineseName = codeChineseName;
 		this.symbol = symbol;
-		this.rate = rate;
 		this.rateFloat = rateFloat;
 		this.description = description;
 		this.created = created;

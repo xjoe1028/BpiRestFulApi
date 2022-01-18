@@ -1,9 +1,5 @@
 package com.example.demo.service;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.common.CommonUtil;
 import com.example.demo.model.BpiRq;
 import com.example.demo.model.BpiRs;
 import com.example.demo.model.Coindesk;
@@ -92,7 +89,8 @@ public class BpiService {
 	 */
 	public BpiRs addBpi(BpiRq rq) {
 		Bpi entity = dtoToEntity(rq);
-		entity.setCreated(getNowDate(new Date()));
+		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat())));
+		entity.setCreated(CommonUtil.getNowDate(new Date()));
 		Bpi bpi = bpiRepository.save(entity);		
 		return BpiRs.builder().bpi(bpi).message("新增成功").build();
 	}
@@ -105,8 +103,8 @@ public class BpiService {
 	 */
 	public BpiRs updateBpi(BpiRq rq) {
 		Bpi entity = dtoToEntity(rq);
-		entity.setRate(fmtMicrometer(rq.getRate().replace(",", ""))); // 千分位格式化
-		entity.setUpdated(getNowDate(new Date()));
+		entity.setRate(String.valueOf(rq.getRateFloat())); // 千分位格式化
+		entity.setUpdated(CommonUtil.getNowDate(new Date()));
 		entity = bpiRepository.save(entity);
 		return BpiRs.builder().bpi(entity).message("修改成功").build();
 	}
@@ -119,22 +117,13 @@ public class BpiService {
 	 */
 	public BpiRs updateBpiRate(BpiRq rq) {
 		Bpi entity = bpiRepository.findByCode(rq.getCode());
-		if(entity == null) {
+		if(entity == null || rq.getRateFloat() == null) {
 			return BpiRs.builder().message("更新失敗").build();
 		}
 		
-		if (rq.getRateFloat() == null && rq.getRate() == null) {
-			return BpiRs.builder().message("更新失敗").build();
-		} else if (rq.getRate() == null && rq.getRateFloat() != null) {
-			rq.setRate(fmtMicrometer(String.valueOf(rq.getRateFloat())));
-		} else if (rq.getRate() != null && rq.getRateFloat() == null) {
-			rq.setRateFloat(Double.parseDouble(rq.getRate()));
-			rq.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
-		} else {
-			rq.setRate(fmtMicrometer(rq.getRate())); // 千分位格式化
-		}
+		String rate = CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()));
 		
-		bpiRepository.updateBpiRateByCode(rq.getRate(), rq.getRateFloat(), rq.getCode(), getNowDate(new Date()));
+		bpiRepository.updateBpiRateByCode(rate, rq.getRateFloat(), rq.getCode(), CommonUtil.getNowDate(new Date()));
 
 		entity = bpiRepository.findByCode(rq.getCode());
 		
@@ -168,22 +157,9 @@ public class BpiService {
 			map.put(k, v);
 		});
 		
-		newBpi.setUpdated(updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19)));
+		newBpi.setUpdated(CommonUtil.updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19)));
 		newBpi.setNewBpi(map);
 		return newBpi;
-	}
-	
-	private String getNowDate(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-		return sdf.format(date);
-	}
-
-	private String updatedFormat(String updated) throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		Date date = dateFormat.parse(updated);// You will get date object relative to server/client
-		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss"); // If you need time just put specific format for time
-		String dateStr = formatter.format(date);
-		return dateStr;
 	}
 	
 	/**
@@ -197,39 +173,9 @@ public class BpiService {
 				.code(rq.getCode())
 				.codeChineseName(rq.getCodeChineseName())
 				.description(rq.getDescription())
-				.rate(fmtMicrometer(rq.getRate()))
 				.rateFloat(rq.getRateFloat())
 				.symbol(rq.getSymbol())
 				.build();
-	}
-	
-	/**
-	 * @Title: fmtMicrometer
-	 * @Description: 格式化數字為千分位
-	 * @param text
-	 * @return    設定檔案
-	 * @return String    返回型別
-	 */
-	private static String fmtMicrometer(String text) {
-		DecimalFormat df = null;
-		if (text.indexOf(".") > 0) {
-			if (text.length() - text.indexOf(".") - 1 == 0) {
-				df = new DecimalFormat("###,##0.");
-			} else if (text.length() - text.indexOf(".") - 1 == 1) {
-				df = new DecimalFormat("###,##0.0");
-			} else {
-				df = new DecimalFormat("###,##0.00");
-			}
-		} else {
-			df = new DecimalFormat("###,##0");
-		}
-		double number = 0.0;
-		try {
-			number = Double.parseDouble(text);
-		} catch (Exception e) {
-			number = 0.0;
-		}
-		return df.format(number);
 	}
 	
 }

@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.example.demo.common.CommonUtil;
 import com.example.demo.model.BpiRq;
 import com.example.demo.model.entity.Bpi;
 import com.example.demo.repository.BpiRepository;
@@ -52,13 +52,12 @@ public class BpiTest {
 	private MockMvc mockMvc;
 	
 	public final static String URL = "/api/bpi";
-	public final static String TODAY = getNowDate(new Date());
+	public final static String TODAY = CommonUtil.getNowDate(new Date());
 
 	public static String[] codes = {"USD", "GBP", "EUR", "CNY" };
 	public static String[] codesName = {"美元", "英镑", "歐元", "人民幣" };
 	public static String[] symbols = {"$", "£", "€", "¥"};
-	public static String[] rates = {"51,211.0422", "37,789.4474", "44,368.3764", "4.34"};
-	public static String[] descriptions = {"United States Dollar", "British Pound Sterling", "Euro", "New Taiwan Dollar"};
+	public static String[] descriptions = {"United States Dollar", "British Pound Sterling", "Euro", "Chinese yuan"};
 	public static Double[] ratesFloat = {51211.0422, 37789.4474, 44368.3764, 4.34};
 	public static String[] createdDates = {TODAY, TODAY, TODAY, TODAY};
 	
@@ -74,7 +73,7 @@ public class BpiTest {
 			Bpi rq = new Bpi();
 			rq.setCode(codes[i]);
 			rq.setCodeChineseName(codesName[i]);
-			rq.setRate(rates[i]);
+			rq.setRate(CommonUtil.fmtMicrometer(ratesFloat[i].toString()));
 			rq.setDescription(descriptions[i]);
 			rq.setRateFloat(ratesFloat[i]);
 			rq.setSymbol(symbols[i]);
@@ -184,7 +183,6 @@ public class BpiTest {
 				.symbol("$")
 				.codeChineseName("新台幣")
 				.description("New Taiwan Dollar")
-				.rate("1000.2")
 				.rateFloat(1000.2)
 				.build();
 		
@@ -217,7 +215,6 @@ public class BpiTest {
 				.code(bpi.getCode())
 				.codeChineseName(bpi.getCodeChineseName())
 				.symbol(bpi.getSymbol())
-				.rate(bpi.getRate())
 				.rateFloat(bpi.getRateFloat())
 				.description(bpi.getDescription())
 				.build();
@@ -313,8 +310,4 @@ public class BpiTest {
 		log.info("response : {}", response);
 	}
 	
-	private static String getNowDate(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-		return sdf.format(date);
-	}
 }
