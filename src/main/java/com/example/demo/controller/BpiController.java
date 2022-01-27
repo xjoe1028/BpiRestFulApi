@@ -103,6 +103,8 @@ public class BpiController {
 	/**
 	 * 修改 Bpi 
 	 * 
+	 * PUT: 替換資源
+	 * 
 	 * @param bpi
 	 * @return
 	 */
@@ -113,6 +115,8 @@ public class BpiController {
 	
 	/**
 	 * 修改 Bpi 匯率
+	 * 
+	 * PATCH: 更新資源部份內容
 	 * 
 	 * @param bpi
 	 * @return

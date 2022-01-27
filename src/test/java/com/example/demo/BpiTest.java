@@ -2,6 +2,7 @@ package com.example.demo;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
@@ -98,7 +99,8 @@ public class BpiTest {
 	@Test
 	void findAllBpisTest() throws Exception {
 //		beforeInit();
-		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findAllBpis")
+		ResultActions resultActions = this.mockMvc.perform(
+			get(URL + "/findAllBpis")
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 		);
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
@@ -117,7 +119,8 @@ public class BpiTest {
 	@Test
 	void findBipByCodeTest() throws Exception {
 //		beforeInit();
-		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findBpi/code") // url
+		ResultActions resultActions = this.mockMvc.perform(
+			get(URL + "/findBpi/code") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 			.param("code", "USD")
 		);
@@ -137,7 +140,8 @@ public class BpiTest {
 	@Test
 	void findBipByCodeChineseNameTest() throws Exception {
 //		beforeInit();
-		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findBpi/codeChineseName") // url
+		ResultActions resultActions = this.mockMvc.perform(
+			get(URL + "/findBpi/codeChineseName") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 			.param("codeChineseName", "人民幣")
 		);
@@ -157,7 +161,8 @@ public class BpiTest {
 	@Test
 	void findBipByCodeAndCodeChineseNameTest() throws Exception {
 //		beforeInit();
-		ResultActions resultActions = this.mockMvc.perform(get(URL + "/findBpi/pk") // url
+		ResultActions resultActions = this.mockMvc.perform(
+			get(URL + "/findBpi/pk") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 			.param("code", "USD")
 			.param("codeChineseName", "美元")
@@ -185,7 +190,8 @@ public class BpiTest {
 				.rateFloat(100.2)
 				.build();
 		
-		ResultActions resultActions = this.mockMvc.perform(post(URL + "/addBpi") // url
+		ResultActions resultActions = this.mockMvc.perform(
+				post(URL + "/addBpi") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 				.content(jsonMapper.writeValueAsString(rq))
 			); 
@@ -218,7 +224,8 @@ public class BpiTest {
 				.description(bpi.getDescription())
 				.build();
 		
-		ResultActions resultActions = this.mockMvc.perform(put(URL + "/updateBpi") // url
+		ResultActions resultActions = this.mockMvc.perform(
+				put(URL + "/updateBpi") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 				.content(jsonMapper.writeValueAsString(rq))
 			);
@@ -242,7 +249,8 @@ public class BpiTest {
 		rq.setCode("TWD");
 		rq.setRateFloat(741987.12);
 		
-		ResultActions resultActions = this.mockMvc.perform(put(URL + "/updateBpiRate") // url
+		ResultActions resultActions = this.mockMvc.perform(
+				patch(URL + "/updateBpiRate") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 				.content(jsonMapper.writeValueAsString(rq))
 			);
@@ -262,7 +270,8 @@ public class BpiTest {
 	@Test
 	void deleteBpiByCodeTest() throws Exception {
 		String testCode = "TWD";
-		ResultActions resultActions = this.mockMvc.perform(delete(URL + "/deleteBpi/code") // url
+		ResultActions resultActions = this.mockMvc.perform(
+				delete(URL + "/deleteBpi/code") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 				.content(testCode)
 			);
@@ -281,7 +290,8 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void callCoindeskTest() throws Exception {
-		ResultActions resultActions = mockMvc.perform(get(URL + "/call/coindesk") // url
+		ResultActions resultActions = this.mockMvc.perform(
+				get(URL + "/call/coindesk") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 			); 
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
@@ -299,7 +309,8 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void callTransFormTest() throws Exception {
-		ResultActions resultActions = mockMvc.perform(get(URL + "/call/coindesk/transform") // url
+		ResultActions resultActions = this.mockMvc.perform(
+				get(URL + "/call/coindesk/transform") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
 			); 
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
