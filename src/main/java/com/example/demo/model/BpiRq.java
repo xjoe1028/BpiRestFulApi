@@ -1,12 +1,11 @@
 package com.example.demo.model;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,52 +17,41 @@ import lombok.NoArgsConstructor;
  *
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-public class BpiRq implements Serializable {
+public class BpiRq extends BaseRq {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 貨幣名稱
-	 */
-	@ApiModelProperty("code 貨幣名稱")
-	@NotBlank(message = "code must be not empty")
-	private String code;
-	
 	/**
 	 * 貨幣中文名稱
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
 	@NotBlank(message = "codeChineseName must be not empty")
 	private String codeChineseName;
-	
+
 	/**
 	 * 金錢格式 ex: $
 	 */
 	@ApiModelProperty("code 金錢符號")
 	private String symbol;
-	
+
 	/**
-	 * 匯率 
+	 * 匯率
 	 */
 	@ApiModelProperty("rate 匯率")
 	private Double rateFloat;
-	
+
 	/**
 	 * 描述
 	 */
 	@ApiModelProperty("description 描述")
 	private String description;
-	
+
 	/**
 	 * 創建時間
 	 */
 	@ApiModelProperty("created 創建時間")
 	private String created;
-	
+
 	/**
 	 * 更新時間
 	 */
@@ -71,8 +59,8 @@ public class BpiRq implements Serializable {
 	private String updated;
 
 	@Builder
-	public BpiRq(String code, String codeChineseName, String symbol, Double rateFloat,
-			String description, String created, String updated) {
+	public BpiRq(String code, String codeChineseName, String symbol, Double rateFloat, String description,
+			String created, String updated) {
 		super();
 		this.code = code;
 		this.codeChineseName = codeChineseName;
@@ -82,5 +70,5 @@ public class BpiRq implements Serializable {
 		this.created = created;
 		this.updated = updated;
 	}
-	
+
 }

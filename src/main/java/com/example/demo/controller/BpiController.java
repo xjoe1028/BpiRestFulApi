@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.model.ApiResponse;
+import com.example.demo.model.BaseRq;
 import com.example.demo.model.BpiRateRq;
 import com.example.demo.model.BpiRq;
 import com.example.demo.model.NewBpi;
@@ -24,7 +27,6 @@ import com.example.demo.model.entity.Bpi;
 import com.example.demo.service.BpiService;
 
 import lombok.extern.slf4j.Slf4j;
-
 
 /**
  * 
@@ -36,15 +38,15 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BpiController {
-	
+
 	public static final String COINDESK_URL = "https://api.coindesk.com/v1/bpi/currentprice.json";
-	
+
 	@Autowired
 	private BpiService bpiService;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	/**
 	 * select All
 	 * 
@@ -55,7 +57,7 @@ public class BpiController {
 	public ApiResponse<List<Bpi>> findAllBpis() {
 		return bpiService.findAll();
 	}
-	
+
 	/**
 	 * 查詢 Bpi by code
 	 * 
@@ -63,10 +65,10 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/code")
-	public ApiResponse<Bpi> findBpiByCode(@RequestParam("code") String code) {
+	public ApiResponse<Bpi> findBpiByCode(@RequestParam(name = "code", defaultValue = "") String code) {
 		return bpiService.findBpiByCode(code);
 	}
-	
+
 	/**
 	 * 查詢 Bpi by code
 	 * 
@@ -74,10 +76,10 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/codeChineseName")
-	public ApiResponse<Bpi> findBpiByCodeChineseName(@RequestParam("codeChineseName") String codeChineseName) {
+	public ApiResponse<Bpi> findBpiByCodeChineseName(@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
 		return bpiService.findBpiByCodeChineseName(codeChineseName);
 	}
-	
+
 	/**
 	 * 查詢 Bpi by code and codeChineseName
 	 * 
@@ -85,10 +87,10 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/pk")
-	public ApiResponse<Bpi> findBpiByPk(@RequestParam("code") String code, @RequestParam("codeChineseName") String codeChineseName) {
+	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code, @RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
 		return bpiService.findByPk(code, codeChineseName);
 	}
-	
+
 	/**
 	 * 新增 Bpi
 	 * 
@@ -96,12 +98,12 @@ public class BpiController {
 	 * @return
 	 */
 	@PostMapping("/addBpi")
-	public ApiResponse<Bpi> addBpi(@RequestBody BpiRq rq) {
+	public ApiResponse<Bpi> addBpi(@Valid @RequestBody BpiRq rq) {
 		return bpiService.addBpi(rq);
 	}
-	
+
 	/**
-	 * 修改 Bpi 
+	 * 修改 Bpi
 	 * 
 	 * PUT: 替換資源
 	 * 
@@ -109,10 +111,10 @@ public class BpiController {
 	 * @return
 	 */
 	@PutMapping("/updateBpi")
-	public ApiResponse<Bpi> updateBpi(@RequestBody BpiRq rq) {
+	public ApiResponse<Bpi> updateBpi(@Valid @RequestBody BpiRq rq) {
 		return bpiService.updateBpi(rq);
 	}
-	
+
 	/**
 	 * 修改 Bpi 匯率
 	 * 
@@ -122,10 +124,10 @@ public class BpiController {
 	 * @return
 	 */
 	@PatchMapping("/updateBpiRate")
-	public ApiResponse<Bpi> updateBpiRate(@RequestBody BpiRateRq rq) {
+	public ApiResponse<Bpi> updateBpiRate(@Valid @RequestBody BpiRateRq rq) {
 		return bpiService.updateBpiRate(rq);
 	}
-	
+
 	/**
 	 * 刪除 Bpi by code
 	 * 
@@ -133,10 +135,10 @@ public class BpiController {
 	 * @return
 	 */
 	@DeleteMapping("/deleteBpi/code")
-	public ApiResponse<Bpi> deleteBpi(@RequestBody String code) {
-		return bpiService.deleteBpiByCode(code);
+	public ApiResponse<Bpi> deleteBpi(@Valid @RequestBody BaseRq rq) {
+		return bpiService.deleteBpiByCode(rq.getCode());
 	}
-	
+
 	/**
 	 * 呼叫 coindesk API
 	 * 
@@ -148,7 +150,7 @@ public class BpiController {
 		log.info("response : {}", response);
 		return ResponseEntity.ok(response);
 	}
-	
+
 	/**
 	 * 呼叫 coindesk API 在 format成自定義的資料 return
 	 * 
@@ -161,5 +163,5 @@ public class BpiController {
 		log.info("response : {}", jsonStr);
 		return ResponseEntity.ok(bpiService.transform(jsonStr));
 	}
-	
+
 }

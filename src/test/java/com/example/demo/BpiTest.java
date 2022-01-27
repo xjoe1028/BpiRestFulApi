@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.demo.common.CommonUtil;
+import com.example.demo.model.BaseRq;
 import com.example.demo.model.BpiRq;
 import com.example.demo.model.entity.Bpi;
 import com.example.demo.repository.BpiRepository;
@@ -269,11 +270,12 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void deleteBpiByCodeTest() throws Exception {
-		String testCode = "TWD";
+		BaseRq rq = new BaseRq();
+		rq.setCode("TWD");
 		ResultActions resultActions = this.mockMvc.perform(
 				delete(URL + "/deleteBpi/code") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(testCode)
+				.content(jsonMapper.writeValueAsString(rq))
 			);
 		resultActions.andReturn().getResponse().setCharacterEncoding("UTF-8"); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK

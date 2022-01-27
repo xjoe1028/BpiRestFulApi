@@ -4,6 +4,10 @@ import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 更新利率 BpiRateRq
@@ -14,15 +18,9 @@ import lombok.Data;
  *
  */
 @Data
-public class BpiRateRq {
+@EqualsAndHashCode(callSuper = false)
+public class BpiRateRq extends BaseRq {
 
-	/**
-	 * 貨幣名稱
-	 */
-	@ApiModelProperty("code 貨幣名稱")
-	@NotBlank(message = "code must be not empty")
-	private String code;
-	
 	/**
 	 * 匯率
 	 */

@@ -29,9 +29,9 @@ public class BpiRsUtil {
 	 * @return
 	 */
 	public static <T> ApiResponse<T> getFailed(ErrorCode code) {
-		return ApiResponse.<T>builder(code.toString(), code.getMessage()).build();
+		return ApiResponse.<T>builder(code.getCode(), code.getMessage()).build();
 	}
-
+	
 	/**
 	 * Get failed API response.
 	 * 
