@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.example.demo.common.BpictlUtil;
+import com.example.demo.common.BpiRsUtil;
 import com.example.demo.common.CommonUtil;
 import com.example.demo.common.ErrorCode;
 import com.example.demo.model.ApiResponse;
@@ -52,10 +52,10 @@ public class BpiService {
 	public ApiResponse<List<Bpi>> findAll() {
 		List<Bpi> bpiList = bpiRepository.findAll();
 		if(CollectionUtils.isEmpty(bpiList)) {
-			return BpictlUtil.getFailed(ErrorCode.SELECT_EMPTY);
+			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpictlUtil.getSuccess(bpiList);
+		return BpiRsUtil.getSuccess(bpiList);
 	}
 
 	/**
@@ -67,10 +67,10 @@ public class BpiService {
 	public ApiResponse<Bpi> findBpiByCode(String code) {
 		Bpi bpi = bpiRepository.findByCode(code);
 		if(bpi == null) { 
-			return BpictlUtil.getFailed(ErrorCode.SELECT_EMPTY);
+			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpictlUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi);
 	}
 	
 	/**
@@ -82,10 +82,10 @@ public class BpiService {
 	public ApiResponse<Bpi> findBpiByCodeChineseName(String codeChineseName) {
 		Bpi bpi = bpiRepository.findByCodeChineseName(codeChineseName);
 		if(bpi == null) {
-			return BpictlUtil.getFailed(ErrorCode.SELECT_EMPTY);
+			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpictlUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi);
 	}
 	
 	/**
@@ -98,10 +98,10 @@ public class BpiService {
 	public ApiResponse<Bpi> findByPk(String code, String codeChineseName) {
 		Bpi bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
 		if(bpi == null) {
-			return BpictlUtil.getFailed(ErrorCode.SELECT_EMPTY);
+			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpictlUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi);
 	}
 
 	/**
@@ -113,13 +113,13 @@ public class BpiService {
 	public ApiResponse<Bpi> addBpi(BpiRq rq) {
 		Bpi bpi = bpiRepository.findByCodeAndCodeChineseName(rq.getCode(), rq.getCodeChineseName());
 		if(bpi != null) {
-			return BpictlUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
+			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 		}
 		
 		Bpi entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setCreated(CommonUtil.getNowDate());
-		return BpictlUtil.getSuccess(bpiRepository.save(entity));
+		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
 	}
 
 	/**
@@ -131,13 +131,13 @@ public class BpiService {
 	public ApiResponse<Bpi> updateBpi(BpiRq rq) {
 		Bpi bpi = bpiRepository.findByCodeAndCodeChineseName(rq.getCode(), rq.getCodeChineseName());
 		if(bpi == null) {
-			return BpictlUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
+			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
 		}
 		
 		Bpi entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setUpdated(CommonUtil.getNowDate());
-		return BpictlUtil.getSuccess(bpiRepository.save(entity));
+		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
 	}
 	
 	/**
@@ -149,12 +149,12 @@ public class BpiService {
 	public ApiResponse<Bpi> updateBpiRate(BpiRateRq rq) {
 		Bpi bpi = bpiRepository.findByCode(rq.getCode());
 		if(bpi == null) {
-			return BpictlUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
+			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
 		}
 		
 		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));
 		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), CommonUtil.getNowDate());
-		return BpictlUtil.getSuccess(bpiRepository.findByCode(rq.getCode()));
+		return BpiRsUtil.getSuccess(bpiRepository.findByCode(rq.getCode()));
 	}
 	
 	/**
@@ -165,11 +165,11 @@ public class BpiService {
 	public ApiResponse<Bpi> deleteBpi(String code) {
 		Bpi bpi = bpiRepository.findByCode(code);
 		if(bpi == null) {
-			return BpictlUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
+			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
 		
 		bpiRepository.delete(bpi);
-		return BpictlUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi);
 	}
 
 	/**
@@ -181,11 +181,11 @@ public class BpiService {
 	public ApiResponse<Bpi> deleteBpiByCode(String code) {
 		Bpi bpi = bpiRepository.findByCode(code);
 		if(bpi == null) {
-			return BpictlUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
+			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
 		
 		bpiRepository.deleteBpiByCode(code);
-		return BpictlUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi);
 	}
 
 	public NewBpi transform(String jsonStr) throws Exception {

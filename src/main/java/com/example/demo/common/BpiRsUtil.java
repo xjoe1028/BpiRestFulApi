@@ -9,7 +9,7 @@ import com.example.demo.model.ApiResponse;
  *
  * @Date 2021/07/14
  */
-public class BpictlUtil {
+public class BpiRsUtil {
 
 	/**
 	 * Get success API response.
