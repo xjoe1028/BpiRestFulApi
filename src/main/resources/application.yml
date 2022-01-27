@@ -16,6 +16,7 @@ spring:
   jpa:
     show-sql: true
     # oracle database setting
+    database: oracle 
     database-platform: org.hibernate.dialect.OracleDialect
     hibernate:
       ddl-auto: update
@@ -23,7 +24,7 @@ spring:
       # h2       
 #      dialect: org.hibernate.dialect.H2Dialect
       # oracle 
-      dialect: org.hibernate.dialect.Oracle10gDialect
+      hibernate.format_sql: true
 
   h2:
     console:

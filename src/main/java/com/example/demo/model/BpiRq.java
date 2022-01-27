@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -30,12 +30,14 @@ public class BpiRq implements Serializable {
 	 * 貨幣名稱
 	 */
 	@ApiModelProperty("code 貨幣名稱")
+	@NotBlank(message = "code must be not empty")
 	private String code;
 	
 	/**
 	 * 貨幣中文名稱
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
+	@NotBlank(message = "codeChineseName must be not empty")
 	private String codeChineseName;
 	
 	/**
@@ -60,7 +62,6 @@ public class BpiRq implements Serializable {
 	 * 創建時間
 	 */
 	@ApiModelProperty("created 創建時間")
-	@Column
 	private String created;
 	
 	/**

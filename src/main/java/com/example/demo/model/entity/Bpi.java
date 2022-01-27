@@ -40,7 +40,7 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("code 貨幣名稱")
 	@Id
-	@Column
+	@Column(unique = true)
 	@NotNull
 	private String code;
 	
@@ -49,7 +49,7 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
 	@Id
-	@Column
+	@Column(unique = true)
 	@NotNull
 	private String codeChineseName;
 	

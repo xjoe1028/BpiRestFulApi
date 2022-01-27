@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
@@ -52,7 +51,7 @@ public class BpiTest {
 	private MockMvc mockMvc;
 	
 	public final static String URL = "/api/bpi";
-	public final static String TODAY = CommonUtil.getNowDate(new Date());
+	public final static String TODAY = CommonUtil.getNowDate();
 
 	public static String[] codes = {"USD", "GBP", "EUR", "CNY" };
 	public static String[] codesName = {"美元", "英镑", "歐元", "人民幣" };
@@ -86,7 +85,7 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void deleteAllDataTest() throws Exception {
-		bpiRepository.findAll().forEach(bpi -> bpiRepository.delete(bpi));
+		bpiRepository.findAll().forEach(bpi -> bpiRepository.deleteAll());
 		log.info("delete success!!");
 	}
 
@@ -175,7 +174,7 @@ public class BpiTest {
 	 * 
 	 * @throws Exception
 	 */
-//	@Disabled("skip")
+	@Disabled("skip")
 	@Test
 	void addBipTest() throws Exception {
 		BpiRq rq = BpiRq.builder()
@@ -183,7 +182,7 @@ public class BpiTest {
 				.symbol("$")
 				.codeChineseName("新台幣")
 				.description("New Taiwan Dollar")
-				.rateFloat(1000.2)
+				.rateFloat(100.2)
 				.build();
 		
 		ResultActions resultActions = this.mockMvc.perform(post(URL + "/addBpi") // url
@@ -240,8 +239,8 @@ public class BpiTest {
 	void updateBipRateTest() throws Exception {
 //		beforeInit();
 		BpiRq rq = new BpiRq();
-		rq.setCode("USD");
-		rq.setRateFloat(1234.12);
+		rq.setCode("TWD");
+		rq.setRateFloat(741987.12);
 		
 		ResultActions resultActions = this.mockMvc.perform(put(URL + "/updateBpiRate") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式

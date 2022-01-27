@@ -45,10 +45,13 @@ public interface BpiRepository extends JpaRepository<Bpi, BpiPK> {
 	/**
 	 * update 語句 jpa 用法
 	 * 
+	 * clearAutomatically 刷新Hibernate一級緩存 jpa 底層 Hibernate 實際上先存在快照區 
+	 * flushAutomatically flush
+	 * 
 	 * @param code
 	 * @return
 	 */
-	@Modifying
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Bpi SET rate = :rate , rateFloat = :rateFloat, updated = :updated WHERE code = :code")
 	@Transactional
 	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat") Double rateFloat , @Param("code") String code, @Param("updated") String updated);

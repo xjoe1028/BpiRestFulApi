@@ -15,17 +15,29 @@ import java.util.Date;
  */
 public class CommonUtil {
 	
-	public static String getNowDate(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+	public static final String DATE_FORMAT_YYYYMMDD_HHMMSS = "yyyy/MM/dd hh:mm:ss";
+	public static final String DATE_FORMAT_YYYYMMDD_T_HHMMSS = "yyyy-MM-dd'T'HH:mm:ss";
+	
+	public static String getNowDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS);
+		return sdf.format(new Date());
+	}
+	
+	public static String dateToString(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS);
+		return sdf.format(date);
+	}
+	
+	public static String dateToFormat(String format, Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
 	}
 
 	public static String updatedFormat(String updated) throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_T_HHMMSS);
 		Date date = dateFormat.parse(updated);// You will get date object relative to server/client
-		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss"); // If you need time just put specific format for time
-		String dateStr = formatter.format(date);
-		return dateStr;
+		DateFormat formatter = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS); // If you need time just put specific format for time
+		return formatter.format(date);
 	}
 	
 	/**

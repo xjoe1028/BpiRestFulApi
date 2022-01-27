@@ -3,11 +3,11 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.model.ApiResponse;
+import com.example.demo.model.BpiRateRq;
 import com.example.demo.model.BpiRq;
-import com.example.demo.model.BpiRs;
 import com.example.demo.model.NewBpi;
 import com.example.demo.model.entity.Bpi;
 import com.example.demo.service.BpiService;
@@ -51,13 +52,8 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findAllBpis")
-	public ResponseEntity<List<Bpi>> findAllBpis() {
-		List<Bpi> bpiList = bpiService.findAll();
-		if(bpiList.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		
-		return ResponseEntity.ok(bpiList);
+	public ApiResponse<List<Bpi>> findAllBpis() {
+		return bpiService.findAll();
 	}
 	
 	/**
@@ -67,13 +63,8 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/code")
-	public ResponseEntity<Bpi> findBpiByCode(@RequestParam("code") String code) {
-		Bpi bpi = bpiService.findBpiByCode(code);
-		if(bpi == null) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		
-		return ResponseEntity.ok(bpi);
+	public ApiResponse<Bpi> findBpiByCode(@RequestParam("code") String code) {
+		return bpiService.findBpiByCode(code);
 	}
 	
 	/**
@@ -83,13 +74,8 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/codeChineseName")
-	public ResponseEntity<Bpi> findBpiByCodeChineseName(@RequestParam("codeChineseName") String codeChineseName) {
-		Bpi bpi = bpiService.findBpiByCodeChineseName(codeChineseName);
-		if(bpi == null) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		
-		return ResponseEntity.ok(bpi);
+	public ApiResponse<Bpi> findBpiByCodeChineseName(@RequestParam("codeChineseName") String codeChineseName) {
+		return bpiService.findBpiByCodeChineseName(codeChineseName);
 	}
 	
 	/**
@@ -99,13 +85,8 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/pk")
-	public ResponseEntity<Bpi> findBpiByPk(@RequestParam("code") String code, @RequestParam("codeChineseName") String codeChineseName) {
-		Bpi bpi = bpiService.findByCodeAndCodeChineseName(code, codeChineseName);
-		if(bpi == null) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		
-		return ResponseEntity.ok(bpi);
+	public ApiResponse<Bpi> findBpiByPk(@RequestParam("code") String code, @RequestParam("codeChineseName") String codeChineseName) {
+		return bpiService.findByPk(code, codeChineseName);
 	}
 	
 	/**
@@ -115,8 +96,8 @@ public class BpiController {
 	 * @return
 	 */
 	@PostMapping("/addBpi")
-	public ResponseEntity<BpiRs> addBpi(@RequestBody BpiRq rq) {
-		return ResponseEntity.ok(bpiService.addBpi(rq));
+	public ApiResponse<Bpi> addBpi(@RequestBody BpiRq rq) {
+		return bpiService.addBpi(rq);
 	}
 	
 	/**
@@ -126,8 +107,8 @@ public class BpiController {
 	 * @return
 	 */
 	@PutMapping("/updateBpi")
-	public ResponseEntity<BpiRs> updateBpi(@RequestBody BpiRq rq) {
-		return ResponseEntity.ok(bpiService.updateBpi(rq));
+	public ApiResponse<Bpi> updateBpi(@RequestBody BpiRq rq) {
+		return bpiService.updateBpi(rq);
 	}
 	
 	/**
@@ -136,9 +117,9 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
-	@PutMapping("/updateBpiRate")
-	public ResponseEntity<BpiRs> updateBpiRate(@RequestBody BpiRq rq) {
-		return ResponseEntity.ok(bpiService.updateBpiRate(rq));
+	@PatchMapping("/updateBpiRate")
+	public ApiResponse<Bpi> updateBpiRate(@RequestBody BpiRateRq rq) {
+		return bpiService.updateBpiRate(rq);
 	}
 	
 	/**
@@ -148,8 +129,8 @@ public class BpiController {
 	 * @return
 	 */
 	@DeleteMapping("/deleteBpi/code")
-	public ResponseEntity<BpiRs> deleteBpiByCode(@RequestBody String code) {
-		return ResponseEntity.ok(bpiService.deleteBpiByCode(code));
+	public ApiResponse<Bpi> deleteBpi(@RequestBody String code) {
+		return bpiService.deleteBpiByCode(code);
 	}
 	
 	/**
@@ -176,4 +157,5 @@ public class BpiController {
 		log.info("response : {}", jsonStr);
 		return ResponseEntity.ok(bpiService.transform(jsonStr));
 	}
+	
 }
