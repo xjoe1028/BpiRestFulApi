@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.entity.Bpi;
-import com.example.demo.model.entity.pk.BpiPK;
 
 /**
  * JPA 底層 Hibernate
@@ -18,7 +17,7 @@ import com.example.demo.model.entity.pk.BpiPK;
  * @Date 2021/10/06
  */
 @Repository
-public interface BpiRepository extends JpaRepository<Bpi, BpiPK> {
+public interface BpiRepository extends JpaRepository<Bpi, String> {
 	
 	/**
 	 * jpa使用jpql做curd語法時 是吃@Entity的名稱 如沒取名就是className 

@@ -7,22 +7,21 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 更新利率 BpiRateRq
  * 
  * @author Joe
  * 
- * @Date 2022/01/21
+ * @Date 2022/02/14
  *
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BpiRateRq extends CodeRq {
-	
+public class CodeRq extends BaseRq {
+
 	/**
-	 * 匯率
+	 * 貨幣名稱
 	 */
-	@ApiModelProperty("rate 貨幣名稱")
-	@NotBlank(message = "rate must be not empty")
-	private Double rate;
+	@ApiModelProperty("code 貨幣名稱")
+	@NotBlank(message = "code must be not empty")
+	public String code;
 	
 }

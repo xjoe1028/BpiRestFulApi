@@ -3,20 +3,16 @@ package com.example.demo.model;
 import java.io.Serializable;
 import java.util.Map;
 
-import com.example.demo.model.entity.Bpi;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 貨幣
+ * 呼叫 url coindesk return的物件
  * 
  * @author Joe
  *
  * @Date 2021/10/06
  */
-//@Entity
-//@Table(name = "coindesk")
 @Data
 public class Coindesk implements Serializable {
 	
@@ -35,6 +31,6 @@ public class Coindesk implements Serializable {
 	
 	private String chartName;
 	
-	private Map<String, Bpi> bpi;
+	private transient Map<String, BpiRq> bpi;
 	
 }

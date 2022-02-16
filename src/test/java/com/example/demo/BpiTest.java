@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
@@ -22,8 +23,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.demo.common.CommonUtil;
-import com.example.demo.model.BaseRq;
 import com.example.demo.model.BpiRq;
+import com.example.demo.model.CodeRq;
 import com.example.demo.model.entity.Bpi;
 import com.example.demo.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,12 +56,12 @@ public class BpiTest {
 	public final static String URL = "/api/bpi";
 	public final static String TODAY = CommonUtil.getNowDate();
 
-	public static String[] codes = {"USD", "GBP", "EUR", "CNY" };
-	public static String[] codesName = {"美元", "英镑", "歐元", "人民幣" };
-	public static String[] symbols = {"$", "£", "€", "¥"};
-	public static String[] descriptions = {"United States Dollar", "British Pound Sterling", "Euro", "Chinese yuan"};
-	public static Double[] ratesFloat = {51211.0422, 37789.4474, 44368.3764, 4.34};
-	public static String[] createdDates = {TODAY, TODAY, TODAY, TODAY};
+	public static List<String> codes = Arrays.asList("USD", "GBP", "EUR", "CNY");
+	public static List<String> codesName = Arrays.asList("美元", "英镑", "歐元", "人民幣");
+	public static List<String> symbols = Arrays.asList("$", "£", "€", "¥");
+	public static List<String> descriptions = Arrays.asList("United States Dollar", "British Pound Sterling", "Euro", "Chinese yuan");
+	public static List<Double> ratesFloat = Arrays.asList(51211.0422, 37789.4474, 44368.3764, 4.34);
+	public static List<String> createdDates = Arrays.asList(TODAY, TODAY, TODAY, TODAY);
 	
 	/**
 	 * 資料初始化
@@ -70,15 +71,15 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void beforeInit() throws Exception {
-		for (int i = 0; i < codes.length; i++) {
+		for (int i = 0; i < codes.size(); i++) {
 			Bpi rq = new Bpi();
-			rq.setCode(codes[i]);
-			rq.setCodeChineseName(codesName[i]);
-			rq.setRate(CommonUtil.fmtMicrometer(ratesFloat[i].toString()));
-			rq.setDescription(descriptions[i]);
-			rq.setRateFloat(ratesFloat[i]);
-			rq.setSymbol(symbols[i]);
-			rq.setCreated(createdDates[i]);
+			rq.setCode(codes.get(i));
+			rq.setCodeChineseName(codesName.get(i));
+			rq.setRate(CommonUtil.fmtMicrometer(ratesFloat.get(i).toString()));
+			rq.setDescription(descriptions.get(i));
+			rq.setRateFloat(ratesFloat.get(i));
+			rq.setSymbol(symbols.get(i));
+			rq.setCreated(createdDates.get(i));
 			bpiRepository.save(rq);
 		}
 		log.info("testData : {}", bpiRepository.findAll().toString());
@@ -99,7 +100,6 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void findAllBpisTest() throws Exception {
-//		beforeInit();
 		ResultActions resultActions = this.mockMvc.perform(
 			get(URL + "/findAllBpis")
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -119,7 +119,6 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void findBipByCodeTest() throws Exception {
-//		beforeInit();
 		ResultActions resultActions = this.mockMvc.perform(
 			get(URL + "/findBpi/code") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
@@ -140,7 +139,6 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void findBipByCodeChineseNameTest() throws Exception {
-//		beforeInit();
 		ResultActions resultActions = this.mockMvc.perform(
 			get(URL + "/findBpi/codeChineseName") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
@@ -161,7 +159,6 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void findBipByCodeAndCodeChineseNameTest() throws Exception {
-//		beforeInit();
 		ResultActions resultActions = this.mockMvc.perform(
 			get(URL + "/findBpi/pk") // url
 			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
@@ -211,7 +208,6 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void updateBipTest() throws Exception {
-//		beforeInit();
 		List<Bpi> bpis = bpiRepository.findAll();
 		Bpi bpi = bpis.get(0);
 		bpi.setDescription("test update");
@@ -245,7 +241,6 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void updateBipRateTest() throws Exception {
-//		beforeInit();
 		BpiRq rq = new BpiRq();
 		rq.setCode("TWD");
 		rq.setRateFloat(741987.12);
@@ -270,7 +265,7 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void deleteBpiByCodeTest() throws Exception {
-		BaseRq rq = new BaseRq();
+		CodeRq rq = new CodeRq();
 		rq.setCode("TWD");
 		ResultActions resultActions = this.mockMvc.perform(
 				delete(URL + "/deleteBpi/code") // url

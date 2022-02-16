@@ -50,6 +50,12 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+# @Slf4j      
+#logging:
+#  level:
+#    ROOT: DEBUG
+    
 # server
 server:
   port: 8080

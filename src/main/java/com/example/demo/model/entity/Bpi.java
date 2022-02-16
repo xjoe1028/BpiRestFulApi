@@ -5,11 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
-
-import com.example.demo.model.entity.pk.BpiPK;
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -17,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * bid 比特幣種類 
+ * bpi 幣別 
  * 
  * @author Joe
  *
@@ -26,9 +23,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "bpi")
-@IdClass(BpiPK.class)
 @NoArgsConstructor
 public class Bpi implements Serializable {
+	
+	// @IdClass(BpiPK.class) 複合主鍵 
 	
 	/**
 	 * 
@@ -48,7 +46,6 @@ public class Bpi implements Serializable {
 	 * 貨幣中文名稱
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
-	@Id
 	@Column(unique = true)
 	@NotNull
 	private String codeChineseName;

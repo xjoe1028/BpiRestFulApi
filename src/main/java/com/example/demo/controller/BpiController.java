@@ -2,11 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.common.BpiRsUtil;
 import com.example.demo.model.ApiResponse;
-import com.example.demo.model.BaseRq;
 import com.example.demo.model.BpiRateRq;
 import com.example.demo.model.BpiRq;
-import com.example.demo.model.NewBpi;
+import com.example.demo.model.CodeRq;
+import com.example.demo.model.NewBpiRs;
+import com.example.demo.model.RqType;
 import com.example.demo.model.entity.Bpi;
 import com.example.demo.service.BpiService;
 
@@ -46,7 +45,7 @@ public class BpiController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-
+	
 	/**
 	 * select All
 	 * 
@@ -88,7 +87,7 @@ public class BpiController {
 	 */
 	@GetMapping("/findBpi/pk")
 	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code, @RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
-		return bpiService.findByPk(code, codeChineseName);
+		return bpiService.findBpiByCAndCcn(code, codeChineseName);
 	}
 
 	/**
@@ -97,8 +96,9 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@RqType(BpiRq.class)
 	@PostMapping("/addBpi")
-	public ApiResponse<Bpi> addBpi(@Valid @RequestBody BpiRq rq) {
+	public ApiResponse<Bpi> addBpi(@RequestBody BpiRq rq) {
 		return bpiService.addBpi(rq);
 	}
 
@@ -110,8 +110,9 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@RqType(BpiRq.class)
 	@PutMapping("/updateBpi")
-	public ApiResponse<Bpi> updateBpi(@Valid @RequestBody BpiRq rq) {
+	public ApiResponse<Bpi> updateBpi(@RequestBody BpiRq rq) {
 		return bpiService.updateBpi(rq);
 	}
 
@@ -123,8 +124,9 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@RqType(BpiRateRq.class)
 	@PatchMapping("/updateBpiRate")
-	public ApiResponse<Bpi> updateBpiRate(@Valid @RequestBody BpiRateRq rq) {
+	public ApiResponse<Bpi> updateBpiRate(@RequestBody BpiRateRq rq) {
 		return bpiService.updateBpiRate(rq);
 	}
 
@@ -134,8 +136,9 @@ public class BpiController {
 	 * @param id
 	 * @return
 	 */
+	@RqType(CodeRq.class)
 	@DeleteMapping("/deleteBpi/code")
-	public ApiResponse<Bpi> deleteBpi(@Valid @RequestBody BaseRq rq) {
+	public ApiResponse<Bpi> deleteBpi(@RequestBody CodeRq rq) {
 		return bpiService.deleteBpiByCode(rq.getCode());
 	}
 
@@ -145,10 +148,10 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/call/coindesk")
-	public ResponseEntity<String> callCoindeskAPI() {
+	public ApiResponse<String> callCoindeskAPI() {
 		String response = restTemplate.getForObject(COINDESK_URL, String.class);
-		log.info("response : {}", response);
-		return ResponseEntity.ok(response);
+		log.info("call coindesk api res : {}", response);
+		return BpiRsUtil.getSuccess(response);
 	}
 
 	/**
@@ -158,10 +161,10 @@ public class BpiController {
 	 * @throws Exception
 	 */
 	@GetMapping("/call/coindesk/transform")
-	public ResponseEntity<NewBpi> transformNewBpi() throws Exception {
+	public ApiResponse<NewBpiRs> transformNewBpi() throws Exception {
 		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);
-		log.info("response : {}", jsonStr);
-		return ResponseEntity.ok(bpiService.transform(jsonStr));
+		log.info("call coindesk api res : {}", jsonStr);
+		return BpiRsUtil.getSuccess(bpiService.transform(jsonStr));
 	}
 
 }

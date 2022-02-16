@@ -3,7 +3,7 @@ package com.example.demo.common;
 import com.example.demo.model.ApiResponse;
 
 /**
- * Bpictl util
+ * BpiRs util
  * 
  * @author Joe
  *

@@ -20,7 +20,8 @@ public enum ErrorCode {
 	UPDATE_RATE_NULL("1004", "檢核錯誤 : rate is null"),
 	UPDATE_CODE_NULL("1005", "檢核錯誤 : code is null"),
 	UPDATE_CODE_AND_RATE_NULL("1006", "檢核錯誤 : code and rate all null"),
-	DELETE_FAILED_DATA_NOT_EXIST("1007", "刪除失敗 : 無此資料"),;
+	DELETE_FAILED_DATA_NOT_EXIST("1007", "刪除失敗 : 無此資料"),
+	VALIDATION_ERROR("1008", "欄位檢核錯誤");
 	
 	private String code;
 	private String message;
