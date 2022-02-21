@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.demo.common.CommonUtil;
+import com.example.demo.model.BpiRateRq;
 import com.example.demo.model.BpiRq;
 import com.example.demo.model.CodeRq;
 import com.example.demo.model.entity.Bpi;
@@ -88,7 +89,7 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void deleteAllDataTest() throws Exception {
-		bpiRepository.findAll().forEach(bpi -> bpiRepository.deleteAll());
+		bpiRepository.deleteAll();
 		log.info("delete success!!");
 	}
 
@@ -241,9 +242,9 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void updateBipRateTest() throws Exception {
-		BpiRq rq = new BpiRq();
+		BpiRateRq rq = new BpiRateRq();
 		rq.setCode("TWD");
-		rq.setRateFloat(741987.12);
+		rq.setRate(741987.12);
 		
 		ResultActions resultActions = this.mockMvc.perform(
 				patch(URL + "/updateBpiRate") // url

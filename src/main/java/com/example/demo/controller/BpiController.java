@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.example.demo.model.NewBpiRs;
 import com.example.demo.model.RqType;
 import com.example.demo.model.entity.Bpi;
 import com.example.demo.service.BpiService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -64,8 +66,8 @@ public class BpiController {
 	 * @return
 	 */
 	@GetMapping("/findBpi/code")
-	public ApiResponse<Bpi> findBpiByCode(@RequestParam(name = "code", defaultValue = "") String code) {
-		return bpiService.findBpiByCode(code);
+	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code) {
+		return bpiService.findBpiByPk(code);
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class BpiController {
 	 */
 	@GetMapping("/findBpi/pk")
 	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code, @RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
-		return bpiService.findBpiByCAndCcn(code, codeChineseName);
+		return bpiService.findBpiByCodeAndCodeChineseName(code, codeChineseName);
 	}
 
 	/**
@@ -158,10 +160,12 @@ public class BpiController {
 	 * 呼叫 coindesk API 在 format成自定義的資料 return
 	 * 
 	 * @return
+	 * @throws ParseException 
+	 * @throws JsonProcessingException 
 	 * @throws Exception
 	 */
 	@GetMapping("/call/coindesk/transform")
-	public ApiResponse<NewBpiRs> transformNewBpi() throws Exception {
+	public ApiResponse<NewBpiRs> transformNewBpi() throws JsonProcessingException, ParseException {
 		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);
 		log.info("call coindesk api res : {}", jsonStr);
 		return BpiRsUtil.getSuccess(bpiService.transform(jsonStr));

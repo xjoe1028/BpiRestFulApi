@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,17 +27,17 @@ public interface BpiRepository extends JpaRepository<Bpi, String> {
 	 * 如果是@Entity(name = "bpi")就是吃bpi
 	 */
 	
-	// 使用 @Query 注釋 來做select
+	// 使用 @Query 注釋 來做select  這個等於jpa寫好的findById
 //	@Query("SELECT * FROM Bpi Where code = 1?")
-	public Bpi findByCode(String code);
+	public Optional<Bpi> findByCode(String code);
 	
 	// 使用 @Query(native = true, value = "原生sql語句") native = true 必須用原生sql語句
 //	@Query("SELECT * FROM Bpi Where codeChineseName = 1?")
-	public Bpi findByCodeChineseName(String codeChineseName);
+	public Optional<Bpi> findByCodeChineseName(String codeChineseName);
 	
 	// 使用 @Query 注釋 來做select
 //	@Query("SELECT * FROM Bpi WHERE code = 1? AND codeChineseName=2?")
-	public Bpi findByCodeAndCodeChineseName(String code, String codeChineseName);
+	public Optional<Bpi> findByCodeAndCodeChineseName(String code, String codeChineseName);
    
 	// 使用 @Query 注釋 來做select :code要對應到@Param("code") 要mapping 不然會報錯
 //	@Query("SELECT * FROM Bpi WHERE code = :code AND codeChineseName = :codeChineseName")

@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class BpiRateRq extends CodeRq {
 	 * 匯率
 	 */
 	@ApiModelProperty("rate 貨幣名稱")
-	@NotBlank(message = "rate must be not empty")
+	@NotNull(message = "rate must be not empty")
 	private Double rate;
 	
 }

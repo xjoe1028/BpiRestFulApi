@@ -55,18 +55,18 @@ public class BpiService {
 	}
 
 	/**
-	 * select by code
+	 * select by code(pk)
 	 * 
 	 * @param code
 	 * @return
 	 */
-	public ApiResponse<Bpi> findBpiByCode(String code) {
-		Bpi bpi = bpiRepository.findByCode(code);
-		if(bpi == null) { 
+	public ApiResponse<Bpi> findBpiByPk(String code) {
+		Optional<Bpi> bpi = bpiRepository.findByCode(code);
+		if(!bpi.isPresent()) { 
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpiRsUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi.get());
 	}
 	
 	/**
@@ -76,12 +76,12 @@ public class BpiService {
 	 * @return
 	 */
 	public ApiResponse<Bpi> findBpiByCodeChineseName(String codeChineseName) {
-		Bpi bpi = bpiRepository.findByCodeChineseName(codeChineseName);
-		if(bpi == null) {
+		Optional<Bpi> bpi = bpiRepository.findByCodeChineseName(codeChineseName);
+		if(!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpiRsUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi.get());
 	}
 	
 	/**
@@ -91,13 +91,13 @@ public class BpiService {
 	 * @param codeChineseName
 	 * @return
 	 */
-	public ApiResponse<Bpi> findBpiByCAndCcn(String code, String codeChineseName) {
-		Bpi bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
-		if(bpi == null) {
+	public ApiResponse<Bpi> findBpiByCodeAndCodeChineseName(String code, String codeChineseName) {
+		Optional<Bpi> bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
+		if(!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
 		
-		return BpiRsUtil.getSuccess(bpi);
+		return BpiRsUtil.getSuccess(bpi.get());
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> addBpi(BpiRq rq) {
 		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
-		if(!bpi.isPresent()) {
+		if(bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 		}
 		
@@ -150,7 +150,7 @@ public class BpiService {
 		
 		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));
 		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), CommonUtil.getNowDate());
-		return BpiRsUtil.getSuccess(bpiRepository.findByCode(rq.getCode()));
+		return BpiRsUtil.getSuccess(bpiRepository.findById(rq.getCode()).orElse(new Bpi()));
 	}
 	
 	/**
@@ -206,7 +206,7 @@ public class BpiService {
 			return NewBpi.builder()
 				.code(b.getCode())
 				.codeChineseName(b.getCodeChineseName())
-				.rate(CommonUtil.fmtMicrometer(String.valueOf(b.getRateFloat())))
+				.rate(b.getRate())
 				.rateFloat(b.getRateFloat())
 				.build();
 		}).collect(Collectors.toList());
@@ -217,12 +217,13 @@ public class BpiService {
 			return NewBpi.builder()
 					.code(b.getCode())
 					.codeChineseName(b.getCodeChineseName())
-					.rate(CommonUtil.fmtMicrometer(String.valueOf(b.getRateFloat())))
+					.rate(b.getRate())
 					.rateFloat(b.getRateFloat())
 					.build();
 		}).collect(Collectors.toMap(NewBpi::getCode, Function.identity(), (v1, v2) -> v2));
 		
-		log.info("bpis: {}", bpisList);
+		log.info("bpiList: {}", bpisList);
+		log.info("bpiMap: {}", bpisMap);
 		
 		return NewBpiRs.builder().bpisList(bpisList).bpisMap(bpisMap)
 				.updated(CommonUtil.updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19))).build();
