@@ -47,10 +47,10 @@ public class BpiService {
 	 */
 	public ApiResponse<List<Bpi>> findAll() {
 		List<Bpi> bpiList = bpiRepository.findAll();
-		if(bpiList.isEmpty()) {
+		if (bpiList.isEmpty()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
-		
+
 		return BpiRsUtil.getSuccess(bpiList);
 	}
 
@@ -62,10 +62,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> findBpiByPk(String code) {
 		Optional<Bpi> bpi = bpiRepository.findByCode(code);
-		if(!bpi.isPresent()) { 
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
-		
+
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
 	
@@ -77,10 +77,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> findBpiByCodeChineseName(String codeChineseName) {
 		Optional<Bpi> bpi = bpiRepository.findByCodeChineseName(codeChineseName);
-		if(!bpi.isPresent()) {
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
-		
+
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
 	
@@ -93,10 +93,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> findBpiByCodeAndCodeChineseName(String code, String codeChineseName) {
 		Optional<Bpi> bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
-		if(!bpi.isPresent()) {
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
-		
+
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
 
@@ -108,10 +108,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> addBpi(BpiRq rq) {
 		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
-		if(bpi.isPresent()) {
+		if (bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 		}
-		
+
 		Bpi entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setCreated(CommonUtil.getNowDate());
@@ -126,10 +126,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> updateBpi(BpiRq rq) {
 		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
-		if(!bpi.isPresent()) {
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
 		}
-		
+
 		Bpi entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setUpdated(CommonUtil.getNowDate());
@@ -144,10 +144,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> updateBpiRate(BpiRateRq rq) {
 		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
-		if(!bpi.isPresent()) {
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
 		}
-		
+
 		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));
 		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), CommonUtil.getNowDate());
 		return BpiRsUtil.getSuccess(bpiRepository.findById(rq.getCode()).orElse(new Bpi()));
@@ -160,10 +160,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> deleteBpi(String code) {
 		Optional<Bpi> bpi = bpiRepository.findById(code);
-		if(!bpi.isPresent()) {
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
-		
+
 		bpiRepository.delete(bpi.get());
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
@@ -176,10 +176,10 @@ public class BpiService {
 	 */
 	public ApiResponse<Bpi> deleteBpiByCode(String code) {
 		Optional<Bpi> bpi = bpiRepository.findById(code);
-		if(!bpi.isPresent()) {
+		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
-		
+
 		bpiRepository.deleteBpiByCode(code);
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
