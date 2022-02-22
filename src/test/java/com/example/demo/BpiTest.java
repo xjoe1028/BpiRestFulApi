@@ -57,12 +57,12 @@ public class BpiTest {
 	public final static String URL = "/api/bpi";
 	public final static String TODAY = CommonUtil.getNowDate();
 
-	public static List<String> codes = Arrays.asList("USD", "GBP", "EUR", "CNY");
-	public static List<String> codesName = Arrays.asList("美元", "英镑", "歐元", "人民幣");
-	public static List<String> symbols = Arrays.asList("$", "£", "€", "¥");
-	public static List<String> descriptions = Arrays.asList("United States Dollar", "British Pound Sterling", "Euro", "Chinese yuan");
-	public static List<Double> ratesFloat = Arrays.asList(51211.0422, 37789.4474, 44368.3764, 4.34);
-	public static List<String> createdDates = Arrays.asList(TODAY, TODAY, TODAY, TODAY);
+	public static List<String> codes = Arrays.asList("USD", "GBP", "EUR", "CNY", "JPY", "KRW");
+	public static List<String> codesName = Arrays.asList("美元", "英镑", "歐元", "人民幣", "日元", "韓元");
+	public static List<String> symbols = Arrays.asList("$", "£", "€", "¥", "¥", "₩");
+	public static List<String> descriptions = Arrays.asList("United States Dollar", "British Pound Sterling", "Euro", "Chinese yuan", "Japanese Yen", "Korea Hwan");
+	public static List<Double> ratesFloat = Arrays.asList(27.85, 37.85, 31.49, 4.39, 0.24, 0.023);
+	public static List<String> createdDates = Arrays.asList(TODAY, TODAY, TODAY, TODAY, TODAY, TODAY);
 	
 	/**
 	 * 資料初始化
