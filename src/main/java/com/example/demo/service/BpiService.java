@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -251,7 +252,7 @@ public class BpiService {
 	 * @return
 	 */
 	private List<String> getBpiCodeNames() {
-		return bpiRepository.findAll().stream().map(Bpi::getCodeChineseName).collect(Collectors.toList());
+		return Optional.ofNullable(bpiRepository.findAll().stream().map(Bpi::getCodeChineseName).collect(Collectors.toList())).orElseGet(ArrayList::new);
 	}
 	
 }
