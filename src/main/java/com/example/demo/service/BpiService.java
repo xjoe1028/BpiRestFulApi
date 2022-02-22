@@ -61,7 +61,7 @@ public class BpiService {
 	 * @return
 	 */
 	public ApiResponse<Bpi> findBpiByPk(String code) {
-		Optional<Bpi> bpi = bpiRepository.findByCode(code);
+		Optional<Bpi> bpi = bpiRepository.findById(code);
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
@@ -150,7 +150,7 @@ public class BpiService {
 
 		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));
 		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), CommonUtil.getNowDate());
-		return BpiRsUtil.getSuccess(bpiRepository.findById(rq.getCode()).orElse(new Bpi()));
+		return BpiRsUtil.getSuccess(bpiRepository.findByCode(rq.getCode()));
 	}
 	
 	/**

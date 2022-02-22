@@ -29,7 +29,7 @@ public interface BpiRepository extends JpaRepository<Bpi, String> {
 	
 	// 使用 @Query 注釋 來做select  這個等於jpa寫好的findById
 //	@Query("SELECT * FROM Bpi Where code = 1?")
-	public Optional<Bpi> findByCode(String code);
+	public Bpi findByCode(String code);
 	
 	// 使用 @Query(native = true, value = "原生sql語句") native = true 必須用原生sql語句
 //	@Query("SELECT * FROM Bpi Where codeChineseName = 1?")
