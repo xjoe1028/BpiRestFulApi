@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,6 +28,8 @@ import com.example.demo.model.entity.Bpi;
 import com.example.demo.service.BpiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -36,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 2021/10/06
  */
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*") // 跨域的問題
 @RestController
 @RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BpiController {
@@ -54,6 +58,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@ApiOperation(value = "查詢所有幣別")
 	@GetMapping("/findAllBpis")
 	public ApiResponse<List<Bpi>> findAllBpis() {
 		return bpiService.findAll();
@@ -65,31 +70,24 @@ public class BpiController {
 	 * @param code
 	 * @return
 	 */
+	@ApiOperation(value = "查詢單一幣別")
+	@ApiImplicitParam(paramType = "query", name = "code", value = "英文幣別", required = true, dataType = "String")
 	@GetMapping("/findBpi/code")
 	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code) {
 		return bpiService.findBpiByPk(code);
 	}
 
 	/**
-	 * 查詢 Bpi by code
+	 * 查詢 Bpi by codeChineseName
 	 * 
 	 * @param code
 	 * @return
 	 */
+	@ApiOperation(value = "查詢單一幣別")
+	@ApiImplicitParam(paramType = "query", name = "codeChineseName", value = "中文幣別", required = true, dataType = "String")
 	@GetMapping("/findBpi/codeChineseName")
 	public ApiResponse<Bpi> findBpiByCodeChineseName(@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
 		return bpiService.findBpiByCodeChineseName(codeChineseName);
-	}
-
-	/**
-	 * 查詢 Bpi by code and codeChineseName
-	 * 
-	 * @param code
-	 * @return
-	 */
-	@GetMapping("/findBpi/pk")
-	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code, @RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
-		return bpiService.findBpiByCodeAndCodeChineseName(code, codeChineseName);
 	}
 
 	/**
@@ -98,6 +96,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@ApiOperation(value = "新增幣別")
 	@RqType(BpiRq.class)
 	@PostMapping("/addBpi")
 	public ApiResponse<Bpi> addBpi(@RequestBody BpiRq rq) {
@@ -112,6 +111,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@ApiOperation(value = "修改幣別")
 	@RqType(BpiRq.class)
 	@PutMapping("/updateBpi")
 	public ApiResponse<Bpi> updateBpi(@RequestBody BpiRq rq) {
@@ -126,6 +126,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
+	@ApiOperation(value = "修改幣別匯率")
 	@RqType(BpiRateRq.class)
 	@PatchMapping("/updateBpiRate")
 	public ApiResponse<Bpi> updateBpiRate(@RequestBody BpiRateRq rq) {
@@ -138,6 +139,7 @@ public class BpiController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "刪除幣別")
 	@RqType(CodeRq.class)
 	@DeleteMapping("/deleteBpi/code")
 	public ApiResponse<Bpi> deleteBpi(@RequestBody CodeRq rq) {
@@ -149,6 +151,7 @@ public class BpiController {
 	 * 
 	 * @return
 	 */
+	@ApiOperation(value = "呼叫外部coindesk API")
 	@GetMapping("/call/coindesk")
 	public ApiResponse<String> callCoindeskAPI() {
 		String response = restTemplate.getForObject(COINDESK_URL, String.class);
@@ -164,6 +167,7 @@ public class BpiController {
 	 * @throws JsonProcessingException 
 	 * @throws Exception
 	 */
+	@ApiOperation(value = "呼叫外部coindesk API 後進行資料處理 return")
 	@GetMapping("/call/coindesk/transform")
 	public ApiResponse<NewBpiRs> transformNewBpi() throws JsonProcessingException, ParseException {
 		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);

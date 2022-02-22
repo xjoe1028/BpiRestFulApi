@@ -51,6 +51,10 @@ public class BpiRq extends CodeRq {
 	@ApiModelProperty("description 描述")
 	private String description;
 	
+	/**
+	 * 匯率(千分位格式)
+	 */
+	@ApiModelProperty("匯率(千分位格式)")
 	private String rate;
 
 	@Builder
