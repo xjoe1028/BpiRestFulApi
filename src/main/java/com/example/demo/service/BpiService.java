@@ -216,11 +216,11 @@ public class BpiService {
 		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream().map(b -> {
 			allBpis.stream().filter(ab -> ab.getCode().equals(b.getCode())).forEach(ab -> b.setCodeChineseName(ab.getCodeChineseName()));
 			return NewBpi.builder()
-					.code(b.getCode())
-					.codeChineseName(b.getCodeChineseName())
-					.rate(b.getRate())
-					.rateFloat(b.getRateFloat())
-					.build();
+				.code(b.getCode())
+				.codeChineseName(b.getCodeChineseName())
+				.rate(b.getRate())
+				.rateFloat(b.getRateFloat())
+				.build();
 		}).collect(Collectors.toMap(NewBpi::getCode, Function.identity(), (v1, v2) -> v2));
 		
 		log.info("bpiList: {}", bpisList);
