@@ -300,7 +300,7 @@ public class BpiTest {
 	}
 	
 	/**
-	 * call outside api and transform our data
+	 * call outside api and transform own data
 	 * 
 	 * @throws Exception
 	 */

@@ -199,11 +199,11 @@ public class BpiService {
 		Coindesk coindesk = mapper.readValue(jsonStr, Coindesk.class);
 		log.info("coindesk: {}", coindesk);
 
-		List<String> bpiCodeNames = getBpiCodeNames();
+		List<Bpi> allBpis = Optional.ofNullable(bpiRepository.findAll()).orElseGet(ArrayList::new);
 		
 		// 轉成list
 		List<NewBpi> bpisList = coindesk.getBpi().values().stream().map(b -> {
-			bpiCodeNames.stream().filter(bcn -> bcn.equals(b.getCodeChineseName())).forEach(b::setCodeChineseName);
+			allBpis.stream().filter(ab -> ab.getCode().equals(b.getCode())).forEach(ab -> b.setCodeChineseName(ab.getCodeChineseName()));
 			return NewBpi.builder()
 				.code(b.getCode())
 				.codeChineseName(b.getCodeChineseName())
@@ -214,7 +214,7 @@ public class BpiService {
 		
 		// 轉成map
 		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream().map(b -> {
-			bpiCodeNames.stream().filter(bcn -> bcn.equals(b.getCodeChineseName())).forEach(b::setCodeChineseName);
+			allBpis.stream().filter(ab -> ab.getCode().equals(b.getCode())).forEach(ab -> b.setCodeChineseName(ab.getCodeChineseName()));
 			return NewBpi.builder()
 					.code(b.getCode())
 					.codeChineseName(b.getCodeChineseName())
@@ -244,15 +244,6 @@ public class BpiService {
 			.rateFloat(rq.getRateFloat())
 			.symbol(rq.getSymbol())
 			.build();
-	}
-	
-	/**
-	 * 取得 bpi 所有幣別中文名稱
-	 * 
-	 * @return
-	 */
-	private List<String> getBpiCodeNames() {
-		return Optional.ofNullable(bpiRepository.findAll().stream().map(Bpi::getCodeChineseName).collect(Collectors.toList())).orElseGet(ArrayList::new);
 	}
 	
 }
