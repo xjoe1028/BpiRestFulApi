@@ -37,8 +37,7 @@ public class RqAspect {
 	// 切入點為com.abc.demo.controller下的所有類別的所有方法
 	@Around(value = "execution(* com.example.demo.controller.*.*(..))")
 	public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-//		String classNamej = joinPoint.getTarget().getClass().getName(); // 取得切入點的類別名稱(含package.class)
-//		log.info("classNamej" + classNamej);
+//		String wholeClassName = joinPoint.getTarget().getClass().getName(); // 取得切入點的類別名稱(含package.class)
 		String className = joinPoint.getSignature().getDeclaringType().getSimpleName(); // 取得切入點的類別名稱(只有類別名稱)
 		String annotatedMethodName = joinPoint.getSignature().getName(); // 取得切入點的方法名稱
 		log.info("----- className.MethodName : {}.{} start -----", className, annotatedMethodName);
