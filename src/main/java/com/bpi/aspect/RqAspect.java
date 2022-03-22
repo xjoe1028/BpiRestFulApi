@@ -46,7 +46,7 @@ public class RqAspect {
 		// 取得有含RqType的 annotation
 		RqType rqType = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(RqType.class);
 		
-		// 判斷有無@RqType annotation
+		// 判斷有無 @RqType annotation
 		if(rqType != null) {
 			log.info("-----validate rq-----");
 			Object rq = args[0];
