@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Data
-@Table(name = "bpi")
+@Table(name = "Bpi")
 @NoArgsConstructor
 public class Bpi implements Serializable {
 	
