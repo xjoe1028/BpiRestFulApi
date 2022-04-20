@@ -34,8 +34,8 @@ public class RqAspect {
 	@Autowired
 	private Validator validator;
 
-	// 切入點為com.abc.demo.controller下的所有類別的所有方法
-	@Around(value = "execution(* com.example.demo.controller.*.*(..))")
+	// 切入點為com.bpi.controller下的所有類別的所有方法
+	@Around(value = "execution(* com.bpi.controller.*.*(..))")
 	public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 //		String wholeClassName = joinPoint.getTarget().getClass().getName(); // 取得切入點的類別名稱(含package.class)
 		String className = joinPoint.getSignature().getDeclaringType().getSimpleName(); // 取得切入點的類別名稱(只有類別名稱)
