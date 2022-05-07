@@ -7,8 +7,9 @@ spring:
 #    sql-script-ecoding: UTF-8
     
     # oracle database
-    url: jdbc:oracle:thin:@61.216.84.220:1533:XE # 配置driver
-    username: demo
+    url: jdbc:oracle:thin:@localhost:1521/ORCL # 配置driver
+#    url: jdbc:oracle:thin:@61.216.84.220:1533:XE # 配置driver 連不上了
+    username: system
     password: 123456
     initialize: true
     sql-script-ecoding: UTF-8

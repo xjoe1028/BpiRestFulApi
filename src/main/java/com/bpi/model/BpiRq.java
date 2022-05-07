@@ -40,9 +40,8 @@ public class BpiRq extends CodeRq {
 	/**
 	 * 匯率
 	 */
-	@JsonProperty("rate_float")
-	@ApiModelProperty("rate 匯率")
-	@NotNull(message = "rate must be not empty")
+	@ApiModelProperty("rateFloat 匯率")
+	@NotNull(message = "rateFloat must be not empty")
 	private Double rateFloat;
 
 	/**
@@ -54,7 +53,7 @@ public class BpiRq extends CodeRq {
 	/**
 	 * 匯率(千分位格式)
 	 */
-	@ApiModelProperty("匯率(千分位格式)")
+	@ApiModelProperty("rate 匯率(千分位格式)")
 	private String rate;
 
 	@Builder

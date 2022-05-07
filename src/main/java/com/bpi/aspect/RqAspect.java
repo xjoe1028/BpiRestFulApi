@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class RqAspect {
 	
+	public static final String SUCCESS_CODE = "0000";
+	
 	@Autowired
 	private Validator validator;
 
@@ -42,6 +44,7 @@ public class RqAspect {
 		String annotatedMethodName = joinPoint.getSignature().getName(); // 取得切入點的方法名稱
 		log.info("----- className.MethodName : {}.{} start -----", className, annotatedMethodName);
 		Object[] args = joinPoint.getArgs(); // 取得輸入參數值
+		log.info("----- params : {} -----", args);
 		
 		// 取得有含RqType的 annotation
 		RqType rqType = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(RqType.class);
@@ -59,8 +62,15 @@ public class RqAspect {
 			}
 		}
 		
-		log.info("----- className.MethodName : {}.{} end -----", className, annotatedMethodName);
 		ApiResponse<?> apiRs = (ApiResponse<?>) joinPoint.proceed();
+		
+		if (StringUtils.equals(apiRs.getCode(), SUCCESS_CODE)) {
+			log.info("----- className.MethodName : {}.{} success : {} -----", className, annotatedMethodName, apiRs.getMessage());
+		} else {
+			log.info("----- className.MethodName : {}.{} failed : {} -----", className, annotatedMethodName, apiRs.getMessage());
+		}
+		
+		log.info("----- className.MethodName : {}.{} end -----", className, annotatedMethodName);
 		return apiRs;
 	}
 	
