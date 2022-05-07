@@ -20,7 +20,7 @@ import com.bpi.model.BpiRq;
 import com.bpi.model.Coindesk;
 import com.bpi.model.NewBpi;
 import com.bpi.model.NewBpiRs;
-import com.bpi.model.entity.Bpi;
+import com.bpi.model.entity.BpiEntity;
 import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -46,8 +46,8 @@ public class BpiService {
 	 * 
 	 * @return
 	 */
-	public ApiResponse<List<Bpi>> findAll() {
-		List<Bpi> bpiList = bpiRepository.findAll();
+	public ApiResponse<List<BpiEntity>> findAll() {
+		List<BpiEntity> bpiList = bpiRepository.findAll();
 		if (bpiList.isEmpty()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
@@ -61,8 +61,8 @@ public class BpiService {
 	 * @param code
 	 * @return
 	 */
-	public ApiResponse<Bpi> findBpiByPk(String code) {
-		Optional<Bpi> bpi = bpiRepository.findById(code);
+	public ApiResponse<BpiEntity> findBpiByPk(String code) {
+		Optional<BpiEntity> bpi = bpiRepository.findById(code);
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
@@ -76,8 +76,8 @@ public class BpiService {
 	 * @param codeChineseName
 	 * @return
 	 */
-	public ApiResponse<Bpi> findBpiByCodeChineseName(String codeChineseName) {
-		Optional<Bpi> bpi = bpiRepository.findByCodeChineseName(codeChineseName);
+	public ApiResponse<BpiEntity> findBpiByCodeChineseName(String codeChineseName) {
+		Optional<BpiEntity> bpi = bpiRepository.findByCodeChineseName(codeChineseName);
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
@@ -92,8 +92,8 @@ public class BpiService {
 	 * @param codeChineseName
 	 * @return
 	 */
-	public ApiResponse<Bpi> findBpiByCodeAndCodeChineseName(String code, String codeChineseName) {
-		Optional<Bpi> bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
+	public ApiResponse<BpiEntity> findBpiByCodeAndCodeChineseName(String code, String codeChineseName) {
+		Optional<BpiEntity> bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		}
@@ -107,13 +107,13 @@ public class BpiService {
 	 * @param bpi
 	 * @return
 	 */
-	public ApiResponse<Bpi> addBpi(BpiRq rq) {
-		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
+	public ApiResponse<BpiEntity> addBpi(BpiRq rq) {
+		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
 		if (bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 		}
 
-		Bpi entity = dtoToEntity(rq);
+		BpiEntity entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setCreated(CommonUtil.getNowDate());
 		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
@@ -125,13 +125,13 @@ public class BpiService {
 	 * @param bpi
 	 * @return
 	 */
-	public ApiResponse<Bpi> updateBpi(BpiRq rq) {
-		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
+	public ApiResponse<BpiEntity> updateBpi(BpiRq rq) {
+		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
 		}
 
-		Bpi entity = dtoToEntity(rq);
+		BpiEntity entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setUpdated(CommonUtil.getNowDate());
 		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
@@ -143,8 +143,8 @@ public class BpiService {
 	 * @param bpi
 	 * @return
 	 */
-	public ApiResponse<Bpi> updateBpiRate(BpiRateRq rq) {
-		Optional<Bpi> bpi = bpiRepository.findById(rq.getCode());
+	public ApiResponse<BpiEntity> updateBpiRate(BpiRateRq rq) {
+		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
 		}
@@ -159,8 +159,8 @@ public class BpiService {
 	 * 
 	 * @param entity
 	 */
-	public ApiResponse<Bpi> deleteBpi(String code) {
-		Optional<Bpi> bpi = bpiRepository.findById(code);
+	public ApiResponse<BpiEntity> deleteBpi(String code) {
+		Optional<BpiEntity> bpi = bpiRepository.findById(code);
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
@@ -175,8 +175,8 @@ public class BpiService {
 	 * @param code
 	 * @return
 	 */
-	public ApiResponse<Bpi> deleteBpiByCode(String code) {
-		Optional<Bpi> bpi = bpiRepository.findById(code);
+	public ApiResponse<BpiEntity> deleteBpiByCode(String code) {
+		Optional<BpiEntity> bpi = bpiRepository.findById(code);
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
@@ -199,7 +199,7 @@ public class BpiService {
 		Coindesk coindesk = mapper.readValue(jsonStr, Coindesk.class);
 		log.info("coindesk: {}", coindesk);
 
-		List<Bpi> allBpis = Optional.ofNullable(bpiRepository.findAll()).orElseGet(ArrayList::new);
+		List<BpiEntity> allBpis = Optional.ofNullable(bpiRepository.findAll()).orElseGet(ArrayList::new);
 		
 		// 轉成list
 		List<NewBpi> bpisList = coindesk.getBpi().values().stream().map(b -> {
@@ -236,8 +236,8 @@ public class BpiService {
 	 * @param rq
 	 * @return
 	 */
-	private Bpi dtoToEntity(BpiRq rq) {
-		return Bpi.builder()
+	private BpiEntity dtoToEntity(BpiRq rq) {
+		return BpiEntity.builder()
 			.code(rq.getCode())
 			.codeChineseName(rq.getCodeChineseName())
 			.description(rq.getDescription())

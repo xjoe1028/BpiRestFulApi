@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "Bpi")
 @NoArgsConstructor
-public class Bpi implements Serializable {
+public class BpiEntity implements Serializable {
 	
 	// @IdClass(BpiPK.class) 複合主鍵 
 	
@@ -38,7 +38,6 @@ public class Bpi implements Serializable {
 	 */
 	@ApiModelProperty("code 貨幣名稱")
 	@Id
-	@Column(unique = true)
 	@NotNull
 	private String code;
 	
@@ -46,7 +45,6 @@ public class Bpi implements Serializable {
 	 * 貨幣中文名稱
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
-	@Column(unique = true)
 	@NotNull
 	private String codeChineseName;
 	
@@ -93,7 +91,7 @@ public class Bpi implements Serializable {
 	private String updated;
 
 	@Builder
-	public Bpi(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
+	public BpiEntity(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
 			String description, String created, String updated) {
 		super();
 		this.code = code;

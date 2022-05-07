@@ -24,7 +24,7 @@ import com.bpi.model.BpiRq;
 import com.bpi.model.CodeRq;
 import com.bpi.model.NewBpiRs;
 import com.bpi.model.RqType;
-import com.bpi.model.entity.Bpi;
+import com.bpi.model.entity.BpiEntity;
 import com.bpi.service.BpiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -60,7 +60,7 @@ public class BpiController {
 	 */
 	@ApiOperation(value = "查詢所有幣別")
 	@GetMapping("/findAllBpis")
-	public ApiResponse<List<Bpi>> findAllBpis() {
+	public ApiResponse<List<BpiEntity>> findAllBpis() {
 		return bpiService.findAll();
 	}
 
@@ -73,7 +73,7 @@ public class BpiController {
 	@ApiOperation(value = "查詢單一幣別")
 	@ApiImplicitParam(paramType = "query", name = "code", value = "英文幣別", required = true, dataType = "String")
 	@GetMapping("/findBpi/code")
-	public ApiResponse<Bpi> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code) {
+	public ApiResponse<BpiEntity> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code) {
 		return bpiService.findBpiByPk(code);
 	}
 
@@ -86,7 +86,7 @@ public class BpiController {
 	@ApiOperation(value = "查詢單一幣別")
 	@ApiImplicitParam(paramType = "query", name = "codeChineseName", value = "中文幣別", required = true, dataType = "String")
 	@GetMapping("/findBpi/codeChineseName")
-	public ApiResponse<Bpi> findBpiByCodeChineseName(@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
+	public ApiResponse<BpiEntity> findBpiByCodeChineseName(@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
 		return bpiService.findBpiByCodeChineseName(codeChineseName);
 	}
 
@@ -99,7 +99,7 @@ public class BpiController {
 	@ApiOperation(value = "新增幣別")
 	@RqType(BpiRq.class)
 	@PostMapping("/addBpi")
-	public ApiResponse<Bpi> addBpi(@RequestBody BpiRq rq) {
+	public ApiResponse<BpiEntity> addBpi(@RequestBody BpiRq rq) {
 		return bpiService.addBpi(rq);
 	}
 
@@ -114,7 +114,7 @@ public class BpiController {
 	@ApiOperation(value = "修改幣別")
 	@RqType(BpiRq.class)
 	@PutMapping("/updateBpi")
-	public ApiResponse<Bpi> updateBpi(@RequestBody BpiRq rq) {
+	public ApiResponse<BpiEntity> updateBpi(@RequestBody BpiRq rq) {
 		return bpiService.updateBpi(rq);
 	}
 
@@ -129,7 +129,7 @@ public class BpiController {
 	@ApiOperation(value = "修改幣別匯率")
 	@RqType(BpiRateRq.class)
 	@PatchMapping("/updateBpiRate")
-	public ApiResponse<Bpi> updateBpiRate(@RequestBody BpiRateRq rq) {
+	public ApiResponse<BpiEntity> updateBpiRate(@RequestBody BpiRateRq rq) {
 		return bpiService.updateBpiRate(rq);
 	}
 
@@ -142,7 +142,7 @@ public class BpiController {
 	@ApiOperation(value = "刪除幣別")
 	@RqType(CodeRq.class)
 	@DeleteMapping("/deleteBpi/code")
-	public ApiResponse<Bpi> deleteBpi(@RequestBody CodeRq rq) {
+	public ApiResponse<BpiEntity> deleteBpi(@RequestBody CodeRq rq) {
 		return bpiService.deleteBpiByCode(rq.getCode());
 	}
 

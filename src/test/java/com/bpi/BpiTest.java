@@ -26,7 +26,7 @@ import com.bpi.common.CommonUtil;
 import com.bpi.model.BpiRateRq;
 import com.bpi.model.BpiRq;
 import com.bpi.model.CodeRq;
-import com.bpi.model.entity.Bpi;
+import com.bpi.model.entity.BpiEntity;
 import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -73,7 +73,7 @@ public class BpiTest {
 	@Test
 	void beforeInit() throws Exception {
 		for (int i = 0; i < codes.size(); i++) {
-			Bpi rq = new Bpi();
+			BpiEntity rq = new BpiEntity();
 			rq.setCode(codes.get(i));
 			rq.setCodeChineseName(codesName.get(i));
 			rq.setRate(CommonUtil.fmtMicrometer(ratesFloat.get(i).toString()));
@@ -209,8 +209,8 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void updateBipTest() throws Exception {
-		List<Bpi> bpis = bpiRepository.findAll();
-		Bpi bpi = bpis.get(0);
+		List<BpiEntity> bpis = bpiRepository.findAll();
+		BpiEntity bpi = bpis.get(0);
 		bpi.setDescription("test update");
 		bpi.setRateFloat(123.123);
 		
