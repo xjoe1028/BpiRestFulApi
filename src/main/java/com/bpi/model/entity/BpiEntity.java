@@ -2,6 +2,7 @@ package com.bpi.model.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,6 +28,9 @@ import lombok.NoArgsConstructor;
 public class BpiEntity implements Serializable {
 	
 	// @IdClass(BpiPK.class) 複合主鍵 
+	// @Basic 它是基本類型，Hibernate 應該使用標準映射來保持其持久性。
+	// @Basic註釋的屬性應用於 JPA 實體，而@Column的屬性 應用於數據庫列
+	// 我們可以使用@Basic來指示一個字段應該被延遲加載
 	
 	/**
 	 * 
@@ -45,6 +49,7 @@ public class BpiEntity implements Serializable {
 	 * 貨幣中文名稱
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
+	@Basic
 	@NotNull
 	private String codeChineseName;
 	
@@ -52,6 +57,7 @@ public class BpiEntity implements Serializable {
 	 * 金錢格式 ex: $
 	 */
 	@ApiModelProperty("code 金錢符號")
+	@Basic
 	@Column
 	private String symbol;
 	
@@ -59,6 +65,7 @@ public class BpiEntity implements Serializable {
 	 * 匯率 有千分位樣式 
 	 */
 	@ApiModelProperty("rate 匯率(千分位,)")
+	@Basic
 	@Column
 	private String rate; 
 	
@@ -73,6 +80,7 @@ public class BpiEntity implements Serializable {
 	 * 描述
 	 */
 	@ApiModelProperty("description 描述")
+	@Basic
 	@Column
 	private String description;
 	
@@ -80,6 +88,7 @@ public class BpiEntity implements Serializable {
 	 * 創建時間
 	 */
 	@ApiModelProperty("created 創建時間")
+	@Basic
 	@Column
 	private String created;
 	
@@ -87,6 +96,7 @@ public class BpiEntity implements Serializable {
 	 * 更新時間
 	 */
 	@ApiModelProperty("updated 更新時間")
+	@Basic
 	@Column
 	private String updated;
 
