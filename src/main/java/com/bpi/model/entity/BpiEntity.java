@@ -36,6 +36,11 @@ public class BpiEntity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+//	@ApiModelProperty("id pk")
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	private Long id;
 
 	/**
 	 * 貨幣名稱
@@ -103,7 +108,6 @@ public class BpiEntity implements Serializable {
 	@Builder
 	public BpiEntity(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
 			String description, String created, String updated) {
-		super();
 		this.code = code;
 		this.codeChineseName = codeChineseName;
 		this.symbol = symbol;

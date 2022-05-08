@@ -126,16 +126,17 @@ public class BpiService {
 	 * @return
 	 */
 	public ApiResponse<BpiEntity> updateBpi(BpiRq rq) {
-		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
-		if (!bpi.isPresent()) {
-			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
+		Optional<BpiEntity> oldBpi = bpiRepository.findById(rq.getOldCode());
+		if (!oldBpi.isPresent()) {
+			log.info("原幣別資料不存在，直接做新增");
+			return addBpi(rq);
+		} else {
+			rq.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
+			rq.setCreated(oldBpi.get().getCreated());
+			rq.setUpdated(CommonUtil.getNowDate());
+			bpiRepository.updateBpi(rq);
+			return BpiRsUtil.getSuccess(bpiRepository.getById(rq.getCode()));
 		}
-
-		BpiEntity entity = dtoToEntity(rq);
-		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
-		entity.setCreated(bpi.get().getCreated());
-		entity.setUpdated(CommonUtil.getNowDate());
-		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
 	}
 	
 	/**
@@ -147,7 +148,7 @@ public class BpiService {
 	public ApiResponse<BpiEntity> updateBpiRate(BpiRateRq rq) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
 		if (!bpi.isPresent()) {
-			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_DATA_NOT_EXIST);
+			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_PK_ONLY);
 		}
 
 		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));

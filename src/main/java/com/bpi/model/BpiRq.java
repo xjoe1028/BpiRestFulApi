@@ -1,5 +1,7 @@
 package com.bpi.model;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -60,6 +62,28 @@ public class BpiRq extends BaseRq {
 	 */
 	@ApiModelProperty("rate 匯率(千分位格式)")
 	private String rate;
+	
+	/**
+	 * 舊幣別 for update用
+	 */
+	@ApiModelProperty("舊幣別")
+	private String oldCode;
+	
+	/**
+	 * 創建時間
+	 */
+	@ApiModelProperty("created 創建時間")
+	@Basic
+	@Column
+	private String created;
+	
+	/**
+	 * 更新時間
+	 */
+	@ApiModelProperty("updated 更新時間")
+	@Basic
+	@Column
+	private String updated;
 
 	@Builder
 	public BpiRq(String code, String codeChineseName, String symbol, Double rateFloat, String description) {

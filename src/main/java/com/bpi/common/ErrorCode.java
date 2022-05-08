@@ -16,7 +16,7 @@ public enum ErrorCode {
 	FAILED("1000", "系統錯誤"),
 	SELECT_EMPTY("1001", "查無資料"),
 	INSERT_FAILED_PK_ONLY("1002", "新增失敗 : 此幣別已存在"),
-	UPDATE_FAILED_DATA_NOT_EXIST("1003", "更新失敗 : 此資料不存在"),
+	UPDATE_FAILED_PK_ONLY("1003", "更新失敗 : 此幣別已存在"),
 	UPDATE_RATE_NULL("1004", "檢核錯誤 : rate is null"),
 	UPDATE_CODE_NULL("1005", "檢核錯誤 : code is null"),
 	UPDATE_CODE_AND_RATE_NULL("1006", "檢核錯誤 : code and rate all null"),

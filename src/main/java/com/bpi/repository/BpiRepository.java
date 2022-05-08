@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bpi.model.BpiRq;
 import com.bpi.model.entity.BpiEntity;
 
 /**
@@ -43,6 +44,11 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 //	@Query("SELECT * FROM BpiEntity WHERE code = :code AND codeChineseName = :codeChineseName")
 //	public Bpi findBpi(@Param("code") String code, @Param("codeChineseName") String codeChineseName);
 	
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("UPDATE BpiEntity SET code = :#{#bpiRq.code} , codeChineseName = :#{#bpiRq.codeChineseName}, symbol = :#{#bpiRq.symbol}, rate = :#{#bpiRq.rate} , rateFloat = :#{#bpiRq.rateFloat}, description = :#{#bpiRq.description}, created = :#{#bpiRq.created}, updated = :#{#bpiRq.updated} WHERE code = :#{#bpiRq.oldCode}")
+	@Transactional
+	public int updateBpi(@Param("bpiRq") BpiRq rq);
+
 	/**
 	 * update 語句 jpa 用法
 	 * 
