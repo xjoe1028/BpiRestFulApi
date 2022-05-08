@@ -1,5 +1,6 @@
 package com.bpi.model;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +17,14 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BpiRateRq extends CodeRq {
+public class BpiRateRq extends BaseRq {
+	
+	/**
+	 * 貨幣名稱
+	 */
+	@ApiModelProperty("code 貨幣名稱")
+	@NotBlank(message = "code must be not empty")
+	public String code;
 	
 	/**
 	 * 匯率

@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.bpi.common.CommonUtil;
 import com.bpi.model.BpiRateRq;
 import com.bpi.model.BpiRq;
-import com.bpi.model.CodeRq;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +89,7 @@ public class BpiTest {
 	@Test
 	void deleteAllDataTest() throws Exception {
 		bpiRepository.deleteAll();
-		log.info("delete success!!");
+		log.info("delete all success!!");
 	}
 
 	/**
@@ -266,7 +265,7 @@ public class BpiTest {
 	@Disabled("skip")
 	@Test
 	void deleteBpiByCodeTest() throws Exception {
-		CodeRq rq = new CodeRq();
+		BpiRq rq = new BpiRq();
 		rq.setCode("TWD");
 		ResultActions resultActions = this.mockMvc.perform(
 				delete(URL + "/deleteBpi/code") // url

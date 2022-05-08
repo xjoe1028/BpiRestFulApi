@@ -66,8 +66,10 @@ public class RqAspect {
 		
 		if (StringUtils.equals(apiRs.getCode(), SUCCESS_CODE)) {
 			log.info("----- className.MethodName : {}.{} success : {} -----", className, annotatedMethodName, apiRs.getMessage());
+			log.info("----- RsData : {} -----", apiRs.getData());
 		} else {
 			log.info("----- className.MethodName : {}.{} failed : {} -----", className, annotatedMethodName, apiRs.getMessage());
+			log.info("----- RsData : {} -----", apiRs.getData());
 		}
 		
 		log.info("----- className.MethodName : {}.{} end -----", className, annotatedMethodName);

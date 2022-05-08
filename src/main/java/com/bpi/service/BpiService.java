@@ -133,6 +133,7 @@ public class BpiService {
 
 		BpiEntity entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
+		entity.setCreated(bpi.get().getCreated());
 		entity.setUpdated(CommonUtil.getNowDate());
 		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
 	}

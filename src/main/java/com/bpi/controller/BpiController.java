@@ -21,7 +21,6 @@ import com.bpi.common.BpiRsUtil;
 import com.bpi.model.ApiResponse;
 import com.bpi.model.BpiRateRq;
 import com.bpi.model.BpiRq;
-import com.bpi.model.CodeRq;
 import com.bpi.model.NewBpiRs;
 import com.bpi.model.RqType;
 import com.bpi.model.entity.BpiEntity;
@@ -140,9 +139,9 @@ public class BpiController {
 	 * @return
 	 */
 	@ApiOperation(value = "刪除幣別")
-	@RqType(CodeRq.class)
+	@RqType(BpiRq.class)
 	@DeleteMapping("/deleteBpi/code")
-	public ApiResponse<BpiEntity> deleteBpi(@RequestBody CodeRq rq) {
+	public ApiResponse<BpiEntity> deleteBpi(@RequestBody BpiRq rq) {
 		return bpiService.deleteBpiByCode(rq.getCode());
 	}
 

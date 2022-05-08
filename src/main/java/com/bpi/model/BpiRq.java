@@ -3,8 +3,6 @@ package com.bpi.model;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +20,14 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-public class BpiRq extends CodeRq {
+public class BpiRq extends BaseRq {
+	
+	/**
+	 * 貨幣名稱
+	 */
+	@ApiModelProperty("code 貨幣名稱")
+	@NotBlank(message = "code must be not empty")
+	public String code;
 
 	/**
 	 * 貨幣中文名稱

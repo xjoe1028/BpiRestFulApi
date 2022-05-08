@@ -40,7 +40,7 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	public Optional<BpiEntity> findByCodeAndCodeChineseName(String code, String codeChineseName);
    
 	// 使用 @Query 注釋 來做select :code要對應到@Param("code") 要mapping 不然會報錯
-//	@Query("SELECT * FROM Bpi WHERE code = :code AND codeChineseName = :codeChineseName")
+//	@Query("SELECT * FROM BpiEntity WHERE code = :code AND codeChineseName = :codeChineseName")
 //	public Bpi findBpi(@Param("code") String code, @Param("codeChineseName") String codeChineseName);
 	
 	/**
@@ -53,7 +53,7 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	 * @return
 	 */
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE Bpi SET rate = :rate , rateFloat = :rateFloat, updated = :updated WHERE code = :code")
+	@Query("UPDATE BpiEntity SET rate = :rate , rateFloat = :rateFloat, updated = :updated WHERE code = :code")
 	@Transactional
 	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat") Double rateFloat , @Param("code") String code, @Param("updated") String updated);
 	
@@ -64,7 +64,7 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	 * @return
 	 */
 	@Modifying
-	@Query("DELETE FROM Bpi WHERE code = :code")
+	@Query("DELETE FROM BpiEntity WHERE code = :code")
 	@Transactional
 	public int deleteBpiByCode(@Param("code") String code);
 }
