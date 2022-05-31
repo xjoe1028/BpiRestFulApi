@@ -31,8 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class RqAspect {
 	
-	public static final String SUCCESS_CODE = "0000";
-	
 	@Autowired
 	private Validator validator;
 
@@ -64,7 +62,7 @@ public class RqAspect {
 		
 		ApiResponse<?> apiRs = (ApiResponse<?>) joinPoint.proceed();
 		
-		if (StringUtils.equals(apiRs.getCode(), SUCCESS_CODE)) {
+		if (apiRs.isSuccess()) {
 			log.info("----- className.MethodName : {}.{} success : {} -----", className, annotatedMethodName, apiRs.getMessage());
 			log.info("----- RsData : {} -----", apiRs.getData());
 		} else {
