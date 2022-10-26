@@ -1,3 +1,8 @@
+# server
+server:
+  port: 9999
+
+# spring
 spring:
   datasource:
      # h2 database
@@ -49,15 +54,38 @@ spring:
 #      password: 123456
 
   jackson:
+    default-property-inclusion: non-null # JSON處理時忽略非空字段
     serialization:
       fail-on-empty-beans: false
 
-# @Slf4j      
-#logging:
-#  level:
-#    ROOT: DEBUG
-    
-# server
-server:
-  port: 8080
+  # cache
+  cache:
+    type: redis
+
+  # redis
+  redis:
+    database: 0       # Redis資料庫索引（預設為0）
+    host: 127.0.0.1   # Redis伺服器地址
+    port: 6379        # Redis伺服器連線埠
+    password:         # Redis伺服器連線密碼（預設為空）
+    timeout: 0        # 連線超時時間（毫秒）
+    jedis:
+      pool:
+        max-active: 8 # 連線池最大連線數（使用負值表示沒有限制）
+        max-wait: -1  # 連線池最大等待時間（使用負值表示沒有限制）
+        max-idle: 8   # 連線池中的最大空閒連線
+        min-idle: 0   # 連線池中的最小空閒連線 
+
+        
+# slf4j      
+logging:
+  file: bpiRestFulApi.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    org.springframework: INFO
+    com.bpi: DEBUG
+
+
 

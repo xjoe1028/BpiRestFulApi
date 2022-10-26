@@ -1,5 +1,6 @@
 package com.bpi.common;
 
+import com.bpi.cconstant.ErrorCode;
 import com.bpi.model.ApiResponse;
 
 /**

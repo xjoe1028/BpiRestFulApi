@@ -11,8 +11,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+import com.bpi.cconstant.ErrorCode;
 import com.bpi.common.BpiRsUtil;
-import com.bpi.common.ErrorCode;
 import com.bpi.model.ApiResponse;
 import com.bpi.model.RqType;
 
@@ -49,7 +49,7 @@ public class RqAspect {
 		
 		// 判斷有無 @RqType annotation
 		if(rqType != null) {
-			log.info("-----validate rq-----");
+			log.info("-----validate rq start-----");
 			Object rq = args[0];
 			// validate rq
 			for (ConstraintViolation<Object> violation : validator.validate(rq)) {
@@ -58,6 +58,7 @@ public class RqAspect {
 					return BpiRsUtil.getFailed(ErrorCode.VALIDATION_ERROR, violation.getMessage());
 				}
 			}
+			log.info("-----validate rq end-----");
 		}
 		
 		ApiResponse<?> apiRs = (ApiResponse<?>) joinPoint.proceed();

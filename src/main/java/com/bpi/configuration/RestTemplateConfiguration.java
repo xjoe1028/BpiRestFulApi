@@ -1,6 +1,6 @@
 package com.bpi.configuration;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * RestTemplate Config
+ * RestTemplate Configuration
  * 
  * @author Joe
  * 
@@ -18,13 +18,13 @@ import org.springframework.web.client.RestTemplate;
  *
  */
 @Configuration
-public class RestTemplateConfig {
+public class RestTemplateConfiguration {
 
 	@Bean
 	public RestTemplate restTesmplate(ClientHttpRequestFactory factory) {
 		RestTemplate restTesmplate = new RestTemplate(factory);
 		// 支持中文編碼
-		restTesmplate.getMessageConverters().set(1, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+		restTesmplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 		return restTesmplate;
 	}
 	

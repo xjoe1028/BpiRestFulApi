@@ -221,6 +221,9 @@ public class BpiTest {
 				.description(bpi.getDescription())
 				.build();
 		
+		// 前端在update 會送 舊幣別 讓後端知道是否新增還是更新
+		rq.setOldCode(bpi.getCode()); 
+		
 		ResultActions resultActions = this.mockMvc.perform(
 				put(URL + "/updateBpi") // url
 				.contentType(MediaType.APPLICATION_JSON) // 資料的格式

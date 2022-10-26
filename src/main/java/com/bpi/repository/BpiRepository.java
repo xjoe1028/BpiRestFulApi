@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bpi.model.BpiRq;
 import com.bpi.model.entity.BpiEntity;
 
 /**
@@ -23,7 +22,7 @@ import com.bpi.model.entity.BpiEntity;
 public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	
 	/**
-	 * jpa使用jpql做curd語法時 是吃@Entity的名稱 如沒取名就是className 
+	 * jpa使用jpql做crud語法時 是吃@Entity的名稱 如沒取名就是className 
 	 * ex: Bpi是entity如果只有@Entity就是吃Bpi
 	 * 如果是@Entity(name = "bpi")就是吃bpi
 	 */
@@ -45,9 +44,9 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 //	public Bpi findBpi(@Param("code") String code, @Param("codeChineseName") String codeChineseName);
 	
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE BpiEntity SET code = :#{#bpiRq.code} , codeChineseName = :#{#bpiRq.codeChineseName}, symbol = :#{#bpiRq.symbol}, rate = :#{#bpiRq.rate} , rateFloat = :#{#bpiRq.rateFloat}, description = :#{#bpiRq.description}, created = :#{#bpiRq.created}, updated = :#{#bpiRq.updated} WHERE code = :#{#bpiRq.oldCode}")
+	@Query("UPDATE BpiEntity SET code = :#{#bpi.code} , codeChineseName = :#{#bpi.codeChineseName}, symbol = :#{#bpi.symbol}, rate = :#{#bpi.rate} , rateFloat = :#{#bpi.rateFloat}, description = :#{#bpi.description}, created = :#{#bpi.created}, updated = :#{#bpi.updated} WHERE code = :oldCode")
 	@Transactional
-	public int updateBpi(@Param("bpiRq") BpiRq rq);
+	public int updateBpi(@Param("bpi") BpiEntity bpi, @Param("oldCode") String oldCode);
 
 	/**
 	 * update 語句 jpa 用法

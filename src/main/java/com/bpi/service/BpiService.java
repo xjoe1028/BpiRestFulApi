@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bpi.cconstant.ErrorCode;
 import com.bpi.common.BpiRsUtil;
 import com.bpi.common.CommonUtil;
-import com.bpi.common.ErrorCode;
 import com.bpi.model.ApiResponse;
 import com.bpi.model.BpiRateRq;
 import com.bpi.model.BpiRq;
@@ -134,7 +134,8 @@ public class BpiService {
 			rq.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 			rq.setCreated(oldBpi.get().getCreated());
 			rq.setUpdated(CommonUtil.getNowDate());
-			bpiRepository.updateBpi(rq);
+			BpiEntity entity = dtoToEntity(rq);
+			bpiRepository.updateBpi(entity, rq.getOldCode());
 			return BpiRsUtil.getSuccess(bpiRepository.getById(rq.getCode()));
 		}
 	}
