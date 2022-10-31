@@ -13,7 +13,8 @@ import lombok.Getter;
 public enum CacheKeys {
 
 	// cache name
-	BPI_CACHE("BPI_CACHE", "幣別Cache")
+	BPI_CACHE("BPI_CACHE", "幣別cache"),
+	BPIS_CACHE("BPIS", "所有幣別cache")
 	;
 	
 	private String cacheName;
@@ -22,6 +23,10 @@ public enum CacheKeys {
 	CacheKeys(String cacheName, String message) {
 		this.cacheName = cacheName;
 		this.message = message;
+	}
+	
+	public static String getCacheName(CacheKeys cacheKey) {
+		return cacheKey.getCacheName();
 	}
 	
 }

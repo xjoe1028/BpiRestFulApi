@@ -28,15 +28,15 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	 */
 	
 	// 使用 @Query 注釋 來做select  這個等於jpa寫好的findById
-//	@Query("SELECT * FROM Bpi Where code = 1?")
+//	@Query("SELECT * FROM BpiEntity Where code = 1?")
 	public BpiEntity findByCode(String code);
 	
 	// 使用 @Query(native = true, value = "原生sql語句") native = true 必須用原生sql語句
-//	@Query("SELECT * FROM Bpi Where codeChineseName = 1?")
+//	@Query("SELECT * FROM BpiEntity Where codeChineseName = 1?")
 	public Optional<BpiEntity> findByCodeChineseName(String codeChineseName);
 	
 	// 使用 @Query 注釋 來做select
-//	@Query("SELECT * FROM Bpi WHERE code = 1? AND codeChineseName=2?")
+//	@Query("SELECT * FROM BpiEntity WHERE code = 1? AND codeChineseName=2?")
 	public Optional<BpiEntity> findByCodeAndCodeChineseName(String code, String codeChineseName);
    
 	// 使用 @Query 注釋 來做select :code要對應到@Param("code") 要mapping 不然會報錯

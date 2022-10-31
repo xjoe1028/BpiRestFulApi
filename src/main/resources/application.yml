@@ -68,7 +68,7 @@ spring:
     host: 127.0.0.1   # Redis伺服器地址
     port: 6379        # Redis伺服器連線埠
     password:         # Redis伺服器連線密碼（預設為空）
-    timeout: 0        # 連線超時時間（毫秒）
+    timeout: 5000     # 連線超時時間（毫秒）
     jedis:
       pool:
         max-active: 8 # 連線池最大連線數（使用負值表示沒有限制）

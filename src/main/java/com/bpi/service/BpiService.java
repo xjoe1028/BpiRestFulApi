@@ -2,6 +2,7 @@ package com.bpi.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,9 +12,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bpi.cconstant.CacheKeys;
 import com.bpi.cconstant.ErrorCode;
 import com.bpi.common.BpiRsUtil;
 import com.bpi.common.CommonUtil;
+import com.bpi.common.JsonUtils;
+import com.bpi.common.RedisUtils;
 import com.bpi.model.ApiResponse;
 import com.bpi.model.BpiRateRq;
 import com.bpi.model.BpiRq;
@@ -24,7 +28,6 @@ import com.bpi.model.entity.BpiEntity;
 import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,18 +43,35 @@ public class BpiService {
 
 	@Autowired
 	private BpiRepository bpiRepository;
-
+	
+	@Autowired
+	private RedisUtils redisUtils;
+	
+	// 如db有更新就要先去查db存入redis，反之
+	private boolean dbUpdatedFlag = false;
+	
 	/**
 	 * select all
 	 * 
 	 * @return
 	 */
 	public ApiResponse<List<BpiEntity>> findAll() {
-		List<BpiEntity> bpiList = bpiRepository.findAll();
-		if (bpiList.isEmpty()) {
-			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
+		String key = CacheKeys.getCacheName(CacheKeys.BPIS_CACHE);
+		List<BpiEntity> bpiList;
+		// 判斷快取是否存在，存在則去撈redis，不存在則去查db
+		if (redisUtils.exists(key) && !dbUpdatedFlag) {
+			log.debug("撈取redis");
+			bpiList = JsonUtils.getListObject(redisUtils.get(key));
+		} else {
+			log.debug("撈取database");
+			bpiList = bpiRepository.findAll();
+			if (bpiList.isEmpty()) {
+				return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
+			}
+			redisUtils.set(key, JsonUtils.getJson(bpiList), RedisUtils.ONE_DAY);
+			dbUpdatedFlag = false; // 查完存入redis，flag又改回false
 		}
-
+		
 		return BpiRsUtil.getSuccess(bpiList);
 	}
 
@@ -116,6 +136,7 @@ public class BpiService {
 		BpiEntity entity = dtoToEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setCreated(CommonUtil.getNowDate());
+		dbUpdatedFlag = true;
 		return BpiRsUtil.getSuccess(bpiRepository.save(entity));
 	}
 
@@ -136,6 +157,7 @@ public class BpiService {
 			rq.setUpdated(CommonUtil.getNowDate());
 			BpiEntity entity = dtoToEntity(rq);
 			bpiRepository.updateBpi(entity, rq.getOldCode());
+			dbUpdatedFlag = true;
 			return BpiRsUtil.getSuccess(bpiRepository.getById(rq.getCode()));
 		}
 	}
@@ -167,8 +189,9 @@ public class BpiService {
 		if (!bpi.isPresent()) {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 		}
-
+		
 		bpiRepository.delete(bpi.get());
+		dbUpdatedFlag = true;
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
 
@@ -185,6 +208,7 @@ public class BpiService {
 		}
 
 		bpiRepository.deleteBpiByCode(code);
+		dbUpdatedFlag = true;
 		return BpiRsUtil.getSuccess(bpi.get());
 	}
 
@@ -198,8 +222,7 @@ public class BpiService {
 	 * @throws ParseException
 	 */
 	public NewBpiRs transform(String jsonStr) throws JsonProcessingException, ParseException {
-		ObjectMapper mapper = new ObjectMapper();
-		Coindesk coindesk = mapper.readValue(jsonStr, Coindesk.class);
+		Coindesk coindesk = JsonUtils.jsonToObject(jsonStr, Coindesk.class);
 		log.info("coindesk: {}", coindesk);
 
 		List<BpiEntity> allBpis = Optional.ofNullable(bpiRepository.findAll()).orElseGet(ArrayList::new);
