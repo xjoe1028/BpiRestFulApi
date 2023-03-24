@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
  * @Date 2021/10/06
  */
 @Entity
-@Data
 @Table(name = "Bpi")
+@Data
 @NoArgsConstructor
 public class BpiEntity implements Serializable {
 	
@@ -78,6 +78,7 @@ public class BpiEntity implements Serializable {
 	 * 匯率 
 	 */
 	@ApiModelProperty("rate 匯率")
+	@Basic
 	@Column
 	private Double rateFloat;
 	
@@ -104,7 +105,7 @@ public class BpiEntity implements Serializable {
 	@Basic
 	@Column
 	private String updated;
-
+	
 	@Builder
 	public BpiEntity(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
 			String description, String created, String updated) {

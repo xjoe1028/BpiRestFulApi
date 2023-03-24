@@ -1,6 +1,6 @@
 # server
 server:
-  port: 9999
+  port: 9998
 
 # spring
 spring:
@@ -86,6 +86,13 @@ logging:
   level:
     org.springframework: INFO
     com.bpi: DEBUG
+    
+# myBatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml    # mapper映射文件
+  type-aliases-package: com.bpi.model.entity  # 實體類所在的位置
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #console印sql
 
 
 

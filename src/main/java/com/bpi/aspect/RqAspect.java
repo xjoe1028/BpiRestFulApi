@@ -43,12 +43,12 @@ public class RqAspect {
 		log.info("----- className.MethodName : {}.{} start -----", className, annotatedMethodName);
 		Object[] args = joinPoint.getArgs(); // 取得輸入參數值
 		log.info("----- params : {} -----", args);
-		
+
 		// 取得有含RqType的 annotation
 		RqType rqType = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(RqType.class);
-		
+
 		// 判斷有無 @RqType annotation
-		if(rqType != null) {
+		if (rqType != null) {
 			log.info("-----validate rq start-----");
 			Object rq = args[0];
 			// validate rq
@@ -60,17 +60,15 @@ public class RqAspect {
 			}
 			log.info("-----validate rq end-----");
 		}
-		
+
 		ApiResponse<?> apiRs = (ApiResponse<?>) joinPoint.proceed();
 		
-		if (apiRs.isSuccess()) {
+		if (apiRs.isSuccess())
 			log.info("----- className.MethodName : {}.{} success : {} -----", className, annotatedMethodName, apiRs.getMessage());
-			log.info("----- RsData : {} -----", apiRs.getData());
-		} else {
+		else
 			log.info("----- className.MethodName : {}.{} failed : {} -----", className, annotatedMethodName, apiRs.getMessage());
-			log.info("----- RsData : {} -----", apiRs.getData());
-		}
 		
+		log.info("----- RsData : {} -----", apiRs.getData());
 		log.info("----- className.MethodName : {}.{} end -----", className, annotatedMethodName);
 		return apiRs;
 	}

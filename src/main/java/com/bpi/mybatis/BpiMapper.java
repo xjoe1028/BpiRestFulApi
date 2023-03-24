@@ -1,0 +1,30 @@
+package com.bpi.mybatis;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.bpi.model.BpiForMyBatis;
+import com.bpi.model.entity.BpiEntity;
+
+/**
+ * Bpi Mapper
+ * 
+ * @author Joe
+ * 
+ * @Date 2022/12/24
+ */
+@Repository
+public interface BpiMapper {
+
+	public List<BpiEntity> findAll();
+	
+	public BpiEntity findByCode(String code);
+	
+	public void addBpi(BpiEntity bpi);
+	
+	public Long updateByCode(BpiForMyBatis rq);
+	
+	public Long deleteByCode(String code);
+	
+}

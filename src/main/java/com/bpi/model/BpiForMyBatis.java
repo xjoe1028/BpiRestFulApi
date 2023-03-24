@@ -1,5 +1,7 @@
 package com.bpi.model;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -7,20 +9,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 /**
- * Bpi rq
+ * Bpi for myBatis update
  * 
  * @author Joe
  * 
- * @Date 2022/01/17
+ * @Date 2022/12/24
  *
  */
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class BpiRq extends BaseRq {
+public class BpiForMyBatis extends BaseRq implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 貨幣名稱
@@ -80,12 +85,16 @@ public class BpiRq extends BaseRq {
 	private String updated;
 
 	@Builder
-	public BpiRq(String code, String codeChineseName, String symbol, Double rateFloat, String description) {
+	public BpiForMyBatis(String code, String codeChineseName, String symbol, Double rateFloat, String description, String created, String updated, String rate, String oldCode) {
 		this.code = code;
 		this.codeChineseName = codeChineseName;
 		this.symbol = symbol;
 		this.rateFloat = rateFloat;
 		this.description = description;
+		this.created = created;
+		this.updated = updated;
+		this.rate = rate;
+		this.oldCode = oldCode;
 	}
 
 }

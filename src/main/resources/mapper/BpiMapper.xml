@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bpi.mybatis.BpiMapper">
+    <!-- 注意id和mapper層定義的方法名稱一致 -->
+    <select id="findByCode" parameterType="String" resultType="com.bpi.model.entity.BpiEntity">
+        SELECT * FROM bpi WHERE code = #{code}
+    </select>
+
+    <select id="findAll" resultType="com.bpi.model.entity.BpiEntity">
+        SELECT * FROM bpi
+    </select>
+
+	<insert id="addBpi" parameterType="com.bpi.model.entity.BpiEntity" >
+		INSERT INTO bpi (code, code_Chinese_Name, symbol, rate, rate_Float, description, created, updated) 
+		VALUES (#{code}, #{codeChineseName}, #{symbol}, #{rate}, #{rateFloat}, #{description}, #{created}, #{updated})
+	</insert>
+	
+	<update id="updateByCode" parameterType="com.bpi.model.BpiForMyBatis" >
+		UPDATE bpi 
+		SET code=#{code}, code_Chinese_Name=#{codeChineseName}, symbol=#{symbol}, 
+			rate=#{rate}, rate_Float=#{rateFloat}, description=#{description}, 
+			created=#{created}, updated=#{updated}
+		WHERE code = #{oldCode}
+	</update>
+
+    <delete id="deleteByCode" parameterType="String">
+        DELETE FROM bpi WHERE code = #{code}
+    </delete>
+    
+</mapper>
