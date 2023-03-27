@@ -162,7 +162,7 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <annotationProcessorPaths>
-                        <!-- 必须要加, 否则生成不了 MapperImpl 实现类 -->
+                        <!-- 必须要加, 否则生成不了 MapperImpl 實現類 -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>

@@ -156,6 +156,7 @@ public class BpiService {
 		Optional<BpiEntity> oldBpi = bpiRepository.findById(rq.getOldCode());
 		BpiEntity entity = bpiMapper.toEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
+		
 		if (!oldBpi.isPresent()) {
 			log.info("原幣別資料不存在，直接做新增");
 			entity.setCreated(CommonUtil.getNowDate());
@@ -242,6 +243,7 @@ public class BpiService {
 				.rateFloat(b.getRateFloat())
 				.build();
 		}).collect(Collectors.toList());
+		
 		// 轉成map
 		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream().map(b -> {
 			allBpis.stream().filter(ab -> ab.getCode().equals(b.getCode())).forEach(ab -> b.setCodeChineseName(ab.getCodeChineseName()));
@@ -262,35 +264,5 @@ public class BpiService {
 			.updated(CommonUtil.updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19)))
 			.build();
 	}
-	
-//	/**
-//	 * data transaction object (dto) transform entity
-//	 * 
-//	 * @param rq
-//	 * @return
-//	 */
-//	private BpiEntity dtoToEntity(BpiRq rq) {
-//		return BpiEntity.builder()
-//			.code(rq.getCode())
-//			.codeChineseName(rq.getCodeChineseName())
-//			.description(rq.getDescription())
-//			.rateFloat(rq.getRateFloat())
-//			.symbol(rq.getSymbol())
-//			.build();
-//	}
-//	
-//	private BpiForMyBatis dtoToMyBatisDto(BpiRq rq) {
-//		return BpiForMyBatis.builder()
-//			.code(rq.getCode())
-//			.codeChineseName(rq.getCodeChineseName())
-//			.description(rq.getDescription())
-//			.rateFloat(rq.getRateFloat())
-//			.symbol(rq.getSymbol())
-//			.created(rq.getCreated())
-//			.updated(rq.getUpdated())
-//			.rate(rq.getRate())
-//			.oldCode(rq.getOldCode())
-//			.build();
-//	}
 	
 }

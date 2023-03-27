@@ -12,9 +12,7 @@ import lombok.Data;
  *
  * @Date 2021/10/06
  */
-//@Entity
 @Data
-//@Table(name = "time")
 public class Time implements Serializable {
 	
 	/**

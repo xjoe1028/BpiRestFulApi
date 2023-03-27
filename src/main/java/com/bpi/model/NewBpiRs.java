@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class NewBpiRs implements Serializable {
 
 	/**
@@ -28,13 +31,5 @@ public class NewBpiRs implements Serializable {
 	private List<NewBpi> bpisList;
 
 	private Map<String, NewBpi> bpisMap;
-
-	@Builder
-	public NewBpiRs(String updated, List<NewBpi> bpisList, Map<String, NewBpi> bpisMap) {
-		super();
-		this.updated = updated;
-		this.bpisList = bpisList;
-		this.bpisMap = bpisMap;
-	}
 
 }
