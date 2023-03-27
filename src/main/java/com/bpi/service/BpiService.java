@@ -18,7 +18,7 @@ import com.bpi.common.CommonUtil;
 import com.bpi.common.JsonUtils;
 import com.bpi.common.RedisUtils;
 import com.bpi.model.ApiResponse;
-import com.bpi.model.BpiMapper;
+import com.bpi.model.BpiAssembler;
 import com.bpi.model.BpiRateRq;
 import com.bpi.model.BpiRq;
 import com.bpi.model.BpiRs;
@@ -48,7 +48,7 @@ public class BpiService {
 	
 	// mapStruct
 	@Autowired
-	private BpiMapper bpiMapper;
+	private BpiAssembler bpiAssembler;
 	
 	@Autowired
 	private RedisUtils redisUtils;
@@ -79,7 +79,7 @@ public class BpiService {
 			dbUpdatedFlag = false; // 查完存入redis，flag又改回false
 		}
 		
-		return BpiRsUtil.getSuccess(bpiMapper.entityListToListRs(bpiList));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityListToListRs(bpiList));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class BpiService {
 		if (!bpi.isPresent()) 
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpi.get()));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class BpiService {
 		if (!bpi.isPresent())
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpi.get()));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public class BpiService {
 		if (!bpi.isPresent()) 
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpi.get()));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
 	}
 
 	/**
@@ -140,10 +140,10 @@ public class BpiService {
 		if (bpi.isPresent()) 
 			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 
-		BpiEntity entity = bpiMapper.toEntity(rq);
+		BpiEntity entity = bpiAssembler.toEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		entity.setCreated(CommonUtil.getNowDate());
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpiRepository.save(entity)));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.save(entity)));
 	}
 
 	/**
@@ -154,19 +154,19 @@ public class BpiService {
 	 */
 	public ApiResponse<BpiRs> updateBpi(BpiRq rq) {
 		Optional<BpiEntity> oldBpi = bpiRepository.findById(rq.getOldCode());
-		BpiEntity entity = bpiMapper.toEntity(rq);
+		BpiEntity entity = bpiAssembler.toEntity(rq);
 		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		
 		if (!oldBpi.isPresent()) {
 			log.info("原幣別資料不存在，直接做新增");
 			entity.setCreated(CommonUtil.getNowDate());
-			return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpiRepository.save(entity)));
+			return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.save(entity)));
 		} else {
 			log.info("原幣別資料已存在，直接做修改");
 			entity.setUpdated(CommonUtil.getNowDate());
 			entity.setCreated(oldBpi.get().getCreated());
 			bpiRepository.updateBpi(entity, rq.getOldCode());
-			return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpiRepository.getById(rq.getCode())));
+			return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.getById(rq.getCode())));
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class BpiService {
 
 		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));
 		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), CommonUtil.getNowDate());
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpiRepository.findByCode(rq.getCode())));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.findByCode(rq.getCode())));
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public class BpiService {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 
 		bpiRepository.delete(bpi.get());
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpi.get()));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class BpiService {
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 
 		bpiRepository.deleteBpiByCode(code);
-		return BpiRsUtil.getSuccess(bpiMapper.entityToRs(bpi.get()));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
 	}
 
 	/**
