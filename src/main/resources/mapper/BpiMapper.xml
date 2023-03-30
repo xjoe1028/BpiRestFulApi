@@ -17,6 +17,7 @@
 		VALUES (#{code}, #{codeChineseName}, #{symbol}, #{rate}, #{rateFloat}, #{description}, #{created}, #{updated})
 	</insert>
 	
+	<!-- 	因為有oldCode，所以不能直接使用entity去做update -->
 	<update id="updateByCode" parameterType="com.bpi.model.BpiForMyBatis" >
 		UPDATE bpi 
 		SET code=#{code}, code_Chinese_Name=#{codeChineseName}, symbol=#{symbol}, 

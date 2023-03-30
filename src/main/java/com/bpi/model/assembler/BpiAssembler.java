@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
+import com.bpi.model.BpiForMyBatis;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.model.rs.BpiRs;
@@ -31,5 +32,7 @@ public interface BpiAssembler {
 	BpiRs entityToRs(BpiEntity entity);
 	
 	List<BpiRs> entityListToListRs(List<BpiEntity> entitys);
+	
+	BpiForMyBatis entityToBpiForMyBatis(BpiEntity entity);
 	
 }

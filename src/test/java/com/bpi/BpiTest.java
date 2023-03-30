@@ -23,9 +23,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.bpi.common.CommonUtil;
+import com.bpi.model.assembler.BpiAssembler;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
+import com.bpi.mybatis.BpiMapper;
 import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,6 +48,12 @@ class BpiTest {
 
 	@Autowired
 	private BpiRepository bpiRepository;
+	
+	@Autowired
+	private BpiMapper bpiMapper;
+	
+	@Autowired
+	private BpiAssembler bpiAssembler;
 	
 	@Autowired
 	private ObjectMapper jsonMapper;
@@ -322,6 +330,26 @@ class BpiTest {
                 .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
                 .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
+	}
+	
+	/**
+	 * MyBatis test update bpi
+	 * 
+	 * @throws Exception
+	 */
+	@Disabled("skip")
+	@Test
+	void updateBpiForMyBatisTest() throws Exception {
+		List<BpiEntity> bpis = bpiRepository.findAll();
+		BpiEntity entity = bpis.get(0);
+		entity.setDescription("test mybatis update");
+		entity.setRateFloat(1234.123);
+		
+		var bpiForMyBatis = bpiAssembler.entityToBpiForMyBatis(entity);
+		bpiForMyBatis.setOldCode(entity.getCode());
+		
+		long result = bpiMapper.updateByCode(bpiForMyBatis);
+		log.info("update success : {} 筆", result);
 	}
 	
 }

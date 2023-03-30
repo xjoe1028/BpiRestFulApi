@@ -21,7 +21,7 @@ public interface BpiMapper {
 	
 	public BpiEntity findByCode(String code);
 	
-	public void addBpi(BpiEntity bpi);
+	public void addBpi(BpiEntity entity);
 	
 	public Long updateByCode(BpiForMyBatis rq);
 	
