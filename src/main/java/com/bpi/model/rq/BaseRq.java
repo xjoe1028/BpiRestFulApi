@@ -1,4 +1,4 @@
-package com.bpi.model;
+package com.bpi.model.rq;
 
 import lombok.Data;
 

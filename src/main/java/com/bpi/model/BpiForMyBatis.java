@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.bpi.model.rq.BaseRq;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;

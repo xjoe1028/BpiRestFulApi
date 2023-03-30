@@ -1,4 +1,4 @@
-package com.bpi.model;
+package com.bpi.model.rs;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

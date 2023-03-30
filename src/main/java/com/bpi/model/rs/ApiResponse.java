@@ -1,4 +1,4 @@
-package com.bpi.model;
+package com.bpi.model.rs;
 
 import java.io.Serializable;
 

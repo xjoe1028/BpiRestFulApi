@@ -1,11 +1,13 @@
-package com.bpi.model;
+package com.bpi.model.dto;
 
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -15,6 +17,9 @@ import lombok.Data;
  * @Date 2022/02/16
  *
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class NewBpi implements Serializable {
 	
@@ -31,15 +36,5 @@ public class NewBpi implements Serializable {
 	
 	@JsonProperty("rate_float")
 	private Double rateFloat;
-
-	@Builder
-	public NewBpi(String code, String codeChineseName, String rate, Double rateFloat) {
-		super();
-		this.code = code;
-		this.codeChineseName = codeChineseName;
-		this.rate = rate;
-		this.rateFloat = rateFloat;
-	}
-	
 	
 }

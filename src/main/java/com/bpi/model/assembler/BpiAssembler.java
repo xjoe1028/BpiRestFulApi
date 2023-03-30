@@ -1,10 +1,12 @@
-package com.bpi.model;
+package com.bpi.model.assembler;
 
 import java.util.List;
 
 import org.mapstruct.Mapper;
 
 import com.bpi.model.entity.BpiEntity;
+import com.bpi.model.rq.BpiRq;
+import com.bpi.model.rs.BpiRs;
 
 /**
  * map struct mapper 

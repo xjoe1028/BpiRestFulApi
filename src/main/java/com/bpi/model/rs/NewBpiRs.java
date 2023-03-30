@@ -1,8 +1,10 @@
-package com.bpi.model;
+package com.bpi.model.rs;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import com.bpi.model.dto.NewBpi;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

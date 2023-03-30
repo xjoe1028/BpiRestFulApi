@@ -1,4 +1,4 @@
-package com.bpi.model;
+package com.bpi.model.rq;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

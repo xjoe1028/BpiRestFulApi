@@ -23,9 +23,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.bpi.common.CommonUtil;
-import com.bpi.model.BpiRateRq;
-import com.bpi.model.BpiRq;
 import com.bpi.model.entity.BpiEntity;
+import com.bpi.model.rq.BpiRateRq;
+import com.bpi.model.rq.BpiRq;
 import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

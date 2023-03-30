@@ -1,7 +1,7 @@
 package com.bpi.common;
 
 import com.bpi.cconstant.ErrorCode;
-import com.bpi.model.ApiResponse;
+import com.bpi.model.rs.ApiResponse;
 
 /**
  * BpiRs util

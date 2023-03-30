@@ -1,7 +1,10 @@
-package com.bpi.model;
+package com.bpi.model.rs;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import com.bpi.model.dto.Time;
+import com.bpi.model.rq.BpiRq;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

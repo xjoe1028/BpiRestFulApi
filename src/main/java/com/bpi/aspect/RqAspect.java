@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.bpi.cconstant.ErrorCode;
 import com.bpi.common.BpiRsUtil;
-import com.bpi.model.ApiResponse;
 import com.bpi.model.RqType;
+import com.bpi.model.rs.ApiResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
