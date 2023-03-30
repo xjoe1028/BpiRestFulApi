@@ -340,15 +340,15 @@ class BpiTest {
 	@Disabled("skip")
 	@Test
 	void updateBpiForMyBatisTest() throws Exception {
-		List<BpiEntity> bpis = bpiRepository.findAll();
-		BpiEntity entity = bpis.get(0);
+		var bpis = bpiRepository.findAll();
+		var entity = bpis.get(0);
 		entity.setDescription("test mybatis update");
 		entity.setRateFloat(1234.123);
 		
 		var bpiForMyBatis = bpiAssembler.entityToBpiForMyBatis(entity);
 		bpiForMyBatis.setOldCode(entity.getCode());
 		
-		long result = bpiMapper.updateByCode(bpiForMyBatis);
+		var result = bpiMapper.updateByCode(bpiForMyBatis);
 		log.info("update success : {} 筆", result);
 	}
 	
