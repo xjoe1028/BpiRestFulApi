@@ -42,8 +42,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Tag(name = "幣別", description = "幣別 RestFul API Controller")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // 跨域的問題
-@RestController
 @RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController
 public class BpiController {
 
 	public static final String COINDESK_URL = "https://api.coindesk.com/v1/bpi/currentprice.json";

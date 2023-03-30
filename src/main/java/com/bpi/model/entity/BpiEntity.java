@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,12 @@ import lombok.NoArgsConstructor;
  *
  * @Date 2021/10/06
  */
-@Entity
-@Table(name = "Bpi")
-@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Table(name = "Bpi")
+@Entity
 public class BpiEntity implements Serializable {
 	
 	// @IdClass(BpiPK.class) 複合主鍵 
@@ -55,6 +58,7 @@ public class BpiEntity implements Serializable {
 	 */
 	@ApiModelProperty("codeChineseName 貨幣中文名稱")
 	@Basic
+	@Column
 	@NotNull
 	private String codeChineseName;
 	
@@ -96,6 +100,7 @@ public class BpiEntity implements Serializable {
 	@ApiModelProperty("created 創建時間")
 	@Basic
 	@Column
+	@NotNull
 	private String created;
 	
 	/**
@@ -105,18 +110,5 @@ public class BpiEntity implements Serializable {
 	@Basic
 	@Column
 	private String updated;
-	
-	@Builder
-	public BpiEntity(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
-			String description, String created, String updated) {
-		this.code = code;
-		this.codeChineseName = codeChineseName;
-		this.symbol = symbol;
-		this.rate = rate;
-		this.rateFloat = rateFloat;
-		this.description = description;
-		this.created = created;
-		this.updated = updated;
-	}
 	
 }

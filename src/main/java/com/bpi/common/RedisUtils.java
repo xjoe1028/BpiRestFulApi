@@ -91,7 +91,7 @@ public class RedisUtils {
         try {
             result = stringRedisTemplate.hasKey(key);
         } catch (Exception e) {
-            log.error("判斷redis缓存中是否有對應的key失敗，錯誤訊息：" + e.getMessage());
+            log.error("判斷redis緩存中是否有對應的key失敗，錯誤訊息：" + e.getMessage());
         }
         
         return result;

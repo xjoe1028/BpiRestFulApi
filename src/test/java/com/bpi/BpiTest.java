@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BpiTest {
+class BpiTest {
 
 	@Autowired
 	private BpiRepository bpiRepository;
