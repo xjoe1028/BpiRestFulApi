@@ -1,6 +1,7 @@
 package com.bpi.model.rs;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,10 @@ import lombok.NoArgsConstructor;
  *
  * @Date 2023/03/24
  */
+@Builder
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class BpiRs {
 
 	@ApiModelProperty("貨幣名稱")
@@ -34,14 +37,4 @@ public class BpiRs {
 	@ApiModelProperty("描述")
 	private String description;
 
-	@Builder
-	public BpiRs(String code, String codeChineseName, String symbol, String rate, Double rateFloat,
-			String description) {
-		this.code = code;
-		this.codeChineseName = codeChineseName;
-		this.symbol = symbol;
-		this.rate = rate;
-		this.rateFloat = rateFloat;
-		this.description = description;
-	}
 }

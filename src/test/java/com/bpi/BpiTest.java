@@ -222,7 +222,7 @@ class BpiTest {
 	void updateBipTest() throws Exception {
 		List<BpiEntity> bpis = bpiRepository.findAll();
 		BpiEntity bpi = bpis.get(0);
-		bpi.setDescription("test2 update");
+		bpi.setDescription("update jpa save");
 		bpi.setRateFloat(1234.123);
 		
 		BpiRq rq = BpiRq.builder()

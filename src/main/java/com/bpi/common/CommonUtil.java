@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -20,17 +21,17 @@ public class CommonUtil {
 	
 	public static String getNowDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS);
-		return sdf.format(new Date());
+		return sdf.format(LocalDateTime.now());
 	}
 	
-	public static String dateToString(Date date) {
+	public static String dateToString(LocalDateTime dateTime) {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS);
-		return sdf.format(date);
+		return sdf.format(dateTime);
 	}
 	
-	public static String dateToFormat(String format, Date date) {
+	public static String dateToFormat(String format, LocalDateTime dateTime) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		return sdf.format(date);
+		return sdf.format(dateTime);
 	}
 
 	public static String updatedFormat(String updated) throws ParseException {
