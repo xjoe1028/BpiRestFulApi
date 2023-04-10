@@ -1,4 +1,4 @@
-package com.bpi.common;
+package com.bpi.util;
 
 import com.bpi.cconstant.ErrorCode;
 import com.bpi.model.rs.ApiResponse;

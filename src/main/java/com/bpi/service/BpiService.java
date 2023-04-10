@@ -12,11 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.bpi.cconstant.CacheKeys;
 import com.bpi.cconstant.ErrorCode;
-import com.bpi.common.BpiRsUtil;
-import com.bpi.common.DateUtil;
-import com.bpi.common.JsonUtils;
-import com.bpi.common.NumberUtil;
-import com.bpi.common.RedisUtils;
 import com.bpi.model.assembler.BpiAssembler;
 import com.bpi.model.dto.NewBpi;
 import com.bpi.model.entity.BpiEntity;
@@ -27,6 +22,11 @@ import com.bpi.model.rs.BpiRs;
 import com.bpi.model.rs.Coindesk;
 import com.bpi.model.rs.NewBpiRs;
 import com.bpi.repository.BpiRepository;
+import com.bpi.util.BpiRsUtil;
+import com.bpi.util.DateUtil;
+import com.bpi.util.JsonUtils;
+import com.bpi.util.NumberUtil;
+import com.bpi.util.RedisUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 

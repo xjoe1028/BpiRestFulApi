@@ -1,4 +1,4 @@
-package com.bpi.common;
+package com.bpi.util;
 
 import java.util.concurrent.TimeUnit;
 

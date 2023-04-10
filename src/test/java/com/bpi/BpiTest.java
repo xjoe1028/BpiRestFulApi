@@ -22,14 +22,14 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bpi.common.DateUtil;
-import com.bpi.common.NumberUtil;
 import com.bpi.model.assembler.BpiAssembler;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.mybatis.BpiMapper;
 import com.bpi.repository.BpiRepository;
+import com.bpi.util.DateUtil;
+import com.bpi.util.NumberUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;

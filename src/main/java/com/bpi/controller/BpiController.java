@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.bpi.common.BpiRsUtil;
 import com.bpi.model.RqType;
 import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
@@ -24,6 +23,7 @@ import com.bpi.model.rs.ApiResponse;
 import com.bpi.model.rs.BpiRs;
 import com.bpi.model.rs.NewBpiRs;
 import com.bpi.service.BpiService;
+import com.bpi.util.BpiRsUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.annotations.ApiImplicitParam;

@@ -1,4 +1,4 @@
-package com.bpi.common;
+package com.bpi.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
