@@ -22,7 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bpi.common.CommonUtil;
+import com.bpi.common.DateUtil;
+import com.bpi.common.NumberUtil;
 import com.bpi.model.assembler.BpiAssembler;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRateRq;
@@ -36,14 +37,16 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Bpi api test
  * 
+ * Junit 不能使用 @RequiredArgsConstructor 去做注入 
+ * 
  * @author Joe
  *
  * @Date 2021/12/22
  */
 @Slf4j
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
 @AutoConfigureMockMvc
+@SpringBootTest
 class BpiTest {
 
 	@Autowired
@@ -62,7 +65,7 @@ class BpiTest {
 	private MockMvc mockMvc;
 	
 	public final static String URL = "/api/bpi";
-	public final static String TODAY = CommonUtil.getNowDate();
+	public final static String TODAY = DateUtil.getNowDate();
 	public final static String CHARACTER_ENCODING = "UTF-8";
 	
 	public static List<String> codes = Arrays.asList("USD", "GBP", "EUR", "CNY", "JPY", "KRW");
@@ -84,7 +87,7 @@ class BpiTest {
 			BpiEntity rq = BpiEntity.builder()
 				.code(codes.get(i))
 				.codeChineseName(codesName.get(i))
-				.rate(CommonUtil.fmtMicrometer(ratesFloat.get(i).toString()))
+				.rate(NumberUtil.fmtMicrometer(ratesFloat.get(i).toString()))
 				.description(descriptions.get(i))
 				.rateFloat(ratesFloat.get(i))
 				.symbol(symbols.get(i))

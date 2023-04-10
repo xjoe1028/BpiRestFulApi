@@ -3,7 +3,6 @@ package com.bpi.controller;
 import java.text.ParseException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +30,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,16 +43,15 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "幣別", description = "幣別 RestFul API Controller")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // 跨域的問題
 @RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 @RestController
 public class BpiController {
 
 	public static final String COINDESK_URL = "https://api.coindesk.com/v1/bpi/currentprice.json";
 
-	@Autowired
-	private BpiService bpiService;
+	final BpiService bpiService;
 
-	@Autowired
-	private RestTemplate restTemplate;
+	final RestTemplate restTemplate;
 	
 	/**
 	 * select All

@@ -8,14 +8,14 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bpi.cconstant.CacheKeys;
 import com.bpi.cconstant.ErrorCode;
 import com.bpi.common.BpiRsUtil;
-import com.bpi.common.CommonUtil;
+import com.bpi.common.DateUtil;
 import com.bpi.common.JsonUtils;
+import com.bpi.common.NumberUtil;
 import com.bpi.common.RedisUtils;
 import com.bpi.model.assembler.BpiAssembler;
 import com.bpi.model.dto.NewBpi;
@@ -30,6 +30,7 @@ import com.bpi.repository.BpiRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,19 +40,17 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 2021/10/06
  */
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class BpiService {
 
 	// JPA
-	@Autowired
-	private BpiRepository bpiRepository;
+	final BpiRepository bpiRepository;
 	
 	// mapStruct
-	@Autowired
-	private BpiAssembler bpiAssembler;
+	final BpiAssembler bpiAssembler;
 	
-	@Autowired
-	private RedisUtils redisUtils;
+	final RedisUtils redisUtils;
 	
 	// 如db有更新就要先去查db存入redis，反之
 	private boolean dbUpdatedFlag = false;
@@ -141,8 +140,8 @@ public class BpiService {
 			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 
 		BpiEntity entity = bpiAssembler.toEntity(rq);
-		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
-		entity.setCreated(CommonUtil.getNowDate());
+		entity.setRate(NumberUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
+		entity.setCreated(DateUtil.getNowDate());
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.save(entity)));
 	}
 
@@ -155,14 +154,14 @@ public class BpiService {
 	public ApiResponse<BpiRs> updateBpi(BpiRq rq) {
 		Optional<BpiEntity> oldBpi = bpiRepository.findById(rq.getOldCode());
 		BpiEntity entity = bpiAssembler.toEntity(rq);
-		entity.setRate(CommonUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
+		entity.setRate(NumberUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		
 		if (!oldBpi.isPresent()) {
 			log.info("原幣別資料不存在，直接做新增");
-			entity.setCreated(CommonUtil.getNowDate());
+			entity.setCreated(DateUtil.getNowDate());
 		} else {
 			log.info("原幣別資料已存在，直接做修改");
-			entity.setUpdated(CommonUtil.getNowDate());
+			entity.setUpdated(DateUtil.getNowDate());
 			entity.setCreated(oldBpi.get().getCreated());
 			// JPA JPQL update
 //			bpiRepository.updateBpi(entity, rq.getOldCode());
@@ -186,8 +185,8 @@ public class BpiService {
 		if (!bpi.isPresent())
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_PK_ONLY);
 
-		String rateStr = CommonUtil.fmtMicrometer(String.valueOf(rq.getRate()));
-		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), CommonUtil.getNowDate());
+		String rateStr = NumberUtil.fmtMicrometer(String.valueOf(rq.getRate()));
+		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), DateUtil.getNowDate());
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.findByCode(rq.getCode())));
 	}
 	
@@ -265,7 +264,7 @@ public class BpiService {
 		return NewBpiRs.builder()
 			.bpisList(bpisList)
 			.bpisMap(bpisMap)
-			.updated(CommonUtil.updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19)))
+			.updated(DateUtil.updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19)))
 			.build();
 	}
 	
