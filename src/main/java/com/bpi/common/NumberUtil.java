@@ -3,7 +3,7 @@ package com.bpi.common;
 import java.text.DecimalFormat;
 
 /**
- * 共用 util
+ * Number util
  * 
  * @author Joe
  * 
