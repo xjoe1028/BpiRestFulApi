@@ -35,54 +35,54 @@ import lombok.extern.slf4j.Slf4j;
 @EnableCaching
 @Slf4j
 public class RedisConfiguration extends CachingConfigurerSupport {
-	
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        
-        return redisTemplate;
-    }
-    
-    @Bean
-	public CacheManager cacheManager(RedisConnectionFactory factory) {
-		RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair
-				.fromSerializer(new GenericJackson2JsonRedisSerializer());
-		
-		RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-				.serializeValuesWith(pair) // 序列化方式
-				.entryTtl(Duration.ofHours(24)); // 過期時間
 
-		return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
-				.cacheDefaults(defaultCacheConfig).build();
+	@Bean
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+		redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+		redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+		return redisTemplate;
 	}
 
-    @Bean
+	@Bean
+	public CacheManager cacheManager(RedisConnectionFactory factory) {
+		RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair
+			.fromSerializer(new GenericJackson2JsonRedisSerializer());
+
+		RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+			.serializeValuesWith(pair) 			// 序列化方式
+			.entryTtl(Duration.ofHours(24)); 	// 過期時間
+
+		return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
+			.cacheDefaults(defaultCacheConfig).build();
+	}
+
+	@Bean
 	@Override
 	public CacheErrorHandler errorHandler() {
 		return new CacheErrorHandler() {
 			@Override
 			public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
-				log.error(exception.getMessage(),exception);
+				log.error(exception.getMessage(), exception);
 			}
 
 			@Override
 			public void handleCachePutError(RuntimeException exception, Cache cache, Object key, Object value) {
-				log.error(exception.getMessage(),exception);
+				log.error(exception.getMessage(), exception);
 			}
 
 			@Override
 			public void handleCacheEvictError(RuntimeException exception, Cache cache, Object key) {
-				log.error(exception.getMessage(),exception);
+				log.error(exception.getMessage(), exception);
 			}
 
 			@Override
 			public void handleCacheClearError(RuntimeException exception, Cache cache) {
-				log.error(exception.getMessage(),exception);
+				log.error(exception.getMessage(), exception);
 			}
 		};
 	}
