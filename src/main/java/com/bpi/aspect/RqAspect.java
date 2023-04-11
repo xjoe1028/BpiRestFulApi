@@ -16,6 +16,7 @@ import com.bpi.model.RqType;
 import com.bpi.model.rs.ApiResponse;
 import com.bpi.util.BpiRsUtil;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -29,10 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Aspect
 @Configuration
+@RequiredArgsConstructor
 public class RqAspect {
 	
-	@Autowired
-	private Validator validator;
+	final Validator validator;
 
 	// 切入點為com.bpi.controller下的所有類別的所有方法
 	@Around(value = "execution(* com.bpi.controller.*.*(..))")

@@ -3,10 +3,10 @@ package com.bpi.model.rs;
 import java.io.Serializable;
 import java.util.Map;
 
+import com.bpi.model.dto.CoindeskBpiDTO;
 import com.bpi.model.dto.Time;
-import com.bpi.model.rq.BpiRq;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -29,11 +29,11 @@ public class Coindesk implements Serializable {
 	/**
 	 * 免責聲明
 	 */
-	@ApiModelProperty("disclaimer 免責聲明")
+	@Schema(description = "disclaimer 免責聲明")
 	private String disclaimer;
 	
 	private String chartName;
 	
-	private transient Map<String, BpiRq> bpi;
+	private transient Map<String, CoindeskBpiDTO> bpi;
 	
 }

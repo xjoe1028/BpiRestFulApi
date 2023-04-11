@@ -220,7 +220,7 @@ public class BpiService {
 		bpiRepository.deleteBpiByCode(code);
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
 	}
-
+	
 	/**
 	 * 呼叫 url 後 return 更新時間,幣別,幣別中文名稱,利率
 	 * 
@@ -231,7 +231,7 @@ public class BpiService {
 	 * @throws ParseException
 	 */
 	public NewBpiRs transform(String jsonStr) throws JsonProcessingException, ParseException {
-		Coindesk coindesk = JsonUtils.jsonToObject(jsonStr, Coindesk.class);
+		Coindesk coindesk = JsonUtils.getObject(jsonStr, Coindesk.class);
 		log.info("coindesk: {}", coindesk);
 
 		List<BpiEntity> allBpis = Optional.ofNullable(bpiRepository.findAll()).orElseGet(ArrayList::new);

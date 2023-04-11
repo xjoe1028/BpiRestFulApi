@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
  * @Date 2021/10/07
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class NewBpiRs implements Serializable {
 
 	/**

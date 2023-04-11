@@ -1,6 +1,6 @@
 package com.bpi.model.rs;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,28 +13,29 @@ import lombok.NoArgsConstructor;
  *
  * @Date 2023/03/24
  */
-@Builder
+@Schema(description = "幣別 API Response")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BpiRs {
 
-	@ApiModelProperty("貨幣名稱")
+	@Schema(description = "貨幣名稱")
 	private String code;
 
-	@ApiModelProperty("貨幣中文名稱")
+	@Schema(description = "貨幣中文名稱")
 	private String codeChineseName;
 
-	@ApiModelProperty("金錢符號")
+	@Schema(description = "金錢符號")
 	private String symbol;
 
-	@ApiModelProperty("匯率(千分位,)")
+	@Schema(description = "匯率(千分位,)")
 	private String rate;
 
-	@ApiModelProperty("匯率")
+	@Schema(description = "匯率")
 	private Double rateFloat;
 
-	@ApiModelProperty("描述")
+	@Schema(description = "描述")
 	private String description;
 
 }

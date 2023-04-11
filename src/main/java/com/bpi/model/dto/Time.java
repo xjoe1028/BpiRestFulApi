@@ -2,7 +2,7 @@ package com.bpi.model.dto;
 
 import java.io.Serializable;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -23,20 +23,20 @@ public class Time implements Serializable {
 	/**
 	 * ex: Oct 6, 2021 10:58:00 UTC
 	 */
-	@ApiModelProperty("updated 修改日期")
+	@Schema(description = "updated 修改日期")
 	private String updated;
 	
 	/**
 	 * ex: 2021-10-06T10:58:00+00:00
 	 */
-	@ApiModelProperty("updatedISO 修改日期ISO")
+	@Schema(description = "updatedISO 修改日期ISO")
 	private String updatedISO;
 	
 	/**
 	 * 原時區+一小時
 	 * ex: Oct 6, 2021 at 11:58 BST
 	 */
-	@ApiModelProperty("updateduk 修改日期")
+	@Schema(description = "updateduk 修改日期")
 	private String updateduk;
 
 }

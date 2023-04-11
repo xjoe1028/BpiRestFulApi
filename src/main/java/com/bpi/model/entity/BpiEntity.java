@@ -9,23 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * bpi 幣別 
+ * bpi 幣別 entity
  * 
  * @author Joe
  *
  * @Date 2021/10/06
  */
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Table(name = "Bpi")
 @Entity
 public class BpiEntity implements Serializable {
@@ -40,7 +40,7 @@ public class BpiEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-//	@ApiModelProperty("id pk")
+//	@Schema(name = "id pk")
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.AUTO)
 //	private Long id;
@@ -48,7 +48,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 貨幣名稱
 	 */
-	@ApiModelProperty("code 貨幣名稱")
+	@Schema(description = "code 貨幣名稱")
 	@Id
 	@NotNull
 	private String code;
@@ -56,7 +56,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 貨幣中文名稱
 	 */
-	@ApiModelProperty("codeChineseName 貨幣中文名稱")
+	@Schema(description = "codeChineseName 貨幣中文名稱")
 	@Basic
 	@Column
 	@NotNull
@@ -65,7 +65,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 金錢格式 ex: $
 	 */
-	@ApiModelProperty("code 金錢符號")
+	@Schema(description = "code 金錢符號")
 	@Basic
 	@Column
 	private String symbol;
@@ -73,7 +73,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 匯率 有千分位樣式 
 	 */
-	@ApiModelProperty("rate 匯率(千分位,)")
+	@Schema(description = "rate 匯率(千分位,)")
 	@Basic
 	@Column
 	private String rate; 
@@ -81,7 +81,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 匯率 
 	 */
-	@ApiModelProperty("rate 匯率")
+	@Schema(description = "rate 匯率")
 	@Basic
 	@Column
 	private Double rateFloat;
@@ -89,7 +89,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 描述
 	 */
-	@ApiModelProperty("description 描述")
+	@Schema(description = "description 描述")
 	@Basic
 	@Column
 	private String description;
@@ -97,7 +97,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 創建時間
 	 */
-	@ApiModelProperty("created 創建時間")
+	@Schema(description = "created 創建時間")
 	@Basic
 	@Column
 	@NotNull
@@ -106,7 +106,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 更新時間
 	 */
-	@ApiModelProperty("updated 更新時間")
+	@Schema(description = "updated 更新時間")
 	@Basic
 	@Column
 	private String updated;

@@ -26,9 +26,11 @@ import com.bpi.service.BpiService;
 import com.bpi.util.BpiRsUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,14 +54,14 @@ public class BpiController {
 	final BpiService bpiService;
 
 	final RestTemplate restTemplate;
-	
+
 	/**
 	 * select All
 	 * 
 	 * @param bpi
 	 * @return
 	 */
-	@ApiOperation(value = "查詢所有幣別")
+	@Operation(summary = "查詢所有幣別")
 	@GetMapping("/findAllBpis")
 	public ApiResponse<List<BpiRs>> findAllBpis() {
 		return bpiService.findAll();
@@ -72,10 +74,10 @@ public class BpiController {
 	 * @return
 	 */
 	@Operation(summary = "查詢單一幣別")
-	@ApiOperation(value = "查詢單一幣別")
-	@ApiImplicitParam(paramType = "query", name = "code", value = "英文幣別", required = true, dataType = "String")
 	@GetMapping("/findBpi/code")
-	public ApiResponse<BpiRs> findBpiByPk(@RequestParam(name = "code", defaultValue = "") String code) {
+	public ApiResponse<BpiRs> findBpiByPk(
+		@Parameter(name = "code", description = "英文幣別", required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = String.class))
+		@RequestParam(name = "code", defaultValue = "") String code) {
 		return bpiService.findBpiByPk(code);
 	}
 
@@ -85,10 +87,11 @@ public class BpiController {
 	 * @param code
 	 * @return
 	 */
-	@ApiOperation(value = "查詢單一幣別")
-	@ApiImplicitParam(paramType = "query", name = "codeChineseName", value = "中文幣別", required = true, dataType = "String")
+	@Operation(summary = "查詢單一幣別")
 	@GetMapping("/findBpi/codeChineseName")
-	public ApiResponse<BpiRs> findBpiByCodeChineseName(@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
+	public ApiResponse<BpiRs> findBpiByCodeChineseName(
+		@Parameter(name = "codeChineseName", description = "中文幣別", required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = String.class))
+		@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
 		return bpiService.findBpiByCodeChineseName(codeChineseName);
 	}
 
@@ -98,7 +101,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
-	@ApiOperation(value = "新增幣別")
+	@Operation(summary = "新增幣別")
 	@RqType(BpiRq.class)
 	@PostMapping("/addBpi")
 	public ApiResponse<BpiRs> addBpi(@RequestBody BpiRq rq) {
@@ -113,7 +116,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
-	@ApiOperation(value = "修改幣別")
+	@Operation(summary = "修改幣別")
 	@RqType(BpiRq.class)
 	@PutMapping("/updateBpi")
 	public ApiResponse<BpiRs> updateBpi(@RequestBody BpiRq rq) {
@@ -128,7 +131,7 @@ public class BpiController {
 	 * @param bpi
 	 * @return
 	 */
-	@ApiOperation(value = "修改幣別匯率")
+	@Operation(summary = "修改幣別匯率")
 	@RqType(BpiRateRq.class)
 	@PatchMapping("/updateBpiRate")
 	public ApiResponse<BpiRs> updateBpiRate(@RequestBody BpiRateRq rq) {
@@ -141,7 +144,7 @@ public class BpiController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value = "刪除幣別")
+	@Operation(summary = "刪除幣別")
 	@RqType(BpiRq.class)
 	@DeleteMapping("/deleteBpi/code")
 	public ApiResponse<BpiRs> deleteBpi(@RequestBody BpiRq rq) {
@@ -153,7 +156,7 @@ public class BpiController {
 	 * 
 	 * @return
 	 */
-	@ApiOperation(value = "呼叫外部coindesk API")
+	@Operation(summary = "呼叫外部coindesk API")
 	@GetMapping("/call/coindesk")
 	public ApiResponse<String> callCoindeskAPI() {
 		String response = restTemplate.getForObject(COINDESK_URL, String.class);
@@ -165,11 +168,11 @@ public class BpiController {
 	 * 呼叫 coindesk API 在 format成自定義的資料 return
 	 * 
 	 * @return
-	 * @throws ParseException 
-	 * @throws JsonProcessingException 
+	 * @throws ParseException
+	 * @throws JsonProcessingException
 	 * @throws Exception
 	 */
-	@ApiOperation(value = "呼叫外部coindesk API 後進行資料處理 return")
+	@Operation(summary = "呼叫外部coindesk API 後進行資料處理 return")
 	@GetMapping("/call/coindesk/transform")
 	public ApiResponse<NewBpiRs> transformNewBpi() throws JsonProcessingException, ParseException {
 		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);
