@@ -8,7 +8,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.bpi.cconstant.ErrorCode;
@@ -23,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
  * Rq Aspect aop
  * 
  * @author Joe
- * 
- * @Date 2022/02/14
  * 
  */
 @Slf4j

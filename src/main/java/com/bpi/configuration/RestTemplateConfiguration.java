@@ -14,8 +14,6 @@ import org.springframework.web.client.RestTemplate;
  * 
  * @author Joe
  * 
- * @Date 2021/10/08
- *
  */
 @Configuration
 public class RestTemplateConfiguration {

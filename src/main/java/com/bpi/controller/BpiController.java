@@ -35,10 +35,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * Bpi Controller
  * 
  * @author Joe
  * 
- * @Date 2021/10/06
  */
 @Slf4j
 @Tag(name = "幣別", description = "幣別 RestFul API Controller")

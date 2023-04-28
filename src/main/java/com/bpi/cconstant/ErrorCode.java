@@ -7,7 +7,6 @@ import lombok.Getter;
  * 
  * @author Joe
  * 
- * @Date 2022/01/18
  */
 @Getter
 public enum ErrorCode {
