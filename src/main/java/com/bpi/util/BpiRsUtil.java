@@ -8,7 +8,6 @@ import com.bpi.model.rs.ApiResponse;
  * 
  * @author Joe
  *
- * @Date 2021/07/14
  */
 public class BpiRsUtil {
 

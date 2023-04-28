@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
  * 
  * @author Joe
  * 
- * @Date 2022/01/18
  */
 public class NumberUtil {
 	

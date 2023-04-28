@@ -7,8 +7,6 @@ import lombok.Data;
  * 
  * @author Joe
  *
- * @Date 2022/01/27
- * 
  */
 @Data
 public class BaseRq {

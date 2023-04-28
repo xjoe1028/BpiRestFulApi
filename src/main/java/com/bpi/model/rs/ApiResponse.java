@@ -16,7 +16,6 @@ import lombok.ToString;
  * 
  * @author Joe
  *
- * @Date 2022/01/19
  */
 @ToString(of = { "code", "message" })
 @NoArgsConstructor

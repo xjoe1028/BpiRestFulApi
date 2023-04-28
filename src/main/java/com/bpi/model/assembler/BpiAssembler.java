@@ -21,8 +21,6 @@ import com.bpi.model.rs.BpiRs;
  * 
  * @author Joe
  *
- * @Date 2023/03/24
- * 
  */
 @Mapper(componentModel = "spring")
 public interface BpiAssembler {

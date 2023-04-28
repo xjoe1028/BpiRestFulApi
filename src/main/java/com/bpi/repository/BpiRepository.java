@@ -1,5 +1,6 @@
 package com.bpi.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,6 @@ import com.bpi.model.entity.BpiEntity;
  * 
  * @author Joe
  * 
- * @Date 2021/10/06
  */
 @Repository
 public interface BpiRepository extends JpaRepository<BpiEntity, String> {
@@ -72,4 +72,13 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	@Query("DELETE FROM BpiEntity WHERE code = :code")
 	@Transactional
 	public int deleteBpiByCode(@Param("code") String code);
+	
+	/**
+	 * 參數 官方文檔 建議使用 Collection List 但如果用陣列Array也是可以
+	 * 
+	 * @param codeChineseNames
+	 * @return
+	 */
+	public List<BpiEntity> findByCodeChineseNameIn(List<String> codeChineseNames);
+	
 }

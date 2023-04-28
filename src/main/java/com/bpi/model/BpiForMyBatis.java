@@ -1,14 +1,11 @@
 package com.bpi.model;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.bpi.model.rq.BaseRq;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,19 +16,12 @@ import lombok.NoArgsConstructor;
  * 
  * @author Joe
  * 
- * @Date 2022/12/24
- *
  */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class BpiForMyBatis extends BaseRq implements Serializable {
+public class BpiForMyBatis extends BaseRq {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * 貨幣名稱
 	 */

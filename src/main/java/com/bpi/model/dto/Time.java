@@ -1,19 +1,16 @@
 package com.bpi.model.dto;
 
-import java.io.Serializable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 時間 entity
+ * 時間 DTO
  * 
  * @author Joe
  *
- * @Date 2021/10/06
  */
 @Data
-public class Time implements Serializable {
+public class Time {
 	
 	/**
 	 * 

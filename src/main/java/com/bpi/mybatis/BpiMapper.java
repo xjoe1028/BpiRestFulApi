@@ -12,7 +12,6 @@ import com.bpi.model.entity.BpiEntity;
  * 
  * @author Joe
  * 
- * @Date 2022/12/24
  */
 @Repository
 public interface BpiMapper {

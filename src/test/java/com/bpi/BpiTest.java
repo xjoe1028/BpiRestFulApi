@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author Joe
  *
- * @Date 2021/12/22
  */
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -121,8 +120,8 @@ class BpiTest {
 		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -141,8 +140,8 @@ class BpiTest {
 		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -161,8 +160,8 @@ class BpiTest {
 		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -182,8 +181,8 @@ class BpiTest {
 		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -196,22 +195,22 @@ class BpiTest {
 	@Test
 	void addBipTest() throws Exception {
 		BpiRq rq = BpiRq.builder()
-				.code("TWD")
-				.symbol("$")
-				.codeChineseName("新台幣")
-				.description("New Taiwan Dollar")
-				.rateFloat(100.2)
-				.build();
+			.code("TWD")
+			.symbol("$")
+			.codeChineseName("新台幣")
+			.description("New Taiwan Dollar")
+			.rateFloat(100.2)
+			.build();
 		
 		ResultActions resultActions = this.mockMvc.perform(
-				post(URL + "/addBpi") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(rq))
-			); 
+			post(URL + "/addBpi") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+			.content(jsonMapper.writeValueAsString(rq))
+		); 
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -229,25 +228,25 @@ class BpiTest {
 		bpi.setRateFloat(1234.123);
 		
 		BpiRq rq = BpiRq.builder()
-				.code(bpi.getCode())
-				.codeChineseName(bpi.getCodeChineseName())
-				.symbol(bpi.getSymbol())
-				.rateFloat(bpi.getRateFloat())
-				.description(bpi.getDescription())
-				.build();
+			.code(bpi.getCode())
+			.codeChineseName(bpi.getCodeChineseName())
+			.symbol(bpi.getSymbol())
+			.rateFloat(bpi.getRateFloat())
+			.description(bpi.getDescription())
+			.build();
 		
 		// 前端在update 會送 舊幣別 讓後端知道是否新增還是更新
 		rq.setOldCode(bpi.getCode()); 
 		
 		ResultActions resultActions = this.mockMvc.perform(
-				put(URL + "/updateBpi") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(rq))
-			);
+			put(URL + "/updateBpi") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+			.content(jsonMapper.writeValueAsString(rq))
+		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -264,14 +263,14 @@ class BpiTest {
 		rq.setRate(741987.12);
 		
 		ResultActions resultActions = this.mockMvc.perform(
-				patch(URL + "/updateBpiRate") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(rq))
-			);
+			patch(URL + "/updateBpiRate") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+			.content(jsonMapper.writeValueAsString(rq))
+		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -286,14 +285,14 @@ class BpiTest {
 		BpiRq rq = new BpiRq();
 		rq.setCode("TWD");
 		ResultActions resultActions = this.mockMvc.perform(
-				delete(URL + "/deleteBpi/code") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-				.content(jsonMapper.writeValueAsString(rq))
-			);
+			delete(URL + "/deleteBpi/code") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+			.content(jsonMapper.writeValueAsString(rq))
+		);
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -306,13 +305,13 @@ class BpiTest {
 	@Test
 	void callCoindeskTest() throws Exception {
 		ResultActions resultActions = this.mockMvc.perform(
-				get(URL + "/call/coindesk") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-			); 
+			get(URL + "/call/coindesk") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+		); 
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	
@@ -325,13 +324,13 @@ class BpiTest {
 	@Test
 	void callTransFormTest() throws Exception {
 		ResultActions resultActions = this.mockMvc.perform(
-				get(URL + "/call/coindesk/transform") // url
-				.contentType(MediaType.APPLICATION_JSON) // 資料的格式
-			); 
+			get(URL + "/call/coindesk/transform") // url
+			.contentType(MediaType.APPLICATION_JSON) // 資料的格式
+		); 
 		resultActions.andReturn().getResponse().setCharacterEncoding(CHARACTER_ENCODING); // 解决打印中文亂碼問題
 		String response = resultActions.andExpect(MockMvcResultMatchers.status().isOk()) // 期待狀態OK
-                .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
-                .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
+            .andDo(MockMvcResultHandlers.print()) // 打印出請求和相應的內容
+            .andReturn().getResponse().getContentAsString(); // 將相應的資料轉換為字串
 		log.info("response : {}", response);
 	}
 	

@@ -14,7 +14,6 @@ import lombok.Data;
  * 
  * @author Joe
  *
- * @Date 2021/10/06
  */
 @Data
 public class Coindesk implements Serializable {

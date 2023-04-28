@@ -1,7 +1,5 @@
 package com.bpi.model.dto;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -10,18 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ * DTO
  * 
  * @author Joe
- * 
- * @Date 2022/02/16
  *
  */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class NewBpi implements Serializable {
+public class NewBpi {
 	
 	/**
 	 * 

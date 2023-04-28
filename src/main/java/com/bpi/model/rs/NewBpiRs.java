@@ -12,10 +12,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * DTO
  * 
  * @author Joe
  *
- * @Date 2021/10/07
  */
 @Data
 @Builder

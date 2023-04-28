@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
  * 
  * @author Joe
  *
- * @Date 2023/03/24
  */
 @Schema(description = "幣別 API Response")
 @Data

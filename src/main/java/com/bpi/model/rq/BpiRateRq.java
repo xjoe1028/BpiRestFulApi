@@ -12,8 +12,6 @@ import lombok.EqualsAndHashCode;
  * 
  * @author Joe
  * 
- * @Date 2022/01/21
- *
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
