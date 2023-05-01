@@ -1,6 +1,5 @@
 package com.bpi.model.rs;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import com.bpi.model.dto.CoindeskBpiDTO;
@@ -16,23 +15,15 @@ import lombok.Data;
  *
  */
 @Data
-public class Coindesk implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Coindesk {
 	
 	private Time time;
 	
-	/**
-	 * 免責聲明
-	 */
-	@Schema(description = "disclaimer 免責聲明")
+	@Schema(description = "免責聲明")
 	private String disclaimer;
 	
 	private String chartName;
 	
-	private transient Map<String, CoindeskBpiDTO> bpi;
+	private Map<String, CoindeskBpiDTO> bpi;
 	
 }

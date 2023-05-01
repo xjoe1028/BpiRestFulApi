@@ -47,7 +47,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 貨幣名稱
 	 */
-	@Schema(description = "code 貨幣名稱")
+	@Schema(description = "貨幣名稱")
 	@Id
 	@NotNull
 	private String code;
@@ -55,7 +55,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 貨幣中文名稱
 	 */
-	@Schema(description = "codeChineseName 貨幣中文名稱")
+	@Schema(description = "貨幣中文名稱")
 	@Basic
 	@Column
 	@NotNull
@@ -64,7 +64,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 金錢格式 ex: $
 	 */
-	@Schema(description = "code 金錢符號")
+	@Schema(description = "金錢符號")
 	@Basic
 	@Column
 	private String symbol;
@@ -72,7 +72,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 匯率 有千分位樣式 
 	 */
-	@Schema(description = "rate 匯率(千分位,)")
+	@Schema(description = "匯率(千分位,)")
 	@Basic
 	@Column
 	private String rate; 
@@ -80,7 +80,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 匯率 
 	 */
-	@Schema(description = "rate 匯率")
+	@Schema(description = "匯率")
 	@Basic
 	@Column
 	private Double rateFloat;
@@ -88,7 +88,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 描述
 	 */
-	@Schema(description = "description 描述")
+	@Schema(description = "描述")
 	@Basic
 	@Column
 	private String description;
@@ -96,7 +96,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 創建時間
 	 */
-	@Schema(description = "created 創建時間")
+	@Schema(description = "創建時間")
 	@Basic
 	@Column
 	@NotNull
@@ -105,7 +105,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 更新時間
 	 */
-	@Schema(description = "updated 更新時間")
+	@Schema(description = "更新時間")
 	@Basic
 	@Column
 	private String updated;

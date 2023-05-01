@@ -1,6 +1,5 @@
 package com.bpi.model.rs;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -21,12 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewBpiRs implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class NewBpiRs {
 
 	private String updated;
 

@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.bpi.cconstant.CacheKeys;
@@ -230,7 +231,7 @@ public class BpiService {
 	 * @throws JsonProcessingException
 	 * @throws ParseException
 	 */
-	public NewBpiRs transform(String jsonStr) throws JsonProcessingException, ParseException {
+	public NewBpiRs transform(String jsonStr) {
 		Coindesk coindesk = JsonUtils.getObject(jsonStr, Coindesk.class);
 		log.info("coindesk: {}", coindesk);
 
@@ -238,10 +239,12 @@ public class BpiService {
 		
 		// 轉成list
 		List<NewBpi> bpisList = coindesk.getBpi().values().stream().map(b -> {
-			allBpis.stream().filter(ab -> ab.getCode().equals(b.getCode())).forEach(ab -> b.setCodeChineseName(ab.getCodeChineseName()));
+			String codeChineseName = allBpis.stream()
+				.filter(ab -> StringUtils.equals(ab.getCode(), b.getCode()))
+				.findFirst().stream().map(BpiEntity::getCodeChineseName).toString();
 			return NewBpi.builder()
 				.code(b.getCode())
-				.codeChineseName(b.getCodeChineseName())
+				.codeChineseName(codeChineseName)
 				.rate(b.getRate())
 				.rateFloat(b.getRateFloat())
 				.build();
@@ -249,10 +252,12 @@ public class BpiService {
 		
 		// 轉成map
 		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream().map(b -> {
-			allBpis.stream().filter(ab -> ab.getCode().equals(b.getCode())).forEach(ab -> b.setCodeChineseName(ab.getCodeChineseName()));
+			String codeChineseName = allBpis.stream()
+				.filter(ab -> StringUtils.equals(ab.getCode(), b.getCode()))
+				.findFirst().stream().map(BpiEntity::getCodeChineseName).toString();
 			return NewBpi.builder()
 				.code(b.getCode())
-				.codeChineseName(b.getCodeChineseName())
+				.codeChineseName(codeChineseName)
 				.rate(b.getRate())
 				.rateFloat(b.getRateFloat())
 				.build();

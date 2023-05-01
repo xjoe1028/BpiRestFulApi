@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Date util
  * 
@@ -33,11 +35,17 @@ public class DateUtil {
 		return dateTime.format(dtf);
 	}
 
-	public static String updatedFormat(String updated) throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_T_HHMMSS);
-		Date date = dateFormat.parse(updated);// You will get date object relative to server/client
-		DateFormat formatter = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS); // If you need time just put specific format for time
-		return formatter.format(date);
+	/**
+	 * 將 ex: yyyy-MM-dd'T'HH:mm:ss 時間格式字串 轉 yyyy/MM/dd hh:mm:ss 時間格式字串
+	 * 
+	 * @param updated
+	 * @return
+	 */
+	public static String updatedFormat(String updated) {
+		DateTimeFormatter sourceFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_YYYYMMDD_T_HHMMSS);
+		LocalDateTime localDateTime = LocalDateTime.parse(updated, sourceFormatter);
+		DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_YYYYMMDD_HHMMSS);
+		return localDateTime.format(targetFormatter);
 	}
 	
 }

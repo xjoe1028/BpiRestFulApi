@@ -21,9 +21,11 @@ import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.model.rs.ApiResponse;
 import com.bpi.model.rs.BpiRs;
+import com.bpi.model.rs.Coindesk;
 import com.bpi.model.rs.NewBpiRs;
 import com.bpi.service.BpiService;
 import com.bpi.util.BpiRsUtil;
+import com.bpi.util.JsonUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -157,10 +159,10 @@ public class BpiController {
 	 */
 	@Operation(summary = "呼叫外部coindesk API")
 	@GetMapping("/call/coindesk")
-	public ApiResponse<String> callCoindeskAPI() {
-		String response = restTemplate.getForObject(COINDESK_URL, String.class);
-		log.info("call coindesk api res : {}", response);
-		return BpiRsUtil.getSuccess(response);
+	public ApiResponse<Coindesk> callCoindeskAPI() {
+		Coindesk coindesk = JsonUtils.getObject(restTemplate.getForObject(COINDESK_URL, String.class), Coindesk.class);
+		log.info("call coindesk api res : {}", coindesk);
+		return BpiRsUtil.getSuccess(coindesk);
 	}
 
 	/**
@@ -173,7 +175,7 @@ public class BpiController {
 	 */
 	@Operation(summary = "呼叫外部coindesk API 後進行資料處理 return")
 	@GetMapping("/call/coindesk/transform")
-	public ApiResponse<NewBpiRs> transformNewBpi() throws JsonProcessingException, ParseException {
+	public ApiResponse<NewBpiRs> transformNewBpi() {
 		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);
 		log.info("call coindesk api res : {}", jsonStr);
 		return BpiRsUtil.getSuccess(bpiService.transform(jsonStr));

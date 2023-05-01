@@ -1,11 +1,10 @@
 package com.bpi.model.dto;
 
-import com.bpi.model.rq.BpiRq;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -20,10 +19,21 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Data
-public class CoindeskBpiDTO extends BpiRq {
+public class CoindeskBpiDTO {
 
+	@Schema(description = "貨幣名稱")
+	public String code;
+	
+	@Schema(description = "金錢符號")
+	private String symbol;
+
+	@Schema(description = "描述")
+	private String description;
+	
+	@Schema(description = "匯率(千分位格式)")
+	private String rate;
+	
 	@JsonProperty("rate_float")
 	private Double rateFloat;
 
