@@ -13,11 +13,6 @@ import lombok.Data;
 public class Time {
 	
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * ex: Oct 6, 2021 10:58:00 UTC
 	 */
 	@Schema(description = "updated 修改日期")
