@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -96,13 +97,16 @@ class BpiTest {
 			bpiRepository.save(rq);
 		}
 		
-		log.info("testData : {}", bpiRepository.findAll().toString());
+		List<BpiEntity> bpiList = bpiRepository.findAll();
+		log.info("testData : {}", bpiList.toString());
+		Assertions.assertEquals(codes.size(), bpiRepository.findAll().size());
 	}
 	
 	@Disabled("skip")
 	@Test
 	void deleteAllDataTest() throws Exception {
 		bpiRepository.deleteAll();
+		Assertions.assertEquals(0, bpiRepository.findAll().size());
 		log.info("delete all success!!");
 	}
 
