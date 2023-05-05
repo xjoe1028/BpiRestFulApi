@@ -227,9 +227,6 @@ public class BpiService {
 	 * 
 	 * @param jsonStr
 	 * @return
-	 * @throws JsonMappingException
-	 * @throws JsonProcessingException
-	 * @throws ParseException
 	 */
 	public NewBpiRs transform(String jsonStr) {
 		Coindesk coindesk = JsonUtils.getObject(jsonStr, Coindesk.class);
@@ -241,7 +238,7 @@ public class BpiService {
 		List<NewBpi> bpisList = coindesk.getBpi().values().stream().map(b -> {
 			String codeChineseName = allBpis.stream()
 				.filter(ab -> StringUtils.equals(ab.getCode(), b.getCode()))
-				.findFirst().stream().map(BpiEntity::getCodeChineseName).collect(Collectors.joining());
+				.findFirst().map(BpiEntity::getCodeChineseName).orElse("");
 			return NewBpi.builder()
 				.code(b.getCode())
 				.codeChineseName(codeChineseName)
@@ -254,7 +251,7 @@ public class BpiService {
 		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream().map(b -> {
 			String codeChineseName = allBpis.stream()
 				.filter(ab -> StringUtils.equals(ab.getCode(), b.getCode()))
-				.findFirst().stream().map(BpiEntity::getCodeChineseName).collect(Collectors.joining());
+				.findFirst().map(BpiEntity::getCodeChineseName).orElse("");
 			return NewBpi.builder()
 				.code(b.getCode())
 				.codeChineseName(codeChineseName)
