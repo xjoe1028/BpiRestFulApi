@@ -1,6 +1,10 @@
 package com.bpi.cconstant;
 
+import java.util.Arrays;
+
+import jdk.jfr.Description;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Message
@@ -9,6 +13,7 @@ import lombok.Getter;
  * 
  */
 @Getter
+@RequiredArgsConstructor
 public enum ErrorCode {
 
 	// error message
@@ -23,22 +28,19 @@ public enum ErrorCode {
 	VALIDATION_ERROR("1008", "欄位檢核錯誤")
 	;
 	
-	private String code;
-	private String message;
+	@Description("錯誤代碼")
+	final String code;
 	
-	ErrorCode(String code, String message) {
-		this.code = code;
-		this.message = message;
-	}
+	@Description("錯誤訊息")
+	final String message;
 	
 	public static ErrorCode findByCode(String code) {
-		for (ErrorCode e : ErrorCode.values()) {
-			if (e.name().equals(code)) {
-				return e;
-			}
-		}
-		return FAILED;
+		return Arrays.stream(ErrorCode.values()).filter(e -> e.getCode().equals(code)).findFirst().orElse(FAILED);
 	}
 	
-	
+	public static String findErrMsg(String code) {
+		return Arrays.stream(ErrorCode.values()).filter(e -> e.getCode().equals(code)).findFirst()
+			.map(ErrorCode::getMessage).orElse(FAILED.getMessage());
+	}
+
 }
