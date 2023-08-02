@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.bpi.cconstant.CacheKeys;
 import com.bpi.cconstant.ErrorCode;
 import com.bpi.model.assembler.BpiAssembler;
+import com.bpi.model.dto.CoindeskBpiDTO;
 import com.bpi.model.dto.NewBpi;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRateRq;
@@ -88,7 +89,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> findBpiByPk(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
 		
-		if (!bpi.isPresent()) 
+		if (bpi.isEmpty()) 
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 		
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
@@ -103,7 +104,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> findBpiByCodeChineseName(String codeChineseName) {
 		Optional<BpiEntity> bpi = bpiRepository.findByCodeChineseName(codeChineseName);
 		
-		if (!bpi.isPresent())
+		if (bpi.isEmpty())
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
@@ -119,7 +120,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> findBpiByCodeAndCodeChineseName(String code, String codeChineseName) {
 		Optional<BpiEntity> bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
 		
-		if (!bpi.isPresent()) 
+		if (bpi.isEmpty())
 			return BpiRsUtil.getFailed(ErrorCode.SELECT_EMPTY);
 
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpi.get()));
@@ -134,7 +135,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> addBpi(BpiRq rq) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
 		
-		if (bpi.isPresent()) 
+		if (bpi.isPresent())
 			return BpiRsUtil.getFailed(ErrorCode.INSERT_FAILED_PK_ONLY);
 
 		BpiEntity entity = bpiAssembler.toEntity(rq);
@@ -154,7 +155,7 @@ public class BpiService {
 		BpiEntity entity = bpiAssembler.toEntity(rq);
 		entity.setRate(NumberUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
 		
-		if (!oldBpi.isPresent()) {
+		if (oldBpi.isEmpty()) {
 			log.info("原幣別資料不存在，直接做新增");
 			entity.setCreated(DateUtil.getNowDate());
 		} else {
@@ -180,7 +181,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> updateBpiRate(BpiRateRq rq) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
 
-		if (!bpi.isPresent())
+		if (bpi.isEmpty())
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_PK_ONLY);
 
 		String rateStr = NumberUtil.fmtMicrometer(String.valueOf(rq.getRate()));
@@ -196,7 +197,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> deleteBpi(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
 
-		if (!bpi.isPresent())
+		if (bpi.isEmpty())
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 
 		bpiRepository.delete(bpi.get());
@@ -212,7 +213,7 @@ public class BpiService {
 	public ApiResponse<BpiRs> deleteBpiByCode(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
 		
-		if (!bpi.isPresent())
+		if (bpi.isEmpty())
 			return BpiRsUtil.getFailed(ErrorCode.DELETE_FAILED_DATA_NOT_EXIST);
 
 		bpiRepository.deleteBpiByCode(code);
@@ -229,34 +230,19 @@ public class BpiService {
 		Coindesk coindesk = JsonUtils.getObject(jsonStr, Coindesk.class);
 		log.info("coindesk: {}", coindesk);
 
-		List<BpiEntity> allBpis = Optional.ofNullable(bpiRepository.findAll()).orElseGet(ArrayList::new);
+		List<BpiEntity> allBpis = Optional.of(bpiRepository.findAll()).orElseGet(ArrayList::new);
 		
 		// 轉成list
-		List<NewBpi> bpisList = coindesk.getBpi().values().stream().map(b -> {
-			String codeChineseName = allBpis.stream()
-				.filter(ab -> StringUtils.equals(ab.getCode(), b.getCode()))
-				.findFirst().map(BpiEntity::getCodeChineseName).orElse("");
-			return NewBpi.builder()
-				.code(b.getCode())
-				.codeChineseName(codeChineseName)
-				.rate(b.getRate())
-				.rateFloat(b.getRateFloat())
-				.build();
-		}).collect(Collectors.toList());
+		assert coindesk != null;
+		List<NewBpi> bpisList = coindesk.getBpi().values().stream()
+			.map(b -> transformNewBpi(allBpis, b))
+			.collect(Collectors.toList());
 		
 		// 轉成map
-		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream().map(b -> {
-			String codeChineseName = allBpis.stream()
-				.filter(ab -> StringUtils.equals(ab.getCode(), b.getCode()))
-				.findFirst().map(BpiEntity::getCodeChineseName).orElse("");
-			return NewBpi.builder()
-				.code(b.getCode())
-				.codeChineseName(codeChineseName)
-				.rate(b.getRate())
-				.rateFloat(b.getRateFloat())
-				.build();
-		}).collect(Collectors.toMap(NewBpi::getCode, Function.identity(), (v1, v2) -> v2));
-		
+		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream()
+			.map(b -> transformNewBpi(allBpis, b))
+			.collect(Collectors.toMap(NewBpi::getCode, Function.identity(), (v1, v2) -> v2));
+
 		log.info("bpiList: {}", bpisList);
 		log.info("bpiMap: {}", bpisMap);
 		
@@ -264,6 +250,18 @@ public class BpiService {
 			.bpisList(bpisList)
 			.bpisMap(bpisMap)
 			.updated(DateUtil.updatedFormat(coindesk.getTime().getUpdatedISO().substring(0,19)))
+			.build();
+	}
+	
+	private NewBpi transformNewBpi(List<BpiEntity> bpis, CoindeskBpiDTO cbDto) {
+		String codeChineseName = bpis.stream()
+			.filter(ab -> StringUtils.equals(ab.getCode(), cbDto.getCode()))
+			.findFirst().map(BpiEntity::getCodeChineseName).orElse("");
+		return NewBpi.builder()
+			.code(cbDto.getCode())
+			.codeChineseName(codeChineseName)
+			.rate(cbDto.getRate())
+			.rateFloat(cbDto.getRateFloat())
 			.build();
 	}
 	

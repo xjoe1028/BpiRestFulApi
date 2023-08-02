@@ -29,7 +29,7 @@ public interface BpiAssembler {
 	
 	BpiRs entityToRs(BpiEntity entity);
 	
-	List<BpiRs> entityListToListRs(List<BpiEntity> entitys);
+	List<BpiRs> entityListToListRs(List<BpiEntity> entities);
 	
 	BpiForMyBatis entityToBpiForMyBatis(BpiEntity entity);
 	
