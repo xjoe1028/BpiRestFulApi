@@ -129,7 +129,7 @@ public class BpiService {
 	/**
 	 * 新增
 	 * 
-	 * @param bpi
+	 * @param rq
 	 * @return
 	 */
 	public ApiResponse<BpiRs> addBpi(BpiRq rq) {
@@ -147,7 +147,7 @@ public class BpiService {
 	/**
 	 * 修改
 	 * 
-	 * @param bpi
+	 * @param rq
 	 * @return
 	 */
 	public ApiResponse<BpiRs> updateBpi(BpiRq rq) {
@@ -175,7 +175,7 @@ public class BpiService {
 	/**
 	 * 修改匯率 by code
 	 * 
-	 * @param bpi
+	 * @param rq
 	 * @return
 	 */
 	public ApiResponse<BpiRs> updateBpiRate(BpiRateRq rq) {
@@ -192,7 +192,7 @@ public class BpiService {
 	/**
 	 * Delete entity
 	 * 
-	 * @param entity
+	 * @param code
 	 */
 	public ApiResponse<BpiRs> deleteBpi(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
