@@ -178,6 +178,8 @@
                 </configuration>
 			</plugin>
 		</plugins>
+		
+		<finalName>BpiBackend</finalName>
 	</build>
 
 </project>

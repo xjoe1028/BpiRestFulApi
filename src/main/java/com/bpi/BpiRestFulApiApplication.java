@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @MapperScan(basePackages = { "com.bpi.mybatis" })
-@ComponentScan(basePackages = { "com.bpi" })
 @SpringBootApplication
 public class BpiRestFulApiApplication {
 

@@ -22,7 +22,7 @@ import com.bpi.model.rs.ApiResponse;
 import com.bpi.model.rs.BpiRs;
 import com.bpi.model.rs.Coindesk;
 import com.bpi.model.rs.NewBpiRs;
-import com.bpi.repository.BpiRepository;
+import com.bpi.service.repository.BpiRepository;
 import com.bpi.util.BpiRsUtil;
 import com.bpi.util.DateUtil;
 import com.bpi.util.JsonUtils;
@@ -53,7 +53,7 @@ public class BpiService {
 	
 	// 如db有更新就要先去查db存入redis，反之
 	private boolean dbUpdatedFlag = false;
-	
+
 	/**
 	 * select all
 	 * 
@@ -140,7 +140,7 @@ public class BpiService {
 
 		BpiEntity entity = bpiAssembler.toEntity(rq);
 		entity.setRate(NumberUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
-		entity.setCreated(DateUtil.getNowDate());
+		entity.setCreated(DateUtil.getNowDateTime());
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.save(entity)));
 	}
 
@@ -157,10 +157,10 @@ public class BpiService {
 		
 		if (oldBpi.isEmpty()) {
 			log.info("原幣別資料不存在，直接做新增");
-			entity.setCreated(DateUtil.getNowDate());
+			entity.setCreated(DateUtil.getNowDateTime());
 		} else {
 			log.info("原幣別資料已存在，直接做修改");
-			entity.setUpdated(DateUtil.getNowDate());
+			entity.setUpdated(DateUtil.getNowDateTime());
 			entity.setCreated(oldBpi.get().getCreated());
 			// JPA JPQL update
 //			bpiRepository.updateBpi(entity, rq.getOldCode());
@@ -185,7 +185,7 @@ public class BpiService {
 			return BpiRsUtil.getFailed(ErrorCode.UPDATE_FAILED_PK_ONLY);
 
 		String rateStr = NumberUtil.fmtMicrometer(String.valueOf(rq.getRate()));
-		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), DateUtil.getNowDate());
+		bpiRepository.updateBpiRateByCode(rateStr, rq.getRate(), rq.getCode(), DateUtil.getNowDateTime());
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.findByCode(rq.getCode())));
 	}
 	
@@ -235,12 +235,12 @@ public class BpiService {
 		// 轉成list
 		assert coindesk != null;
 		List<NewBpi> bpisList = coindesk.getBpi().values().stream()
-			.map(b -> transformNewBpi(allBpis, b))
+			.map(b -> this.transformNewBpi(allBpis, b))
 			.collect(Collectors.toList());
 		
 		// 轉成map
 		Map<String, NewBpi> bpisMap = coindesk.getBpi().values().stream()
-			.map(b -> transformNewBpi(allBpis, b))
+			.map(b -> this.transformNewBpi(allBpis, b))
 			.collect(Collectors.toMap(NewBpi::getCode, Function.identity(), (v1, v2) -> v2));
 
 		log.info("bpiList: {}", bpisList);

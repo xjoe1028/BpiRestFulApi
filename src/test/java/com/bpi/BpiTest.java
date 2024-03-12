@@ -28,7 +28,7 @@ import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.mybatis.BpiMapper;
-import com.bpi.repository.BpiRepository;
+import com.bpi.service.repository.BpiRepository;
 import com.bpi.util.DateUtil;
 import com.bpi.util.NumberUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,7 +65,7 @@ class BpiTest {
 	private MockMvc mockMvc;
 	
 	public final static String URL = "/api/bpi";
-	public final static String TODAY = DateUtil.getNowDate();
+	public final static String TODAY = DateUtil.getNowDateTime();
 	public final static String CHARACTER_ENCODING = "UTF-8";
 	
 	public static List<String> codes = Arrays.asList("USD", "GBP", "EUR", "CNY", "JPY", "KRW");
