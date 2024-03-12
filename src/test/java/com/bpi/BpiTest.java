@@ -28,7 +28,7 @@ import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.mybatis.BpiMapper;
-import com.bpi.service.repository.BpiRepository;
+import com.bpi.repository.BpiRepository;
 import com.bpi.util.DateUtil;
 import com.bpi.util.NumberUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

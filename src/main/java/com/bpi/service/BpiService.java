@@ -22,7 +22,7 @@ import com.bpi.model.rs.ApiResponse;
 import com.bpi.model.rs.BpiRs;
 import com.bpi.model.rs.Coindesk;
 import com.bpi.model.rs.NewBpiRs;
-import com.bpi.service.repository.BpiRepository;
+import com.bpi.repository.BpiRepository;
 import com.bpi.util.BpiRsUtil;
 import com.bpi.util.DateUtil;
 import com.bpi.util.JsonUtils;
