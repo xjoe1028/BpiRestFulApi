@@ -59,7 +59,6 @@ public class BpiController {
 	/**
 	 * select All
 	 * 
-	 * @param bpi
 	 * @return
 	 */
 	@Operation(summary = "查詢所有幣別")
@@ -85,7 +84,7 @@ public class BpiController {
 	/**
 	 * 查詢 Bpi by codeChineseName
 	 * 
-	 * @param code
+	 * @param codeChineseName
 	 * @return
 	 */
 	@Operation(summary = "查詢單一幣別")
@@ -114,7 +113,7 @@ public class BpiController {
 	 * 
 	 * PUT: 替換資源
 	 * 
-	 * @param bpi
+	 * @param rq
 	 * @return
 	 */
 	@Operation(summary = "修改幣別")
@@ -129,7 +128,7 @@ public class BpiController {
 	 * 
 	 * PATCH: 更新資源部份內容
 	 * 
-	 * @param bpi
+	 * @param rq
 	 * @return
 	 */
 	@Operation(summary = "修改幣別匯率")
@@ -142,7 +141,7 @@ public class BpiController {
 	/**
 	 * 刪除 Bpi by code
 	 * 
-	 * @param id
+	 * @param rq
 	 * @return
 	 */
 	@Operation(summary = "刪除幣別")
