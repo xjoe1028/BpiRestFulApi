@@ -41,7 +41,7 @@ public class DateUtil {
 	 * @param minGoString
 	 * @return
 	 */
-	public LocalDate formatMinGoToLocalDate(String minGoString) {
+	public LocalDate format0YYYMMDDToLocalDate(String minGoString) {
 		try {
 			ChronoLocalDate date = CHRONOLOGY.date(DATE_MINGO_FORMATTER.parse(minGoString));
 			return LocalDate.from(date);
@@ -74,12 +74,20 @@ public class DateUtil {
 		return LocalDate.now().format(DATE_FORMATTER);
 	}
 
+	public static String getNowDate(DateTimeFormatter formatter) {
+		return LocalDate.now().format(formatter);
+	}
+
 	public static String getNowDateTime() {
 		return LocalDateTime.now().format(DATE_FORMAT_YYYYMMDD_HHMMSS);
 	}
 
-	public static String dateTimeToString(LocalDateTime dateTime) {
-		return dateTime.format(DATE_FORMAT_YYYYMMDD_HHMMSS);
+	public static String getNowDateTime(DateTimeFormatter formatter) {
+		return LocalDateTime.now().format(formatter);
+	}
+
+	public static String dateTimeToString(LocalDateTime dateTime, DateTimeFormatter formatter) {
+		return dateTime.format(formatter);
 	}
 
 	public static String dateToFormat(String format, LocalDate date) {
@@ -137,6 +145,13 @@ public class DateUtil {
 		}
 	}
 
+	public static String formatLocalDateToMinGoString(String localDate, DateTimeFormatter localDateFormatter, DateTimeFormatter mingoFormatter) {
+		if (Optional.ofNullable(localDate).isEmpty()) {
+			log.debug("formatLocalDateToMinGoString input localDate is null");
+			return "0";
+		}
+		LocalDate trans = LocalDate.parse(localDate, localDateFormatter);
+		return MinguoDate.from(trans).format(mingoFormatter);// 轉民國
+	}
 
-	
 }
