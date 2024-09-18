@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * Bpi Rs
  * 
@@ -20,21 +22,21 @@ import lombok.NoArgsConstructor;
 public class BpiRs {
 
 	@Schema(description = "貨幣名稱")
-	private String code;
+	String code;
 
 	@Schema(description = "貨幣中文名稱")
-	private String codeChineseName;
+	String codeChineseName;
 
 	@Schema(description = "金錢符號")
-	private String symbol;
+	String symbol;
 
 	@Schema(description = "匯率(千分位,)")
-	private String rate;
+	String rate;
 
 	@Schema(description = "匯率")
-	private Double rateFloat;
+	BigDecimal rateFloat;
 
 	@Schema(description = "描述")
-	private String description;
+	String description;
 
 }

@@ -22,10 +22,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NewBpiRs {
 
-	private String updated;
+	String updated;
 
-	private List<NewBpi> bpisList;
+	List<NewBpi> bpisList;
 
-	private Map<String, NewBpi> bpisMap;
+	Map<String, NewBpi> bpisMap;
 
 }

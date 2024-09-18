@@ -1,6 +1,7 @@
 package com.bpi.model.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,12 +38,12 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 	
 //	@Schema(name = "id pk")
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.AUTO)
-//	private Long id;
+//	Long id;
 
 	/**
 	 * 貨幣名稱
@@ -50,7 +51,7 @@ public class BpiEntity implements Serializable {
 	@Schema(description = "貨幣名稱")
 	@Id
 	@NotNull
-	private String code;
+	String code;
 	
 	/**
 	 * 貨幣中文名稱
@@ -59,7 +60,7 @@ public class BpiEntity implements Serializable {
 	@Basic
 	@Column
 	@NotNull
-	private String codeChineseName;
+	String codeChineseName;
 	
 	/**
 	 * 金錢格式 ex: $
@@ -67,7 +68,7 @@ public class BpiEntity implements Serializable {
 	@Schema(description = "金錢符號")
 	@Basic
 	@Column
-	private String symbol;
+	String symbol;
 	
 	/**
 	 * 匯率 有千分位樣式 
@@ -75,7 +76,7 @@ public class BpiEntity implements Serializable {
 	@Schema(description = "匯率(千分位,)")
 	@Basic
 	@Column
-	private String rate; 
+	String rate; 
 	
 	/**
 	 * 匯率 
@@ -83,7 +84,7 @@ public class BpiEntity implements Serializable {
 	@Schema(description = "匯率")
 	@Basic
 	@Column
-	private Double rateFloat;
+	BigDecimal rateFloat;
 	
 	/**
 	 * 描述
@@ -91,7 +92,7 @@ public class BpiEntity implements Serializable {
 	@Schema(description = "描述")
 	@Basic
 	@Column
-	private String description;
+	String description;
 	
 	/**
 	 * 創建時間
@@ -100,7 +101,7 @@ public class BpiEntity implements Serializable {
 	@Basic
 	@Column
 	@NotNull
-	private String created;
+	String created;
 	
 	/**
 	 * 更新時間
@@ -108,6 +109,6 @@ public class BpiEntity implements Serializable {
 	@Schema(description = "更新時間")
 	@Basic
 	@Column
-	private String updated;
+	String updated;
 	
 }

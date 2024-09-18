@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -72,7 +73,7 @@ class BpiTest {
 	public static List<String> codesName = Arrays.asList("美元", "英镑", "歐元", "人民幣", "日元", "韓元");
 	public static List<String> symbols = Arrays.asList("$", "£", "€", "¥", "¥", "₩");
 	public static List<String> descriptions = Arrays.asList("United States Dollar", "British Pound Sterling", "Euro", "Chinese yuan", "Japanese Yen", "Korea Hwan");
-	public static List<Double> ratesFloat = Arrays.asList(27.85, 37.85, 31.49, 4.39, 0.24, 0.023);
+	public static List<BigDecimal> ratesFloat = Arrays.asList(BigDecimal.valueOf(27.85), BigDecimal.valueOf(37.85), BigDecimal.valueOf(31.49), BigDecimal.valueOf(4.39), BigDecimal.valueOf(0.24), BigDecimal.valueOf(0.023));
 	public static List<String> createdDates = Arrays.asList(TODAY, TODAY, TODAY, TODAY, TODAY, TODAY);
 	
 	/**
@@ -211,7 +212,7 @@ class BpiTest {
 			.symbol("$")
 			.codeChineseName("新台幣")
 			.description("New Taiwan Dollar")
-			.rateFloat(100.2)
+			.rateFloat(BigDecimal.valueOf(100.2))
 			.build();
 		
 		MockHttpServletResponse mockRes = this.mockMvc.perform(
@@ -239,7 +240,7 @@ class BpiTest {
 		List<BpiEntity> bpis = bpiRepository.findAll();
 		BpiEntity bpi = bpis.get(0);
 		bpi.setDescription("update jpa save");
-		bpi.setRateFloat(1234.123);
+		bpi.setRateFloat(BigDecimal.valueOf(1234.123));
 		
 		BpiRq rq = BpiRq.builder()
 			.code(bpi.getCode())
@@ -276,7 +277,7 @@ class BpiTest {
 	void updateBipRateTest() throws Exception {
 		BpiRateRq rq = new BpiRateRq();
 		rq.setCode("TWD");
-		rq.setRate(741987.12);
+		rq.setRate(BigDecimal.valueOf(741987.12));
 		
 		MockHttpServletResponse mockRes = this.mockMvc.perform(
 				patch(URL + "/updateBpiRate") // url
@@ -369,7 +370,7 @@ class BpiTest {
 		var bpis = bpiRepository.findAll();
 		var entity = bpis.get(0);
 		entity.setDescription("test mybatis update");
-		entity.setRateFloat(1234.123);
+		entity.setRateFloat(BigDecimal.valueOf(1234.123));
 		
 		var bpiForMyBatis = bpiAssembler.entityToBpiForMyBatis(entity);
 		bpiForMyBatis.setOldCode(entity.getCode());

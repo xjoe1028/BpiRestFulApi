@@ -17,13 +17,13 @@ import lombok.Data;
 @Data
 public class Coindesk {
 	
-	private Time time;
+	Time time;
 	
 	@Schema(description = "免責聲明")
-	private String disclaimer;
+	String disclaimer;
 	
-	private String chartName;
+	String chartName;
 	
-	private Map<String, CoindeskBpiDTO> bpi;
+	Map<String, CoindeskBpiDTO> bpi;
 	
 }

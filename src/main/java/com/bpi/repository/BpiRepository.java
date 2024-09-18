@@ -1,5 +1,6 @@
 package com.bpi.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE BpiEntity SET rate = :rate , rateFloat = :rateFloat, updated = :updated WHERE code = :code")
 	@Transactional
-	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat") Double rateFloat , @Param("code") String code, @Param("updated") String updated);
+	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat") BigDecimal rateFloat , @Param("code") String code, @Param("updated") String updated);
 	
 	/**
 	 * delete 語句 jpa 用法

@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+
 /**
  * 更新利率 BpiRateRq
  * 
@@ -19,10 +21,10 @@ public class BpiRateRq extends BaseRq {
 	
 	@Schema(description = "code 貨幣名稱")
 	@NotBlank(message = "code must be not empty")
-	public String code;
+	String code;
 	
 	@Schema(description = "rate 匯率")
 	@NotNull(message = "rate must be not empty")
-	private Double rate;
+	BigDecimal rate;
 	
 }

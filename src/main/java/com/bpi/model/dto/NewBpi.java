@@ -19,15 +19,15 @@ import lombok.NoArgsConstructor;
 public class NewBpi {
 	
 	@Schema(description = "貨幣名稱")
-	private String code;
+	String code;
 	
 	@Schema(description = "貨幣中文名稱")
-	private String codeChineseName;
+	String codeChineseName;
 	
 	@Schema(description = "匯率(千分位格式)")
-	private String rate;
+	String rate;
 	
 	@Schema(description = "匯率")
-	private Double rateFloat;
+	Double rateFloat;
 	
 }
