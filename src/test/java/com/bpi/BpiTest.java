@@ -92,7 +92,7 @@ class BpiTest {
 				.description(descriptions.get(i))
 				.rateFloat(ratesFloat.get(i))
 				.symbol(symbols.get(i))
-				.created(createdDates.get(i))
+				.createDateTime(createdDates.get(i))
 				.build();
 			
 			bpiRepository.save(rq);

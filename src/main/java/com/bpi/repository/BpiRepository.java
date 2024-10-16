@@ -45,7 +45,7 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 //	public Bpi findBpi(@Param("code") String code, @Param("codeChineseName") String codeChineseName);
 	
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE BpiEntity SET code = :#{#bpi.code} , codeChineseName = :#{#bpi.codeChineseName}, symbol = :#{#bpi.symbol}, rate = :#{#bpi.rate} , rateFloat = :#{#bpi.rateFloat}, description = :#{#bpi.description}, created = :#{#bpi.created}, updated = :#{#bpi.updated} WHERE code = :oldCode")
+	@Query("UPDATE BpiEntity SET code = :#{#bpi.code} , codeChineseName = :#{#bpi.codeChineseName}, symbol = :#{#bpi.symbol}, rate = :#{#bpi.rate} , rateFloat = :#{#bpi.rateFloat}, description = :#{#bpi.description}, createDateTime = :#{#bpi.createDateTime}, updateDateTime = :#{#bpi.updateDateTime} WHERE code = :oldCode")
 	@Transactional
 	public int updateBpi(@Param("bpi") BpiEntity bpi, @Param("oldCode") String oldCode);
 
@@ -59,7 +59,7 @@ public interface BpiRepository extends JpaRepository<BpiEntity, String> {
 	 * @return
 	 */
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE BpiEntity SET rate = :rate , rateFloat = :rateFloat, updated = :updated WHERE code = :code")
+	@Query("UPDATE BpiEntity SET rate = :rate , rateFloat = :rateFloat, updateDateTime = :updated WHERE code = :code")
 	@Transactional
 	public int updateBpiRateByCode(@Param("rate") String rate, @Param("rateFloat") BigDecimal rateFloat , @Param("code") String code, @Param("updated") String updated);
 	

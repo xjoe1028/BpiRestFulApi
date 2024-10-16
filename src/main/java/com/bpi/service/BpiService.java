@@ -43,10 +43,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BpiService {
 
-	// JPA
 	final BpiRepository bpiRepository;
 	
-	// mapStruct
 	final BpiAssembler bpiAssembler;
 	
 	final RedisUtils redisUtils;
@@ -56,8 +54,6 @@ public class BpiService {
 
 	/**
 	 * select all
-	 * 
-	 * @return
 	 */
 	public ApiResponse<List<BpiRs>> findAll() {
 		String key = CacheKeys.getCacheName(CacheKeys.BPIS_CACHE);
@@ -82,9 +78,6 @@ public class BpiService {
 
 	/**
 	 * select by code(pk)
-	 * 
-	 * @param code
-	 * @return
 	 */
 	public ApiResponse<BpiRs> findBpiByPk(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
@@ -97,9 +90,6 @@ public class BpiService {
 	
 	/**
 	 * select by codeChineseName
-	 * 
-	 * @param codeChineseName
-	 * @return
 	 */
 	public ApiResponse<BpiRs> findBpiByCodeChineseName(String codeChineseName) {
 		Optional<BpiEntity> bpi = bpiRepository.findByCodeChineseName(codeChineseName);
@@ -112,10 +102,6 @@ public class BpiService {
 	
 	/**
 	 * 查詢 where code = ? and codeChineseName = ?
-	 * 
-	 * @param code
-	 * @param codeChineseName
-	 * @return
 	 */
 	public ApiResponse<BpiRs> findBpiByCodeAndCodeChineseName(String code, String codeChineseName) {
 		Optional<BpiEntity> bpi = bpiRepository.findByCodeAndCodeChineseName(code, codeChineseName);
@@ -128,9 +114,6 @@ public class BpiService {
 
 	/**
 	 * 新增
-	 * 
-	 * @param rq
-	 * @return
 	 */
 	public ApiResponse<BpiRs> addBpi(BpiRq rq) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
@@ -140,15 +123,12 @@ public class BpiService {
 
 		BpiEntity entity = bpiAssembler.toEntity(rq);
 		entity.setRate(NumberUtil.fmtMicrometer(String.valueOf(rq.getRateFloat()))); // 千分位格式化
-		entity.setCreated(DateUtil.getNowDateTime());
+		entity.setCreateDateTime(DateUtil.getNowDateTime());
 		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.save(entity)));
 	}
 
 	/**
 	 * 修改
-	 * 
-	 * @param rq
-	 * @return
 	 */
 	public ApiResponse<BpiRs> updateBpi(BpiRq rq) {
 		Optional<BpiEntity> oldBpi = bpiRepository.findById(rq.getOldCode());
@@ -157,26 +137,21 @@ public class BpiService {
 		
 		if (oldBpi.isEmpty()) {
 			log.info("原幣別資料不存在，直接做新增");
-			entity.setCreated(DateUtil.getNowDateTime());
+			entity.setCreateDateTime(DateUtil.getNowDateTime());
+			entity = bpiRepository.save(entity); // JPA save
 		} else {
 			log.info("原幣別資料已存在，直接做修改");
-			entity.setUpdated(DateUtil.getNowDateTime());
-			entity.setCreated(oldBpi.get().getCreated());
-			// JPA JPQL update
-//			bpiRepository.updateBpi(entity, rq.getOldCode());
-//			return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.getById(rq.getCode())));
+			entity.setUpdateDateTime(DateUtil.getNowDateTime());
+			entity.setCreateDateTime(oldBpi.get().getCreateDateTime());
+			bpiRepository.updateBpi(entity, rq.getOldCode()); // JPA JPQL update
 		}
 		
-		// JPA save
-		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(bpiRepository.save(entity)));
+		return BpiRsUtil.getSuccess(bpiAssembler.entityToRs(entity));
 		
 	}
 	
 	/**
 	 * 修改匯率 by code
-	 * 
-	 * @param rq
-	 * @return
 	 */
 	public ApiResponse<BpiRs> updateBpiRate(BpiRateRq rq) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(rq.getCode());
@@ -191,8 +166,6 @@ public class BpiService {
 	
 	/**
 	 * Delete entity
-	 * 
-	 * @param code
 	 */
 	public ApiResponse<BpiRs> deleteBpi(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
@@ -206,9 +179,6 @@ public class BpiService {
 
 	/**
 	 * 刪除 by code JPQL
-	 * 
-	 * @param code
-	 * @return
 	 */
 	public ApiResponse<BpiRs> deleteBpiByCode(String code) {
 		Optional<BpiEntity> bpi = bpiRepository.findById(code);
@@ -222,9 +192,6 @@ public class BpiService {
 	
 	/**
 	 * 呼叫 url 後 return 更新時間,幣別,幣別中文名稱,利率
-	 * 
-	 * @param jsonStr
-	 * @return
 	 */
 	public NewBpiRs transform(String jsonStr) {
 		Coindesk coindesk = JsonUtils.getObject(jsonStr, Coindesk.class);

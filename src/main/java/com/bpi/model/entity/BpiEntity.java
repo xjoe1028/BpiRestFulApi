@@ -3,12 +3,8 @@ package com.bpi.model.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -50,65 +46,59 @@ public class BpiEntity implements Serializable {
 	 */
 	@Schema(description = "貨幣名稱")
 	@Id
-	@NotNull
+	@Column(name = "CODE")
 	String code;
 	
 	/**
 	 * 貨幣中文名稱
 	 */
 	@Schema(description = "貨幣中文名稱")
-	@Basic
-	@Column
-	@NotNull
+	@Column(name = "CODE_CHINESE_NAME")
 	String codeChineseName;
 	
 	/**
 	 * 金錢格式 ex: $
 	 */
 	@Schema(description = "金錢符號")
-	@Basic
-	@Column
+	@Column(name = "SYMBOL")
 	String symbol;
 	
 	/**
 	 * 匯率 有千分位樣式 
 	 */
 	@Schema(description = "匯率(千分位,)")
-	@Basic
-	@Column
+	@Column(name = "RATE")
 	String rate; 
 	
 	/**
 	 * 匯率 
 	 */
 	@Schema(description = "匯率")
-	@Basic
-	@Column
+	@Column(name = "RATE_FLOAT")
 	BigDecimal rateFloat;
 	
 	/**
 	 * 描述
 	 */
 	@Schema(description = "描述")
-	@Basic
-	@Column
+	@Column(name = "DESCRIPTION")
 	String description;
 	
 	/**
 	 * 創建時間
 	 */
 	@Schema(description = "創建時間")
-	@Basic
-	@Column
 	@NotNull
-	String created;
+	@Column(name = "CREATE_DATE_TIME", insertable = false, updatable = false)
+	// @Convert(converter = TimeStampAttributeConverter.class)
+	String createDateTime;
 	
 	/**
 	 * 更新時間
 	 */
 	@Schema(description = "更新時間")
-	@Basic
-	@Column
-	String updated;
+	@Column(name = "UPDATE_DATE_TIME")
+	// @Convert(converter = TimeStampAttributeConverter.class)
+	String updateDateTime;
 	
 }

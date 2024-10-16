@@ -1,8 +1,9 @@
 package com.bpi.model.rq;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -76,17 +77,5 @@ public class BpiRq extends BaseRq {
 	 */
 	@Schema(description = "舊幣別")
 	String oldCode;
-
-	/**
-	 * 創建時間
-	 */
-	@Schema(description = "創建時間")
-	String created;
-
-	/**
-	 * 更新時間
-	 */
-	@Schema(description = "更新時間")
-	String updated;
 
 }

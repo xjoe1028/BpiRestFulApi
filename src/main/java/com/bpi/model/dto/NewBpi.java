@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * DTO
  * 
@@ -28,6 +30,6 @@ public class NewBpi {
 	String rate;
 	
 	@Schema(description = "匯率")
-	Double rateFloat;
+	BigDecimal rateFloat;
 	
 }

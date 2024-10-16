@@ -43,7 +43,6 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 @Slf4j
-@Tag(name = "幣別", description = "幣別 RestFul API Controller")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // 跨域的問題
 @RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -58,8 +57,6 @@ public class BpiController {
 
 	/**
 	 * select All
-	 * 
-	 * @return
 	 */
 	@Operation(summary = "查詢所有幣別")
 	@GetMapping("/findAllBpis")
@@ -83,9 +80,6 @@ public class BpiController {
 
 	/**
 	 * 查詢 Bpi by codeChineseName
-	 * 
-	 * @param codeChineseName
-	 * @return
 	 */
 	@Operation(summary = "查詢單一幣別")
 	@GetMapping("/findBpi/codeChineseName")
@@ -97,9 +91,6 @@ public class BpiController {
 
 	/**
 	 * 新增 Bpi
-	 * 
-	 * @param bpi
-	 * @return
 	 */
 	@Operation(summary = "新增幣別")
 	@RqType(BpiRq.class)
@@ -110,11 +101,7 @@ public class BpiController {
 
 	/**
 	 * 修改 Bpi
-	 * 
 	 * PUT: 替換資源
-	 * 
-	 * @param rq
-	 * @return
 	 */
 	@Operation(summary = "修改幣別")
 	@RqType(BpiRq.class)
@@ -125,11 +112,7 @@ public class BpiController {
 
 	/**
 	 * 修改 Bpi 匯率
-	 * 
 	 * PATCH: 更新資源部份內容
-	 * 
-	 * @param rq
-	 * @return
 	 */
 	@Operation(summary = "修改幣別匯率")
 	@RqType(BpiRateRq.class)
@@ -140,9 +123,6 @@ public class BpiController {
 
 	/**
 	 * 刪除 Bpi by code
-	 * 
-	 * @param rq
-	 * @return
 	 */
 	@Operation(summary = "刪除幣別")
 	@RqType(BpiRq.class)
@@ -153,8 +133,6 @@ public class BpiController {
 
 	/**
 	 * 呼叫 coindesk API
-	 * 
-	 * @return
 	 */
 	@Operation(summary = "呼叫外部coindesk API")
 	@GetMapping("/call/coindesk")
@@ -166,11 +144,6 @@ public class BpiController {
 
 	/**
 	 * 呼叫 coindesk API 在 format成自定義的資料 return
-	 * 
-	 * @return
-	 * @throws ParseException
-	 * @throws JsonProcessingException
-	 * @throws Exception
 	 */
 	@Operation(summary = "呼叫外部coindesk API 後進行資料處理 return")
 	@GetMapping("/call/coindesk/transform")
