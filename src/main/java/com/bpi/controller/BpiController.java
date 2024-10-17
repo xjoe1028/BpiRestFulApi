@@ -1,8 +1,10 @@
 package com.bpi.controller;
 
-import java.text.ParseException;
 import java.util.List;
 
+import com.bpi.feign.CoindeskFeign;
+import com.bpi.util.BpiRsUtil;
+import com.bpi.util.JsonUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.bpi.model.RqType;
 import com.bpi.model.rq.BpiRateRq;
@@ -24,15 +25,11 @@ import com.bpi.model.rs.BpiRs;
 import com.bpi.model.rs.Coindesk;
 import com.bpi.model.rs.NewBpiRs;
 import com.bpi.service.BpiService;
-import com.bpi.util.BpiRsUtil;
-import com.bpi.util.JsonUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,11 +46,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class BpiController {
 
-	public static final String COINDESK_URL = "https://api.coindesk.com/v1/bpi/currentprice.json";
-
 	final BpiService bpiService;
 
-	final RestTemplate restTemplate;
+	final CoindeskFeign coindeskFeign;
 
 	/**
 	 * select All
@@ -137,7 +132,7 @@ public class BpiController {
 	@Operation(summary = "呼叫外部coindesk API")
 	@GetMapping("/call/coindesk")
 	public ApiResponse<Coindesk> callCoindeskAPI() {
-		Coindesk coindesk = JsonUtils.getObject(restTemplate.getForObject(COINDESK_URL, String.class), Coindesk.class);
+		Coindesk coindesk = JsonUtils.getObject(coindeskFeign.getCurrentPrice(), Coindesk.class);
 		log.info("call coindesk api res : {}", coindesk);
 		return BpiRsUtil.getSuccess(coindesk);
 	}
@@ -148,7 +143,7 @@ public class BpiController {
 	@Operation(summary = "呼叫外部coindesk API 後進行資料處理 return")
 	@GetMapping("/call/coindesk/transform")
 	public ApiResponse<NewBpiRs> transformNewBpi() {
-		String jsonStr = restTemplate.getForObject(COINDESK_URL, String.class);
+		String jsonStr = coindeskFeign.getCurrentPrice();
 		log.info("call coindesk api res : {}", jsonStr);
 		return BpiRsUtil.getSuccess(bpiService.transform(jsonStr));
 	}

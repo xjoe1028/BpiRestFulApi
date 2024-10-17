@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,9 +16,14 @@ import javax.sql.DataSource;
 public class MyBatisConfig {
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSource(DataSourceProperties properties) {
         // 配置你的数据源
-        return new HikariDataSource();
+        HikariDataSource hikariDataSource = new HikariDataSource();
+        hikariDataSource.setJdbcUrl(properties.getUrl());
+        hikariDataSource.setUsername(properties.getUsername());
+        hikariDataSource.setPassword(properties.getPassword());
+        hikariDataSource.setMaximumPoolSize(5);
+        return hikariDataSource;
     }
 
     @Bean

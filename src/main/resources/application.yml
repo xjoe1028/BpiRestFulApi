@@ -1,48 +1,22 @@
-# server
 server:
   port: 9998
-
-# spring
 spring:
+  application:
+    name: BpiRestFulApi
+
   datasource:
-    # h2 database
-    driver-class-name: org.h2.Driver # h2 database 連接位址
-    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE # 配置driver
-    username: sa
-    password:
-
-    #    # oracle database
-    #    driver-class-name: oracle.jdbc.OracleDriver
-    #    url: jdbc:oracle:thin:@localhost:1521/ORCL # 配置driver
-    #    username: system
-    #    password: 123456
-
-    # mysql database
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://localhost:3306/mysql_local?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    #    username: root
-    #    password: 123456
-    hikari:
-      connection-timeout: 30000
-      maximum-pool-size: 5
-      minimum-idle: 5
-      idle-timeout: 60000
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mysql_local?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 123456
 
   jpa:
     show-sql: true
-    # mysql
-    #    database: mysql
-    #    database-platform: org.hibernate.dialect.MySQL8Dialect
-    # oracle
-    #    database: oracle
-    # database-platform: org.hibernate.dialect.OracleDialect
-    # h2
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
-
     hibernate:
       ddl-auto: update
-      format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   h2:
     console:
@@ -67,6 +41,7 @@ spring:
     default-property-inclusion: non-null # JSON處理時忽略非空字段
     serialization:
       fail-on-empty-beans: false
+      indent-output: true
 
   # cache
   cache:
@@ -75,6 +50,8 @@ spring:
   # redis
   data:
     redis:
+      repositories:
+        enabled: true
       database: 0       # Redis資料庫索引（預設為0）
       host: 127.0.0.1   # Redis伺服器地址
       port: 6379        # Redis伺服器連線埠
@@ -87,16 +64,24 @@ spring:
           max-idle: 8   # 連線池中的最大空閒連線
           min-idle: 0   # 連線池中的最小空閒連線
 
+springdoc:
+  api-docs: "/api-docs"
+  swagger-ui:
+    path: "/swagger-ui.html"
+    display-request-duration: true
+
 # slf4j
 logging:
-  file:
-    name: bpiRestFulApi.log
+  #  file:
+  #    name: bpiRestFulApi.log
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   level:
-    org.springframework: INFO
-    com.bpi: DEBUG
+    root: info
+    org.springframework: info
+    com.bpi: debug
+
 
 # myBatis
 mybatis:
@@ -105,5 +90,16 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #console印sql
 
+# openFeign
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
 
-
+# 自定義外部api url
+api:
+  coindesk:
+    url: https://api.coindesk.com

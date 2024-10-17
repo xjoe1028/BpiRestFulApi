@@ -89,7 +89,7 @@ public class BpiEntity implements Serializable {
 	 */
 	@Schema(description = "創建時間")
 	@NotNull
-	@Column(name = "CREATE_DATE_TIME", insertable = false, updatable = false)
+	@Column(name = "CREATE_DATE_TIME", updatable = false)
 	// @Convert(converter = TimeStampAttributeConverter.class)
 	String createDateTime;
 	
