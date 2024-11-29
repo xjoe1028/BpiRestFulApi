@@ -1,6 +1,7 @@
 package com.bpi.model.rs;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jdk.jfr.Description;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,22 +22,22 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class BpiRs {
 
-	@Schema(description = "貨幣名稱")
+	@Description("貨幣名稱")
 	String code;
 
-	@Schema(description = "貨幣中文名稱")
+	@Description("貨幣中文名稱")
 	String codeChineseName;
 
-	@Schema(description = "金錢符號")
+	@Description("金錢符號")
 	String symbol;
 
-	@Schema(description = "匯率(千分位,)")
+	@Description("匯率(千分位,)")
 	String rate;
 
-	@Schema(description = "匯率")
+	@Description("匯率")
 	BigDecimal rateFloat;
 
-	@Schema(description = "描述")
+	@Description("描述")
 	String description;
 
 }

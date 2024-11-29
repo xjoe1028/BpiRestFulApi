@@ -8,6 +8,7 @@ import com.bpi.model.BpiForMyBatis;
 import com.bpi.model.entity.BpiEntity;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.model.rs.BpiRs;
+import org.mapstruct.Mapping;
 
 /**
  * map struct mapper 
@@ -22,7 +23,7 @@ import com.bpi.model.rs.BpiRs;
  * @author Joe
  *
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", builder = @org.mapstruct.Builder(disableBuilder = true))
 public interface BpiAssembler {
 	
 	BpiEntity toEntity(BpiRq rq);

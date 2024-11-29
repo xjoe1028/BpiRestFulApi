@@ -22,6 +22,6 @@ INSERT INTO BPI (CODE,CODE_CHINESE_NAME,CREATED,DESCRIPTION,RATE,RATE_FLOAT,SYMB
 db：oracle or h2 or MySQL 
 <br>
 # SWAGGER-UI
-swagger-ui url：http://localhost:{server.port}/swagger-ui/
+swagger-ui url： http://localhost:${server.port}/swagger-ui/index.html
 # H2-Console
 h2 console url：http://localhost:{server.port}/h2-console/

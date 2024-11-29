@@ -5,19 +5,10 @@ import java.util.List;
 import com.bpi.feign.CoindeskFeign;
 import com.bpi.util.BpiRsUtil;
 import com.bpi.util.JsonUtils;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bpi.model.RqType;
 import com.bpi.model.rq.BpiRateRq;
 import com.bpi.model.rq.BpiRq;
 import com.bpi.model.rs.ApiResponse;
@@ -40,57 +31,35 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*") // 跨域的問題
-@RequestMapping(value = "/api/bpi", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @RestController
-public class BpiController {
+public class BpiController implements BpiApi {
 
 	final BpiService bpiService;
 
 	final CoindeskFeign coindeskFeign;
 
-	/**
-	 * select All
-	 */
 	@Operation(summary = "查詢所有幣別")
-	@GetMapping("/findAllBpis")
+	@Override
 	public ApiResponse<List<BpiRs>> findAllBpis() {
 		return bpiService.findAll();
 	}
 
-	/**
-	 * 查詢 Bpi by code
-	 * 
-	 * @param code
-	 * @return
-	 */
 	@Operation(summary = "查詢單一幣別")
-	@GetMapping("/findBpi/code")
-	public ApiResponse<BpiRs> findBpiByPk(
-		@Parameter(name = "code", description = "英文幣別", required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = String.class))
-		@RequestParam(name = "code", defaultValue = "") String code) {
+	@Override
+	public ApiResponse<BpiRs> findBpiByPk(String code) {
 		return bpiService.findBpiByPk(code);
 	}
 
-	/**
-	 * 查詢 Bpi by codeChineseName
-	 */
 	@Operation(summary = "查詢單一幣別")
-	@GetMapping("/findBpi/codeChineseName")
-	public ApiResponse<BpiRs> findBpiByCodeChineseName(
-		@Parameter(name = "codeChineseName", description = "中文幣別", required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = String.class))
-		@RequestParam(name = "codeChineseName", defaultValue = "") String codeChineseName) {
+	@Override
+	public ApiResponse<BpiRs> findBpiByCodeChineseName(String codeChineseName) {
 		return bpiService.findBpiByCodeChineseName(codeChineseName);
 	}
 
-	/**
-	 * 新增 Bpi
-	 */
 	@Operation(summary = "新增幣別")
-	@RqType(BpiRq.class)
-	@PostMapping("/addBpi")
-	public ApiResponse<BpiRs> addBpi(@RequestBody BpiRq rq) {
+	@Override
+	public ApiResponse<BpiRs> addBpi(BpiRq rq) {
 		return bpiService.addBpi(rq);
 	}
 
@@ -99,9 +68,8 @@ public class BpiController {
 	 * PUT: 替換資源
 	 */
 	@Operation(summary = "修改幣別")
-	@RqType(BpiRq.class)
-	@PutMapping("/updateBpi")
-	public ApiResponse<BpiRs> updateBpi(@RequestBody BpiRq rq) {
+	@Override
+	public ApiResponse<BpiRs> updateBpi(BpiRq rq) {
 		return bpiService.updateBpi(rq);
 	}
 
@@ -110,38 +78,27 @@ public class BpiController {
 	 * PATCH: 更新資源部份內容
 	 */
 	@Operation(summary = "修改幣別匯率")
-	@RqType(BpiRateRq.class)
-	@PatchMapping("/updateBpiRate")
-	public ApiResponse<BpiRs> updateBpiRate(@RequestBody BpiRateRq rq) {
+	@Override
+	public ApiResponse<BpiRs> updateBpiRate(BpiRateRq rq) {
 		return bpiService.updateBpiRate(rq);
 	}
 
-	/**
-	 * 刪除 Bpi by code
-	 */
 	@Operation(summary = "刪除幣別")
-	@RqType(BpiRq.class)
-	@DeleteMapping("/deleteBpi/code")
-	public ApiResponse<BpiRs> deleteBpi(@RequestBody BpiRq rq) {
+	@Override
+	public ApiResponse<BpiRs> deleteBpi(BpiRq rq) {
 		return bpiService.deleteBpiByCode(rq.getCode());
 	}
 
-	/**
-	 * 呼叫 coindesk API
-	 */
 	@Operation(summary = "呼叫外部coindesk API")
-	@GetMapping("/call/coindesk")
+	@Override
 	public ApiResponse<Coindesk> callCoindeskAPI() {
 		Coindesk coindesk = JsonUtils.getObject(coindeskFeign.getCurrentPrice(), Coindesk.class);
 		log.info("call coindesk api res : {}", coindesk);
 		return BpiRsUtil.getSuccess(coindesk);
 	}
 
-	/**
-	 * 呼叫 coindesk API 在 format成自定義的資料 return
-	 */
 	@Operation(summary = "呼叫外部coindesk API 後進行資料處理 return")
-	@GetMapping("/call/coindesk/transform")
+	@Override
 	public ApiResponse<NewBpiRs> transformNewBpi() {
 		String jsonStr = coindeskFeign.getCurrentPrice();
 		log.info("call coindesk api res : {}", jsonStr);

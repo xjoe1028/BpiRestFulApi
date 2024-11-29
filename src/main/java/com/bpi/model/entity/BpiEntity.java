@@ -6,11 +6,8 @@ import java.math.BigDecimal;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jdk.jfr.Description;
+import lombok.*;
 
 /**
  * bpi 幣別 entity
@@ -36,7 +33,7 @@ public class BpiEntity implements Serializable {
 	 */
 	static final long serialVersionUID = 1L;
 	
-//	@Schema(name = "id pk")
+//	@Description(name = "id pk")
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.AUTO)
 //	Long id;
@@ -44,7 +41,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 貨幣名稱
 	 */
-	@Schema(description = "貨幣名稱")
+	@Description("貨幣名稱")
 	@Id
 	@Column(name = "CODE")
 	String code;
@@ -52,42 +49,42 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 貨幣中文名稱
 	 */
-	@Schema(description = "貨幣中文名稱")
+	@Description("貨幣中文名稱")
 	@Column(name = "CODE_CHINESE_NAME")
 	String codeChineseName;
 	
 	/**
 	 * 金錢格式 ex: $
 	 */
-	@Schema(description = "金錢符號")
+	@Description("金錢符號")
 	@Column(name = "SYMBOL")
 	String symbol;
 	
 	/**
 	 * 匯率 有千分位樣式 
 	 */
-	@Schema(description = "匯率(千分位,)")
+	@Description("匯率(千分位,)")
 	@Column(name = "RATE")
 	String rate; 
 	
 	/**
 	 * 匯率 
 	 */
-	@Schema(description = "匯率")
+	@Description("匯率")
 	@Column(name = "RATE_FLOAT")
 	BigDecimal rateFloat;
 	
 	/**
 	 * 描述
 	 */
-	@Schema(description = "描述")
+	@Description("描述")
 	@Column(name = "DESCRIPTION")
 	String description;
 	
 	/**
 	 * 創建時間
 	 */
-	@Schema(description = "創建時間")
+	@Description("創建時間")
 	@NotNull
 	@Column(name = "CREATE_DATE_TIME", updatable = false)
 	// @Convert(converter = TimeStampAttributeConverter.class)
@@ -96,7 +93,7 @@ public class BpiEntity implements Serializable {
 	/**
 	 * 更新時間
 	 */
-	@Schema(description = "更新時間")
+	@Description("更新時間")
 	@Column(name = "UPDATE_DATE_TIME")
 	// @Convert(converter = TimeStampAttributeConverter.class)
 	String updateDateTime;

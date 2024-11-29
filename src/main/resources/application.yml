@@ -1,5 +1,6 @@
 server:
   port: 9998
+
 spring:
   application:
     name: BpiRestFulApi
@@ -95,7 +96,8 @@ spring:
           min-idle: 0   # 連線池中的最小空閒連線
 
 springdoc:
-  api-docs: "/api-docs"
+  api-docs:
+    path: "/v3/api-docs"
   swagger-ui:
     path: "/swagger-ui.html"
     display-request-duration: true
