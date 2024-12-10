@@ -23,13 +23,31 @@ spring:
     url: jdbc:mysql://localhost:3306/mysql_local?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: 123456
-
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 5
       minimum-idle: 5
       idle-timeout: 60000
-
+#    first:
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      jdbc-url: jdbc:mysql://localhost:3306/mysql_local?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#      username: root
+#      password: 123456
+#      hikari:
+#        connection-timeout: 30000
+#        maximum-pool-size: 5
+#        minimum-idle: 5
+#        idle-timeout: 60000
+#    seconnd:
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      jdbc-url: jdbc:mysql://localhost:3306/mysql_local?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#      username: root
+#      password: 123456
+#      hikari:
+#        connection-timeout: 30000
+#        maximum-pool-size: 5
+#        minimum-idle: 5
+#        idle-timeout: 60000
   jpa:
     show-sql: true
     hibernate:
@@ -78,8 +96,14 @@ spring:
   cache:
     type: redis
 
-  # redis
   data:
+    # mongodb 不要用local
+    mongodb:
+      uri: mongodb://admin:123456@localhost:27017
+      database: my-mongodb
+      username: admin
+      password: 123456
+    # redis
     redis:
       repositories:
         enabled: true
@@ -95,6 +119,7 @@ spring:
           max-idle: 8   # 連線池中的最大空閒連線
           min-idle: 0   # 連線池中的最小空閒連線
 
+# swagger
 springdoc:
   api-docs:
     path: "/v3/api-docs"

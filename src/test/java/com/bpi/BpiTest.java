@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import com.bpi.model.entity.mongodb.BpiMongoEntity;
+import com.bpi.repository.mongodb.BpiMongoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -49,6 +53,12 @@ import lombok.extern.slf4j.Slf4j;
 @AutoConfigureMockMvc
 @SpringBootTest
 class BpiTest {
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
+
+	@Autowired
+	private BpiMongoRepository bpiMongoRepository;
 
 	@Autowired
 	private BpiRepository bpiRepository;
@@ -378,5 +388,38 @@ class BpiTest {
 		var result = bpiMapper.updateByCode(bpiForMyBatis);
 		log.info("update success : {} 筆", result);
 	}
-	
+
+	@Disabled("skip")
+	@Test
+	void crudBpiMongoDBTest() throws Exception {
+		var resultList = bpiMongoRepository.findAll();
+		log.info("jpa findAll() resultList: {}", resultList);
+		BpiMongoEntity entity;
+		if (resultList.isEmpty()) {
+			entity = BpiMongoEntity.builder()
+				.code("test")
+				.codeChineseName("測試")
+				.description("測試芒果db")
+				.rate("0")
+				.rateFloat(BigDecimal.ZERO)
+				.createDateTime(DateUtil.getNowDateTime())
+				.build();
+			entity = bpiMongoRepository.insert(entity);
+			log.info("entity: {}", entity);
+		} else {
+			entity = resultList.get(0);
+			entity.setDescription("測試mongoDB update success!!!");
+			entity.setUpdateDateTime(DateUtil.getNowDateTime());
+			entity = bpiMongoRepository.save(entity);
+			log.info("update after entity: {}", entity);
+		}
+		resultList = bpiMongoRepository.findByCode(entity.getCode());
+		log.info("jpa findByCode() resultList: {}", resultList);
+
+		// 使用 mongoTemplate去做select
+		// var resultList2 = mongoTemplate.find(new Query(), BpiMongoEntity.class);
+		// log.info("use mongoTemplate resultList: {}", resultList2);
+
+	}
+
 }
