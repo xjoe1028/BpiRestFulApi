@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface CoindeskFeign {
 
     @GetMapping("/v1/bpi/currentprice.json")
-    public String getCurrentPrice();
+    String getCurrentPrice();
 
 }
