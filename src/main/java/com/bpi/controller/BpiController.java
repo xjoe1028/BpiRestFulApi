@@ -5,8 +5,6 @@ import java.util.List;
 import com.bpi.feign.CoindeskFeign;
 import com.bpi.util.BpiRsUtil;
 import com.bpi.util.JsonUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bpi.model.rq.BpiRateRq;
@@ -18,9 +16,6 @@ import com.bpi.model.rs.NewBpiRs;
 import com.bpi.service.BpiService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

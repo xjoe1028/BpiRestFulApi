@@ -1,11 +1,20 @@
 # Bpi-RestFul-API sql
 Create sql：
 
-create table bpi (bpi_id bigint not null, code varchar(255), code_chinese_name varchar(255), description varchar(255), rate varchar(255), rate_float double, symbol varchar(255), updated varchar(255), primary key (bpi_id))
+create table bpi (
+code              varchar(255)   not null primary key,
+code_chinese_name varchar(255)   null,
+create_date_time  varchar(255)   not null,
+description       varchar(255)   null,
+rate              varchar(255)   null,
+rate_float        decimal(38, 2) null,
+symbol            varchar(255)   null,
+update_date_time  varchar(255)   null
+);
 
 Insert sql：
 
-INSERT INTO BPI (CODE,CODE_CHINESE_NAME,CREATED,DESCRIPTION,RATE,RATE_FLOAT,SYMBOL,UPDATED) VALUES
+INSERT INTO BPI (CODE,CODE_CHINESE_NAME,CREATED_DATE_TIME,DESCRIPTION,RATE,RATE_FLOAT,SYMBOL,UPDATE_DATE_TIME) VALUES
 	 ('USD','美元','2023/05/02 12:09:29','United States Dollar','27.85',27.85,'$',NULL),
 	 ('GBP','英镑','2023/05/02 12:09:29','British Pound Sterling','37.85',37.85,'£',NULL),
 	 ('EUR','歐元','2023/05/02 12:09:29','Euro','31.49',31.49,'€',NULL),
